@@ -3,7 +3,7 @@ from typing import Optional,Dict,List
 
 class RegistroPlanta:
 
-    def __init__(self, nombre_planta:str, tipo_planta:str, viva:bool):
+    def __init__(self, nombre_planta:str, tipo_planta:str, viva:bool = True):
         self.__nombre_planta:str = nombre_planta
         self.__tipo_planta:str = tipo_planta
         self.__viva:bool = viva

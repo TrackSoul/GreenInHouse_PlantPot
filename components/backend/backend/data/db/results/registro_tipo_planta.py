@@ -28,8 +28,8 @@ class RegistroTipoPlanta(ModuloBase):
         return Table(
             'tipos_plantas',
             metadata,
-            Column('tipo_planta', String, primary_key=True),
-            Column('descripcion_planta', String, nullable=False )
+            Column('tipo_planta', String(100), primary_key=True),
+            Column('descripcion_planta', String(500), nullable=False )
         )
 
     @staticmethod

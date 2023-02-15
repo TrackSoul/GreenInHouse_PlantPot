@@ -13,7 +13,7 @@ class RegistroPlantaSet():
     Clase responsable a nivel de tabla de las operaciones con los registros.
     """
     @staticmethod
-    def create(session: Session, nombre_planta:str, tipo_planta:str) -> RegistroPlanta:
+    def create(session: Session, nombre_planta:str, tipo_planta:str, viva:bool) -> RegistroPlanta:
         """
         Creacion de un nuevo registro de un sensor
 
@@ -37,7 +37,7 @@ class RegistroPlantaSet():
         if not tipo_planta:
             raise ValueError('Necesario especificar el tipo de la planta.')
         try:
-            nuevo_registro = RegistroPlanta(nombre_planta, tipo_planta)
+            nuevo_registro = RegistroPlanta(nombre_planta, tipo_planta, viva)
             session.add(nuevo_registro)
             session.commit()
             return nuevo_registro

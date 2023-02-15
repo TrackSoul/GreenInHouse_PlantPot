@@ -7,14 +7,18 @@ from common.data.registro_sensor import RegistroSensor as RegistroSensorCommon
 from backend.data.config import BackendConfiguration
 from backend.data.db import Esquema
 from backend.service import RegistroSensorService, RegistroPlantaService, RegistroTipoPlantaService
-from common.data import TipoSensor, ZonaSensor
+from common.data import TipoSensor, ZonaSensor, RegistroPlanta as RegistroPlantaCommon, RegistroTipoPlanta as RegistroTipoPlantaCommon
 
 cfg: BackendConfiguration = BackendConfiguration()
 #cfg.load_from_file(cfg.default_config_file())
 db: Esquema = Esquema(cfg)
 
 RegistroTipoPlantaService.create_registro_tipo_planta(db,"Ninguno","Sin descripcion")
-RegistroPlantaService.create_registro_planta(db,"Sin planta","Ninguno")
+tipo_planta_common = RegistroTipoPlantaCommon("Tomatera","Planta facil de cultivar")
+RegistroTipoPlantaService.create_registro_tipo_planta_from_common(db,tipo_planta_common)
+RegistroPlantaService.create_registro_planta(db,"Sin planta","Ninguno", False)
+planta_common = RegistroPlantaCommon("Mi tomatera","Tomatera")
+RegistroPlantaService.create_registro_planta_from_common(db,planta_common)
 RegistroSensorService.create_registro_sensor(db,TipoSensor.HUMEDAD,ZonaSensor.AMBIENTE,1,65.0, "%")
 RegistroSensorService.create_registro_sensor(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,65.0,"%")
 RegistroSensorService.create_registro_sensor(db,TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,29.0,"ºC")

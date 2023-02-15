@@ -10,10 +10,10 @@ class RegistroPlanta(ModuloBase):
     Definicion y almacenamiento de los registros del sensor.
     """
 
-    def __init__(self, nombre_planta:str, tipo_planta:str):
+    def __init__(self, nombre_planta:str, tipo_planta:str, viva: bool):
         self.nombre_planta: str = nombre_planta
         self.tipo_planta: str = tipo_planta
-        self.viva: bool = True
+        self.viva: bool = viva
 
     @staticmethod
     def _table_definition(metadata: MetaData) -> Table:
@@ -30,8 +30,8 @@ class RegistroPlanta(ModuloBase):
             #str(self.tipo_sensor + str(self.numero_sensor)),
             'plantas',
             metadata,
-            Column('nombre_planta', String, primary_key=True),
-            Column('tipo_planta', String, ForeignKey('tipos_plantas.tipo_planta'), nullable=False ),
+            Column('nombre_planta', String(100), primary_key=True),
+            Column('tipo_planta', String(100), ForeignKey('tipos_plantas.tipo_planta'), nullable=False ),
             Column('viva', Boolean, nullable=False ),
         )
 

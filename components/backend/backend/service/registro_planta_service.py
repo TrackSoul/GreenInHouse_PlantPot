@@ -9,13 +9,13 @@ class RegistroPlantaService():
 
     @staticmethod
     # def create_registro_planta(tipo_planta: Union[TipoPlanta,str], zona_planta:Union[ZonaPlanta,str] ,numero_planta:int, valor:float, schema: Esquema) -> CommonRegistroPlanta:
-    def create_registro_planta(esquema: Esquema, nombre_planta: str, tipo_planta: str) -> CommonRegistroPlanta:
+    def create_registro_planta(esquema: Esquema, nombre_planta: str, tipo_planta: str, viva:bool = True) -> CommonRegistroPlanta:
         session: Session = esquema.new_session()
         out: CommonRegistroPlanta = None
         try:
             # if isinstance(tipo_planta, str):
             #     tipo_planta = TipoPlanta[tipo_planta]
-            new_registro_planta: RegistroPlanta = RegistroPlantaSet.create(session, nombre_planta, tipo_planta)
+            new_registro_planta: RegistroPlanta = RegistroPlantaSet.create(session, nombre_planta, tipo_planta, viva)
             out= CommonRegistroPlanta(new_registro_planta.nombre_planta,new_registro_planta.tipo_planta,new_registro_planta.viva)
         except Exception as ex:
             raise ex
