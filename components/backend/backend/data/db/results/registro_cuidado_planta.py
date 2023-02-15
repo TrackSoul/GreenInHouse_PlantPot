@@ -10,7 +10,10 @@ class RegistroCuidadoPlanta(ModuloBase):
     Definicion y almacenamiento de los registros del sensor.
     """
 
-    def __init__(self, tipo_planta:str, ):
+    def __init__(self, tipo_planta:str, temperatura_minima:float, temperatura_maxima:float, 
+      humedad_ambiente_minima:float, humedad_ambiente_maxima:float, humedad_maceta_minima:float, humedad_maceta_maxima:float, 
+      humedad_suelo_minima:float, humedad_suelo_maxima:float, luz_minima:float, luz_maxima:float, 
+      horas_luz_minimas:float, horas_luz_maximas:float, dia_inicio:int, dia_final:float):
         self.id: int
         self.tipo_planta: str = tipo_planta
         self.temperatura_minima: float = temperatura_minima
@@ -23,10 +26,10 @@ class RegistroCuidadoPlanta(ModuloBase):
         self.humedad_suelo_maxima: float  = humedad_suelo_maxima
         self.luz_minima: float = luz_minima
         self.luz_maxima: float  = luz_maxima
-        self.horas_luz_minima: float = horas_luz_minima
-        self.horas_luz_maxima: float  = horas_luz_maxima
+        self.horas_luz_minimas: float = horas_luz_minimas
+        self.horas_luz_maximas: float  = horas_luz_maximas
         self.dia_inicio: int = dia_inicio
-        self.dia_final: int = dia_inicio
+        self.dia_final: int = dia_final
 
 
     @staticmethod
