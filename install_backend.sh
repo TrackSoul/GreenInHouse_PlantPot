@@ -10,6 +10,7 @@ chmod 777 install.sh
 chmod 777 start.sh
 
 apt install python3.8-venv
+apt install sqlite3
 
 path_intall=~/GrenInHouse
 
