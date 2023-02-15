@@ -2,12 +2,14 @@
 
 original_path=$(pwd)
 
-#cd "$original_path"/components/common
-#chmod 777 install.sh
+cd "$original_path"/components/common
+chmod 777 install.sh
 
-#cd "$original_path"/components/backend
-#chmod 777 install.sh
-#chmod 777 start.sh
+cd "$original_path"/components/backend
+chmod 777 install.sh
+chmod 777 start.sh
+
+apt install python3.8-venv
 
 path_intall=~/GrenInHouse
 
