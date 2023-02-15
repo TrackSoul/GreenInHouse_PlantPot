@@ -6,10 +6,7 @@ from sqlalchemy.exc import IntegrityError  # type: ignore
 from sqlalchemy.orm.session import Session  # type: ignore
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore
 from backend.data.db.results.registro_sensor import RegistroSensor
-from backend.data.db.exc.error_sensor_existe import ErrorSensorExiste
-from backend.data.db.exc.error_sensor_no_existe import ErrorSensorNoExiste
-from backend.data.db.exc.error_registro_sensor_existe import ErrorRegistroSensorExiste
-from backend.data.db.exc.error_registro_sensor_no_existe import ErrorRegistroSensorNoExiste
+from backend.data.db.exc import ErrorSensorExiste, ErrorSensorNoExiste, ErrorRegistroSensorExiste, ErrorRegistroSensorNoExiste
 from common.data import TipoSensor, ZonaSensor
 
 class RegistroSensorSet():
@@ -70,7 +67,10 @@ class RegistroSensorSet():
         query = session.query(RegistroSensor)
         return query.all()
 
-'''nombre_plantather a user exists or not.
+'''
+    @staticmethod
+    def get(session: Session, id: str) -> Optional[RegistroPlanta]:
+        """ Determines whether a user exists or not.
 
         Args:
             - session (Session): Objeto de sesion.

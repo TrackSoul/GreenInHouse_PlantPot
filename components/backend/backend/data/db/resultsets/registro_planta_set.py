@@ -6,8 +6,7 @@ from sqlalchemy.exc import IntegrityError  # type: ignore
 from sqlalchemy.orm.session import Session  # type: ignore
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore
 from backend.data.db.results.registro_planta import RegistroPlanta
-from backend.data.db.exc.error_registro_planta_existe import ErrorRegistroPlantaExiste
-from backend.data.db.exc.error_registro_planta_no_existe import ErrorRegistroPlantaNoExiste
+from backend.data.db.exc import ErrorRegistroPlantaExiste, ErrorRegistroPlantaNoExiste, ErrorRegistroTipoPlantaNoExiste
 
 class RegistroPlantaSet():
     """ 
@@ -23,9 +22,8 @@ class RegistroPlantaSet():
 
         Args:
             - session (Session): Objeto de sesion.
-            - tipo_sensor (str): Tipo de sensor.
-            - numero_sensor (str): Numero de sensor.
-            - valor (float): Valor de lectura del sensor.
+            - nombre_planta (str): Nombre de planta.
+            - tipo_planta (str): Tipo de planta.
 
         Raises:
             - ValueError: Si no es proporcionado alguno de los datos necesarios.
@@ -46,12 +44,15 @@ class RegistroPlantaSet():
         except IntegrityError as ex:
             session.rollback()
             raise ErrorRegistroPlantaExiste(
-                'El nombre de planta ' + str(nuevo_registro.nombre_planta) + ' ya está registrado.'
+                'El nombre de planta ' + str(nombre_planta) + ' ya está registrado.'
+                ) from ex
+        except NoResultFound as ex:
+            raise ErrorRegistroTipoPlantaNoExiste(
+                'El tipo de planta ' + tipo_planta + 'no existe'
                 ) from ex
 
     @staticmethod
     def list_all(session: Session) -> List[RegistroPlanta]:
-    #def list_all(session: Session, tipo_sensor:str ,numero_sensor:str) -> List[Sensor]:
         """Lists every user.
 
         Args:
@@ -64,12 +65,12 @@ class RegistroPlantaSet():
         return query.all()
 
     @staticmethod
-    def get_planta(session: Session, nombre_planta: str) -> Optional[RegistroPlanta]:
+    def get(session: Session, nombre_planta: str) -> Optional[RegistroPlanta]:
         """ Determines whether a user exists or not.
 
         Args:
             - session (Session): Objeto de sesion.
-            - id (str): The question id to find
+            - nombre_planta (str): The question id to find
             
         Returns:
             - Optional[Pregunta]: The question 

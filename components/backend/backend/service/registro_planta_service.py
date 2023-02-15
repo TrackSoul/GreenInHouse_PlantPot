@@ -25,12 +25,12 @@ class RegistroPlantaService():
     
     @staticmethod
     def create_registro_planta_from_common(registro_planta: CommonRegistroPlanta, schema: Esquema) -> CommonRegistroPlanta:
-        return RegistroPlantaService.create_registro_planta(registro_planta.getTipoPlanta(), registro_planta.getNumeroPlanta(), registro_planta.getValor(), schema)
+        return RegistroPlantaService.create_registro_planta(registro_planta.getNombrePlanta(), registro_planta.getTipoPlanta(), registro_planta.getViva(), schema)
 
     @staticmethod
     def exists_registro_planta(nombre_planta: str, schema: Esquema):
         session: Session = schema.new_session()
-        registro_planta_exists: bool = RegistroPlantaSet.get_pregunta(session, nombre_planta)
+        registro_planta_exists: bool = RegistroPlantaSet.get(session, nombre_planta)
         schema.remove_session()
         return registro_planta_exists
 

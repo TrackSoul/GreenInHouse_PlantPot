@@ -34,5 +34,5 @@ class RegistroPlanta:
         return dict
 
     def from_json(dict: dict):
-        sensor = RegistroPlanta(dict["nombre_planta"],dict["tipo_planta"],dict["viva"])
-        return sensor
+        planta = RegistroPlanta(dict["nombre_planta"],dict["tipo_planta"],dict["viva"])
+        return planta

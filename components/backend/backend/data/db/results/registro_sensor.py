@@ -3,7 +3,7 @@ from typing import Dict, Optional
 from sqlalchemy import Table, MetaData, Column, String, Enum, Integer, Float, TIMESTAMP # type: ignore
 from sqlalchemy import ForeignKey  # type: ignore
 from sqlalchemy.orm import relationship  # type: ignore
-from backend.data.db.results.modulo_base import ModuloBase
+from backend.data.db.results import ModuloBase
 from common.data import TipoSensor, ZonaSensor
 
 class RegistroSensor(ModuloBase):

@@ -31,7 +31,7 @@ class RegistroPlanta(ModuloBase):
             'plantas',
             metadata,
             Column('nombre_planta', String, primary_key=True),
-            Column('tipo_planta', String, nullable=False ),
+            Column('tipo_planta', String, ForeignKey('tipos_plantas.tipo_planta'), nullable=False ),
             Column('viva', Boolean, nullable=False ),
         )
 
