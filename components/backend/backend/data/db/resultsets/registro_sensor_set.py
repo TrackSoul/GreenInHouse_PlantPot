@@ -14,7 +14,7 @@ class RegistroSensorSet():
     Clase responsable a nivel de tabla de las operaciones con los registros.
     """
     @staticmethod
-    def create(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, valor:float,nombre_planta:str = "Sin planta") -> RegistroSensor:
+    def create(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, valor:float, escala:str, nombre_planta:str ) -> RegistroSensor:
         """
         Creacion de un nuevo registro de un sensor
 
@@ -42,15 +42,17 @@ class RegistroSensorSet():
             raise ValueError('Necesario especificar el numero de sensor.')
         if not valor:
             raise ValueError('Necesario especificar el valor del sensor.')
+        if not escala:
+            raise ValueError('Necesario especificar la escala del sensor.')
         try:
-            nuevo_registro = RegistroSensor(tipo_sensor, zona_sensor, numero_sensor, valor, nombre_planta)
+            nuevo_registro = RegistroSensor(tipo_sensor, zona_sensor, numero_sensor, valor, escala, nombre_planta)
             session.add(nuevo_registro)
             session.commit()
             return nuevo_registro
         except IntegrityError as ex:
             session.rollback()
             raise ErrorRegistroSensorExiste(
-                'El registro ' + str(nuevo_registro.id) + ' del sensor ' + str(nuevo_registro.numero_sensor) + ' de ' +  nuevo_registro.tipo_sensor + 'ya existe.'
+                'El registro ' + str(nuevo_registro.id) + ' del sensor ' + str(nuevo_registro.numero_sensor) + ' de ' +  nuevo_registro.tipo_sensor + ' de ' +  nuevo_registro.zona_sensor + 'ya existe.'
                 ) from ex
 
     @staticmethod

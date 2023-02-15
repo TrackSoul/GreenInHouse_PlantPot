@@ -9,8 +9,8 @@ class RegistroPlantaService():
 
     @staticmethod
     # def create_registro_planta(tipo_planta: Union[TipoPlanta,str], zona_planta:Union[ZonaPlanta,str] ,numero_planta:int, valor:float, schema: Esquema) -> CommonRegistroPlanta:
-    def create_registro_planta(nombre_planta: str, tipo_planta: str, schema: Esquema) -> CommonRegistroPlanta:
-        session: Session = schema.new_session()
+    def create_registro_planta(esquema: Esquema, nombre_planta: str, tipo_planta: str) -> CommonRegistroPlanta:
+        session: Session = esquema.new_session()
         out: CommonRegistroPlanta = None
         try:
             # if isinstance(tipo_planta, str):
@@ -20,28 +20,28 @@ class RegistroPlantaService():
         except Exception as ex:
             raise ex
         finally:
-            schema.remove_session()
+            esquema.remove_session()
         return out
     
     @staticmethod
-    def create_registro_planta_from_common(registro_planta: CommonRegistroPlanta, schema: Esquema) -> CommonRegistroPlanta:
-        return RegistroPlantaService.create_registro_planta(registro_planta.getNombrePlanta(), registro_planta.getTipoPlanta(), registro_planta.getViva(), schema)
+    def create_registro_planta_from_common(esquema: Esquema, registro_planta: CommonRegistroPlanta) -> CommonRegistroPlanta:
+        return RegistroPlantaService.create_registro_planta(esquema, registro_planta.getNombrePlanta(), registro_planta.getTipoPlanta(), registro_planta.getViva())
 
     @staticmethod
-    def exists_registro_planta(nombre_planta: str, schema: Esquema):
-        session: Session = schema.new_session()
+    def exists_registro_planta(esquema: Esquema, nombre_planta: str):
+        session: Session = esquema.new_session()
         registro_planta_exists: bool = RegistroPlantaSet.get(session, nombre_planta)
-        schema.remove_session()
+        esquema.remove_session()
         return registro_planta_exists
 
     @staticmethod
-    def list_registro_planta(schema: Esquema) -> List[CommonRegistroPlanta]:
+    def list_registro_planta(esquema: Esquema) -> List[CommonRegistroPlanta]:
         out: List[CommonRegistroPlanta] = []
-        session: Session = schema.new_session()
+        session: Session = esquema.new_session()
         registros_planta: List[RegistroPlanta] = RegistroPlantaSet.list_all(session)
         for registro_planta in registros_planta:
             out.append(CommonRegistroPlanta(registro_planta.nombre_planta,registro_planta.tipo_planta,registro_planta.viva))
-        schema.remove_session()
+        esquema.remove_session()
         return out
 
 '''

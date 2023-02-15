@@ -9,8 +9,8 @@ class RegistroTipoPlantaService():
 
     @staticmethod
     # def create_registro_planta(tipo_planta: Union[TipoPlanta,str], zona_planta:Union[ZonaPlanta,str] ,numero_planta:int, valor:float, schema: Esquema) -> CommonRegistroPlanta:
-    def create_registro_tipo_planta(tipo_planta: str, descripcion_planta: str, schema: Esquema) -> CommonRegistroTipoPlanta:
-        session: Session = schema.new_session()
+    def create_registro_tipo_planta(esquema: Esquema, tipo_planta: str, descripcion_planta: str) -> CommonRegistroTipoPlanta:
+        session: Session = esquema.new_session()
         out: CommonRegistroTipoPlanta = None
         try:
             # if isinstance(tipo_planta, str):
@@ -20,28 +20,28 @@ class RegistroTipoPlantaService():
         except Exception as ex:
             raise ex
         finally:
-            schema.remove_session()
+            esquema.remove_session()
         return out
     
     @staticmethod
-    def create_registro_tipo_planta_from_common(registro_tipo_planta_common: CommonRegistroTipoPlanta, schema: Esquema) -> CommonRegistroTipoPlanta:
-        return RegistroTipoPlantaService.create_registro_tipo_planta(registro_tipo_planta_common.getTipoPlanta(), registro_tipo_planta_common.getDescripcionPlanta(), schema)
+    def create_registro_tipo_planta_from_common(esquema: Esquema, registro_tipo_planta_common: CommonRegistroTipoPlanta) -> CommonRegistroTipoPlanta:
+        return RegistroTipoPlantaService.create_registro_tipo_planta(esquema, registro_tipo_planta_common.getTipoPlanta(), registro_tipo_planta_common.getDescripcionPlanta())
 
     @staticmethod
-    def exists_registro_tipo_planta(tipo_planta: str, schema: Esquema):
-        session: Session = schema.new_session()
+    def exists_registro_tipo_planta(esquema: Esquema, tipo_planta: str):
+        session: Session = esquema.new_session()
         registro_tipo_planta_exists: bool = RegistroTipoPlantaSet.get(session, tipo_planta)
-        schema.remove_session()
+        esquema.remove_session()
         return registro_tipo_planta_exists
 
     @staticmethod
-    def list_registro_planta(schema: Esquema) -> List[CommonRegistroTipoPlanta]:
+    def list_registro_planta(esquema: Esquema) -> List[CommonRegistroTipoPlanta]:
         out: List[CommonRegistroTipoPlanta] = []
-        session: Session = schema.new_session()
+        session: Session = esquema.new_session()
         registros_tipo_planta: List[RegistroTipoPlanta] = RegistroTipoPlanta.list_all(session)
         for registro_tipo_planta in registros_tipo_planta:
             out.append(CommonRegistroTipoPlanta(registro_tipo_planta.tipo_planta,registro_tipo_planta.descripcion_planta))
-        schema.remove_session()
+        esquema.remove_session()
         return out
 
 '''
