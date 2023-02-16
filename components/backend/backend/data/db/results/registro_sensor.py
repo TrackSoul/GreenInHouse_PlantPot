@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Dict, Optional
 from sqlalchemy import Table, MetaData, Column, String, Enum, Integer, Float, TIMESTAMP # type: ignore
-from sqlalchemy import ForeignKey  # type: ignore
+from sqlalchemy import ForeignKey, ForeignKeyConstraint  # type: ignore
 from sqlalchemy.orm import relationship  # type: ignore
 from backend.data.db.results import ModuloBase
 from common.data import TipoSensor, ZonaSensor
@@ -34,16 +34,18 @@ class RegistroSensor(ModuloBase):
         """
         return Table(
             #str(self.tipo_sensor + str(self.numero_sensor)),
-            'sensores',
+            'registros_sensores',
             metadata,
             Column('id', Integer, autoincrement='auto', primary_key=True),
-            Column('tipo_sensor',Enum(TipoSensor),nullable=False ),
-            Column('zona_sensor',Enum(ZonaSensor),nullable=False ),
+            Column('tipo_sensor', Enum(TipoSensor), nullable=False ),
+            Column('zona_sensor', Enum(ZonaSensor), nullable=False ),
             Column('numero_sensor', Integer, nullable=False),
             Column('valor', Float, nullable=False),
             Column('escala', String, nullable=False),
             Column('fecha', TIMESTAMP, nullable=False),
-            Column('nombre_planta', String, ForeignKey('plantas.nombre_planta'), nullable=False)
+            Column('nombre_planta', String, ForeignKey('registros_plantas.nombre_planta'), nullable=False),
+            ForeignKeyConstraint(['tipo_sensor','zona_sensor','numero_sensor'],
+                                 ['sensores.tipo_sensor','sensores.zona_sensor','sensores.numero_sensor'])
         )
 
     @staticmethod

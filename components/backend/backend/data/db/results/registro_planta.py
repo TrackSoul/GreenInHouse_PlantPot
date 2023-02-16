@@ -28,10 +28,10 @@ class RegistroPlanta(ModuloBase):
         """
         return Table(
             #str(self.tipo_sensor + str(self.numero_sensor)),
-            'plantas',
+            'registros_plantas',
             metadata,
             Column('nombre_planta', String(100), primary_key=True),
-            Column('tipo_planta', String(100), ForeignKey('tipos_plantas.tipo_planta'), nullable=False ),
+            Column('tipo_planta', String(100), ForeignKey('registros_tipos_plantas.tipo_planta'), nullable=False ),
             Column('viva', Boolean, nullable=False ),
         )
 
