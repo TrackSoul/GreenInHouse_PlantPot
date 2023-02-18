@@ -11,6 +11,7 @@ from backend.data.config import BackendConfiguration
 from backend.data.db.results import Sensor, RegistroSensor, RegistroPlanta, RegistroTipoPlanta
 
 
+
 # Requerido por SQLite para forzxar la integridad de claves foraneas
 @event.listens_for(Engine, "connect")
 def set_sqlite_pragma(

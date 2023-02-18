@@ -2,12 +2,12 @@
 
 original_path=$(pwd)
 
-cd "$original_path"/components/common
-chmod 777 install.sh
+# cd "$original_path"/components/common
+# chmod 777 install.sh
 
-cd "$original_path"/components/backend
-chmod 777 install.sh
-chmod 777 start.sh
+# cd "$original_path"/components/backend
+# chmod 777 install.sh
+# chmod 777 start.sh
 
 apt install python3.8-venv
 apt install sqlite3
@@ -15,7 +15,7 @@ apt install sqlite3
 path_intall=~/GrenInHouse
 
 mkdir -p "$path_intall"
-cp -a "$original_path"/components "$path_intall"
+cp -a "$original_path"/. "$path_intall"
 cd "$path_intall"
 mkdir -p venv_backend
 cd "$path_intall"/venv_backend
@@ -30,4 +30,5 @@ cd "$path_intall"/components/common
 
 cd "$path_intall"/components/backend
 ./install.sh
+./initialize.sh
 ./start.sh

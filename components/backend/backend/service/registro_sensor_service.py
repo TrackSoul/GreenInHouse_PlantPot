@@ -24,7 +24,7 @@ class RegistroSensorService():
             out= CommonRegistroSensor(new_registro_sensor.tipo_sensor,new_registro_sensor.zona_sensor,
                                       new_registro_sensor.numero_sensor,new_registro_sensor.valor, 
                                       new_registro_sensor.escala, new_registro_sensor.nombre_planta, 
-                                      new_registro_sensor.id, new_registro_sensor.fecha)
+                                      new_registro_sensor.fecha, new_registro_sensor.id)
         except Exception as ex:
             raise ex
         finally:
@@ -53,7 +53,7 @@ class RegistroSensorService():
             out.append(CommonRegistroSensor(registro_sensor.tipo_sensor,registro_sensor.zona_sensor,
                                       registro_sensor.numero_sensor,registro_sensor.valor, 
                                       registro_sensor.escala, registro_sensor.nombre_planta, 
-                                      registro_sensor.id, registro_sensor.fecha))
+                                      registro_sensor.fecha, registro_sensor.id))
         esquema.remove_session()
         return out
 

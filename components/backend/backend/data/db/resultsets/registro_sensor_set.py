@@ -5,7 +5,7 @@ from typing import List, Optional
 from sqlalchemy.exc import IntegrityError  # type: ignore
 from sqlalchemy.orm.session import Session  # type: ignore
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore
-from backend.data.db.results.registro_sensor import RegistroSensor
+from backend.data.db.results import RegistroSensor
 from backend.data.db.exc import ErrorSensorExiste, ErrorSensorNoExiste, ErrorRegistroSensorExiste, ErrorRegistroSensorNoExiste
 from common.data import TipoSensor, ZonaSensor
 
@@ -69,9 +69,8 @@ class RegistroSensorSet():
         query = session.query(RegistroSensor)
         return query.all()
 
-'''
     @staticmethod
-    def get(session: Session, id: str) -> Optional[RegistroPlanta]:
+    def get(session: Session, id: str) -> Optional[RegistroSensor]:
         """ Determines whether a user exists or not.
 
         Args:
@@ -84,14 +83,15 @@ class RegistroSensorSet():
         if not id:
             raise ValueError('An id is requiered.')
         try:
-            query = session.query(Sensor).filter_by(id=id)
-            sensor: Sensor = query.one()
+            query = session.query(RegistroSensor).filter_by(id=id)
+            sensor: RegistroSensor = query.one()
         except NoResultFound as ex:
             raise ErrorRegistroSensorNoExiste(
-                'The question with title ' + id + ' don\'t exists.'
+                'El registro de sensor con el id ' + id + ' no existe.'
                 ) from ex
         return sensor
 
+'''
     @staticmethod
     def update(session: Session,id:int):
 

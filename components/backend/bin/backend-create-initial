@@ -13,18 +13,21 @@ cfg: BackendConfiguration = BackendConfiguration()
 #cfg.load_from_file(cfg.default_config_file())
 db: Esquema = Esquema(cfg)
 
+#datos de inicializacion del sistema
 RegistroTipoPlantaService.create_registro_tipo_planta(db,"Ninguno","Sin descripcion")
-tipo_planta_common = RegistroTipoPlantaCommon("Tomatera","Planta facil de cultivar")
-RegistroTipoPlantaService.create_registro_tipo_planta_from_common(db,tipo_planta_common)
 RegistroPlantaService.create_registro_planta(db,"Sin planta","Ninguno", False)
-planta_common = RegistroPlantaCommon("Mi tomatera","Tomatera")
-RegistroPlantaService.create_registro_planta_from_common(db,planta_common)
-
 SensorService.create_sensor(db,TipoSensor.HUMEDAD,ZonaSensor.AMBIENTE,1,"DHT11",None,19)
 sensor_common = SensorCommon(TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,"DHT11",None,19)
 SensorService.create_sensor_from_common(db,sensor_common)
-SensorService.create_sensor(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,"SIN_MODELO",None,20)
 
+
+
+tipo_planta_common = RegistroTipoPlantaCommon("Tomatera","Planta facil de cultivar")
+RegistroTipoPlantaService.create_registro_tipo_planta_from_common(db,tipo_planta_common)
+planta_common = RegistroPlantaCommon("Mi tomatera","Tomatera")
+RegistroPlantaService.create_registro_planta_from_common(db,planta_common)
+SensorService.create_sensor(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,"SIN_MODELO",None,20)
 RegistroSensorService.create_registro_sensor(db,TipoSensor.HUMEDAD,ZonaSensor.AMBIENTE,1,65.0, "%")
 RegistroSensorService.create_registro_sensor(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,65.0,"%")
+RegistroSensorService.create_registro_sensor(db,TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,29.0,"ºC")
 RegistroSensorService.create_registro_sensor(db,TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,29.0,"ºC")
