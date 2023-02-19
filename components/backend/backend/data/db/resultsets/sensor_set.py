@@ -1,6 +1,7 @@
 #import hashlib
 #from flask import current_app
 
+from datetime import datetime
 from typing import List, Optional
 from sqlalchemy.exc import IntegrityError  # type: ignore
 from sqlalchemy.orm.session import Session  # type: ignore
@@ -14,7 +15,10 @@ class SensorSet():
     Clase responsable a nivel de tabla de las operaciones con los registros.
     """
     @staticmethod
-    def create(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, modelo_sensor:str, direccion_lectura:str, patilla_1_lectura:int, patilla_2_lectura:int, patilla_3_lectura:int, patilla_4_lectura:int ) -> Sensor:
+    def create(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
+               modelo_sensor:str, direccion_lectura:str, patilla_1_lectura:int, patilla_2_lectura:int, 
+               patilla_3_lectura:int, patilla_4_lectura:int,
+               fecha_creacion:datetime ,fecha_eliminacion:datetime) -> Sensor:
         """
         Creacion de un nuevo registro de un sensor
 
@@ -50,14 +54,17 @@ class SensorSet():
         if not direccion_lectura and not patilla_1_lectura:
             raise ValueError('Necesario especificar la direccion o patilla de lectura del sensor.')
         try:
-            nuevo_sensor = Sensor(tipo_sensor, zona_sensor, numero_sensor, modelo_sensor, direccion_lectura, patilla_1_lectura, patilla_2_lectura, patilla_3_lectura, patilla_4_lectura)
+            nuevo_sensor = Sensor(tipo_sensor, zona_sensor, numero_sensor, modelo_sensor, 
+                                  direccion_lectura, patilla_1_lectura, patilla_2_lectura, 
+                                  patilla_3_lectura, patilla_4_lectura, 
+                                  fecha_creacion, fecha_eliminacion)
             session.add(nuevo_sensor)
             session.commit()
             return nuevo_sensor
         except IntegrityError as ex:
             session.rollback()
             raise ErrorSensorExiste(
-                'El sensor ' + str(nuevo_sensor.numero_sensor) + ' de ' +  nuevo_sensor.tipo_sensor + ' de ' +  nuevo_sensor.zona_sensor + 'ya existe.'
+                'El sensor ' + str(nuevo_sensor.numero_sensor) + ' de ' +  str(nuevo_sensor.tipo_sensor) + ' de ' +  str(nuevo_sensor.zona_sensor) + ' ya existe.'
                 ) from ex
 
     @staticmethod

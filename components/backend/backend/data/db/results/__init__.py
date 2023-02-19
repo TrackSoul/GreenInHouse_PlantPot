@@ -3,3 +3,4 @@ from .registro_sensor import RegistroSensor
 from .registro_planta import RegistroPlanta
 from .registro_tipo_planta import RegistroTipoPlanta
 from .sensor import Sensor
+from .sensor_planta import SensorPlanta

@@ -8,7 +8,10 @@ from typing import Dict
 from flask import Flask
 from flask import current_app
 from flask.logging import default_handler
+
 from authlib.jose import JsonWebSignature  # type: ignore
+#from connexion.apps.flask_app import FlaskJSONEncoder
+
 import backend
 from backend.data.config import BackendConfiguration
 from backend.data.db import Esquema
@@ -36,6 +39,7 @@ if __name__ == '__main__':
 
     app.add_api("spec.yml", strict_validation=True)
     flask_app = app.app
+    #flask_app.json_encoder = FlaskJSONEncoder
     with flask_app.app_context():
         current_app.db = db
         current_app.cfg = cfg

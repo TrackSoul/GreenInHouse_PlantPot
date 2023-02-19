@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Dict, Optional
-from sqlalchemy import Table, MetaData, Column, String, Boolean # type: ignore
+from sqlalchemy import Table, MetaData, Column, String, Boolean, TIMESTAMP # type: ignore
 from sqlalchemy import ForeignKey  # type: ignore
 from sqlalchemy.orm import relationship  # type: ignore
 from backend.data.db.results import ModuloBase
@@ -10,10 +10,11 @@ class RegistroPlanta(ModuloBase):
     Definicion y almacenamiento de los registros del sensor.
     """
 
-    def __init__(self, nombre_planta:str, tipo_planta:str, viva: bool):
+    def __init__(self, nombre_planta:str, tipo_planta:str, fecha_plantacion: datetime, fecha_marchitacion: datetime):
         self.nombre_planta: str = nombre_planta
         self.tipo_planta: str = tipo_planta
-        self.viva: bool = viva
+        self.fecha_plantacion: datetime = fecha_plantacion
+        self.fecha_marchitacion: datetime = fecha_marchitacion
 
     @staticmethod
     def _table_definition(metadata: MetaData) -> Table:
@@ -32,7 +33,8 @@ class RegistroPlanta(ModuloBase):
             metadata,
             Column('nombre_planta', String(100), primary_key=True),
             Column('tipo_planta', String(100), ForeignKey('registros_tipos_plantas.tipo_planta'), nullable=False ),
-            Column('viva', Boolean, nullable=False ),
+            Column('fecha_plantacion', TIMESTAMP, nullable=True ),
+            Column('fecha_marchitacion', TIMESTAMP, nullable=True ),
         )
 
     @staticmethod

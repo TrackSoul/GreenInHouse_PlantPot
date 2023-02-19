@@ -1,6 +1,7 @@
 #import hashlib
 #from flask import current_app
 
+from datetime import datetime
 from typing import List, Optional
 from sqlalchemy.exc import IntegrityError  # type: ignore
 from sqlalchemy.orm.session import Session  # type: ignore
@@ -13,7 +14,7 @@ class RegistroPlantaSet():
     Clase responsable a nivel de tabla de las operaciones con los registros.
     """
     @staticmethod
-    def create(session: Session, nombre_planta:str, tipo_planta:str, viva:bool) -> RegistroPlanta:
+    def create(session: Session, nombre_planta:str, tipo_planta:str, fecha_plantacion: datetime, fecha_marchitacion: datetime) -> RegistroPlanta:
         """
         Creacion de un nuevo registro de un sensor
 
@@ -37,7 +38,7 @@ class RegistroPlantaSet():
         if not tipo_planta:
             raise ValueError('Necesario especificar el tipo de la planta.')
         try:
-            nuevo_registro = RegistroPlanta(nombre_planta, tipo_planta, viva)
+            nuevo_registro = RegistroPlanta(nombre_planta, tipo_planta, fecha_plantacion, fecha_marchitacion)
             session.add(nuevo_registro)
             session.commit()
             return nuevo_registro

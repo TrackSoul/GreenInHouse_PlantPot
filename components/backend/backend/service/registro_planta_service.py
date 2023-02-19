@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Union, List, Dict
 from sqlalchemy.orm.session import Session # type: ignore
 from backend.data.db.esquema import Esquema
@@ -9,14 +10,17 @@ class RegistroPlantaService():
 
     @staticmethod
     # def create_registro_planta(tipo_planta: Union[TipoPlanta,str], zona_planta:Union[ZonaPlanta,str] ,numero_planta:int, valor:float, schema: Esquema) -> CommonRegistroPlanta:
-    def create_registro_planta(esquema: Esquema, nombre_planta: str, tipo_planta: str, viva:bool = True) -> CommonRegistroPlanta:
+    def create_registro_planta(esquema: Esquema, nombre_planta: str, tipo_planta: str, 
+                               fecha_plantacion: datetime = datetime.now(), fecha_marchitacion: datetime = None) -> CommonRegistroPlanta:
         session: Session = esquema.new_session()
         out: CommonRegistroPlanta = None
         try:
             # if isinstance(tipo_planta, str):
             #     tipo_planta = TipoPlanta[tipo_planta]
-            new_registro_planta: RegistroPlanta = RegistroPlantaSet.create(session, nombre_planta, tipo_planta, viva)
-            out= CommonRegistroPlanta(new_registro_planta.nombre_planta,new_registro_planta.tipo_planta,new_registro_planta.viva)
+            new_registro_planta: RegistroPlanta = RegistroPlantaSet.create(session, nombre_planta, tipo_planta, 
+                                                                           fecha_plantacion, fecha_marchitacion)
+            out= CommonRegistroPlanta(new_registro_planta.nombre_planta,new_registro_planta.tipo_planta,
+                                      new_registro_planta.fecha_plantacion,new_registro_planta.fecha_marchitacion)
         except Exception as ex:
             raise ex
         finally:
@@ -25,7 +29,7 @@ class RegistroPlantaService():
     
     @staticmethod
     def create_registro_planta_from_common(esquema: Esquema, registro_planta: CommonRegistroPlanta) -> CommonRegistroPlanta:
-        return RegistroPlantaService.create_registro_planta(esquema, registro_planta.getNombrePlanta(), registro_planta.getTipoPlanta(), registro_planta.getViva())
+        return RegistroPlantaService.create_registro_planta(esquema, registro_planta.getNombrePlanta(), registro_planta.getTipoPlanta())
 
     @staticmethod
     def exists_registro_planta(esquema: Esquema, nombre_planta: str):
@@ -40,7 +44,8 @@ class RegistroPlantaService():
         session: Session = esquema.new_session()
         registros_planta: List[RegistroPlanta] = RegistroPlantaSet.list_all(session)
         for registro_planta in registros_planta:
-            out.append(CommonRegistroPlanta(registro_planta.nombre_planta,registro_planta.tipo_planta,registro_planta.viva))
+            out.append(CommonRegistroPlanta(registro_planta.nombre_planta,registro_planta.tipo_planta,
+                                            registro_planta.fecha_plantacion,registro_planta.fecha_marchitacion))
         esquema.remove_session()
         return out
 

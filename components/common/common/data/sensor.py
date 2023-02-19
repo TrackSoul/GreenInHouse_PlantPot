@@ -1,12 +1,14 @@
 from datetime import datetime
 from typing import Optional,Dict,List
 from enum import Enum
-from common.data import TipoSensor, ZonaSensor
+from common.data import TipoSensor, ZonaSensor, RegistroSensor
 
 class Sensor:
 
-    def __init__(self, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, modelo_sensor:str, direccion_lectura:str, patilla_1_lectura:int, patilla_2_lectura:int=None, patilla_3_lectura:int=None, patilla_4_lectura:int=None ):
-        #self.__id:int = id
+    def __init__(self, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
+                 modelo_sensor:str, direccion_lectura:str=None, patilla_1_lectura:int=None, 
+                 patilla_2_lectura:int=None, patilla_3_lectura:int=None, patilla_4_lectura:int=None,
+                 fecha_creacion:datetime=None ,fecha_eliminacion:datetime=None):
         self.__tipo_sensor: TipoSensor = tipo_sensor
         self.__zona_sensor: ZonaSensor = zona_sensor
         self.__numero_sensor: int = numero_sensor
@@ -16,9 +18,17 @@ class Sensor:
         self.__patilla_2_lectura: int = patilla_2_lectura
         self.__patilla_3_lectura: int = patilla_3_lectura
         self.__patilla_4_lectura: int = patilla_4_lectura
+        self.__fecha_creacion: datetime = fecha_creacion
+        self.__fecha_eliminacion: datetime = fecha_eliminacion
         
-    # def getId(self) -> Optional[int]:
-    #     return self.__id
+    # TODO
+    # Crear factoria de sensores que genere un objeto con el que leer el sensor especipfico
+    # y que conozca ya su modelo, para saber como leer dicho sensor
+    #
+
+
+    def creaRegistro(self, valor: float, escala: str) -> RegistroSensor:
+        return RegistroSensor(self.getTipoSensor(),self.getZonaSensor(),self.getNumeroSensor(),valor,escala)
 
     def getTipoSensor(self) -> TipoSensor:
         return self.__tipo_sensor
@@ -74,6 +84,18 @@ class Sensor:
     def setPatilla4Lectura(self, patilla_4_lectura:int):
         self.__patilla_4_lectura = patilla_4_lectura
 
+    def getFechaCreacion(self) -> Optional[datetime]:
+        return self.__fecha_creacion
+    
+    def setFechaCreacion(self, fecha_creacion:datetime):
+        self.__fecha_creacion = fecha_creacion
+
+    def getFechaEliminacion(self) -> Optional[datetime]:
+        return self.__fecha_eliminacion
+    
+    def setFechaEliminacion(self, fecha_eliminacion:datetime):
+        self.__fecha_eliminacion = fecha_eliminacion
+
     def to_json(self) -> Dict:
         dict={}
         #dict["id"]=self.getId()
@@ -86,10 +108,14 @@ class Sensor:
         dict["patilla_2_lectura"]=self.getPatilla2Lectura()
         dict["patilla_3_lectura"]=self.getPatilla3Lectura()
         dict["patilla_4_lectura"]=self.getPatilla4Lectura()
+        dict["fecha_creacion"]=self.getFechaCreacion()
+        dict["fecha_eliminacion"]=self.getFechaEliminacion()
         return dict
     
     def from_json(dict: dict):
-        sensor = RegistroSensor(dict["tipo_sensor"],dict["zona_sensor"],dict["numero_sensor"],dict["modelo_sensor"],
-                                 dict["direccion_lectura"], dict["patilla_1_lectura"], dict["patilla_2_lectura"], 
-                                 dict["patilla_3_lectura"], dict["patilla_4_lectura"])
+        sensor = Sensor(tipo_sensor=dict["tipo_sensor"],zona_sensor=dict["zona_sensor"],numero_sensor=dict["numero_sensor"],
+                        modelo_sensor=dict["modelo_sensor"], direccion_lectura=dict["direccion_lectura"], 
+                        patilla_1_lectura=dict["patilla_1_lectura"], patilla_2_lectura=dict["patilla_2_lectura"], 
+                        patilla_3_lectura=dict["patilla_3_lectura"], patilla_4_lectura=dict["patilla_4_lectura"],
+                        fecha_creacion=dict["fecha_creacion"], fecha_eliminacion=dict["fecha_eliminacion"])
         return sensor

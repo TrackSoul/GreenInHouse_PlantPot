@@ -9,3 +9,5 @@ from backend.data.db.exc.error_registro_planta_existe import ErrorRegistroPlanta
 from backend.data.db.exc.error_registro_planta_no_existe import ErrorRegistroPlantaNoExiste
 from backend.data.db.exc.error_registro_tipo_planta_existe import ErrorRegistroTipoPlantaExiste
 from backend.data.db.exc.error_registro_tipo_planta_no_existe import ErrorRegistroTipoPlantaNoExiste
+from backend.data.db.exc.error_sensor_planta_existe import ErrorSensorPlantaExiste
+from backend.data.db.exc.error_sensor_planta_no_existe import ErrorSensorPlantaNoExiste

@@ -8,7 +8,7 @@ from sqlalchemy.ext.declarative import declarative_base  # type: ignore
 from sqlalchemy.orm import sessionmaker, scoped_session, registry  # type: ignore
 from sqlalchemy.orm.session import Session  # type: ignore
 from backend.data.config import BackendConfiguration
-from backend.data.db.results import Sensor, RegistroSensor, RegistroPlanta, RegistroTipoPlanta
+from backend.data.db.results import Sensor, RegistroSensor, RegistroPlanta, RegistroTipoPlanta, SensorPlanta
 
 
 
@@ -50,6 +50,7 @@ class Esquema:
         RegistroTipoPlanta.map(self.__registry)
         RegistroPlanta.map(self.__registry)
         RegistroSensor.map(self.__registry)
+        SensorPlanta.map(self.__registry)
 
         self.__registry.metadata.create_all(self.__create_engine)
 
