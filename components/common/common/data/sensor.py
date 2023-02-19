@@ -26,9 +26,12 @@ class Sensor:
     # y que conozca ya su modelo, para saber como leer dicho sensor
     #
 
+    #def leerSensor() -> [float, str]:
 
-    def creaRegistro(self, valor: float, escala: str) -> RegistroSensor:
+    def crearRegistroSensor(self, valor: float, escala: str) -> RegistroSensor:
         return RegistroSensor(self.getTipoSensor(),self.getZonaSensor(),self.getNumeroSensor(),valor,escala)
+    
+    #def leerSesnorYCrearRegistroSensor()
 
     def getTipoSensor(self) -> TipoSensor:
         return self.__tipo_sensor
