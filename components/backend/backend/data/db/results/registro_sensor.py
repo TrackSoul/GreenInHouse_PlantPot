@@ -12,15 +12,13 @@ class RegistroSensor(ModuloBase):
     """
 
     def __init__(self, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
-                 valor:float, escala:str, #nombre_planta:str,
-                 fecha: datetime):
+                 valor:float, escala:str, fecha: datetime):
         self.id: int
         self.tipo_sensor: TipoSensor = tipo_sensor
         self.zona_sensor: ZonaSensor = zona_sensor
         self.numero_sensor: int = numero_sensor
         self.valor: float = valor   
         self.escala: str = escala     
-        #self.nombre_planta: str = nombre_planta
         self.fecha: datetime = fecha
 
     @staticmethod
@@ -45,7 +43,6 @@ class RegistroSensor(ModuloBase):
             Column('valor', Float, nullable=False),
             Column('escala', String, nullable=False),
             Column('fecha', TIMESTAMP, nullable=False),
-            #Column('nombre_planta', String, ForeignKey('registros_plantas.nombre_planta'), nullable=False),
             ForeignKeyConstraint(['tipo_sensor','zona_sensor','numero_sensor'],
                                  ['sensores.tipo_sensor','sensores.zona_sensor','sensores.numero_sensor'])
         )
