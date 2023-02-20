@@ -64,7 +64,7 @@ class SensorSet():
         except IntegrityError as ex:
             session.rollback()
             raise ErrorSensorExiste(
-                'El sensor ' + str(nuevo_sensor.numero_sensor) + ' de ' +  str(nuevo_sensor.tipo_sensor) + ' de ' +  str(nuevo_sensor.zona_sensor) + ' ya existe.'
+                'El sensor ' + str(numero_sensor) + ' de ' +  str(tipo_sensor) + ' de ' +  str(zona_sensor) + ' ya existe.'
                 ) from ex
 
     @staticmethod
@@ -103,21 +103,38 @@ class SensorSet():
             sensor: Sensor = query.one()
         except NoResultFound as ex:
             raise ErrorSensorNoExiste(
-                'El sensor ' + str(sensor.numero_sensor) + ' de ' +  sensor.tipo_sensor + ' de ' +  sensor.zona_sensor + 'no existe.'
+                'El sensor ' + str(numero_sensor) + ' de ' +  tipo_sensor + ' de ' +  zona_sensor + 'no existe.'
                 ) from ex
         return sensor
 
-'''
     @staticmethod
-    def update(session: Session,id:int):
+    def update(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
+               modelo_sensor:str, direccion_lectura:str, patilla_1_lectura:int, patilla_2_lectura:int, 
+               patilla_3_lectura:int, patilla_4_lectura:int,
+               fecha_creacion:datetime ,fecha_eliminacion:datetime):
 
-        if not id:
-            raise ValueError('An id is requiered.')
+        if not tipo_sensor:
+            raise ValueError('Necesario especificar el tipo de sensor.')
+        if not zona_sensor:
+            raise ValueError('Necesario especificar la zona del sensor.')
+        if not numero_sensor:
+            raise ValueError('Necesario especificar el numero de sensor.')
         try:
-            session.query(Pregunta).filter(Pregunta.id == id).update({"visible": False})
+            query = session.query(Sensor).filter_by(tipo_sensor=tipo_sensor,zona_sensor=zona_sensor,numero_sensor=numero_sensor)
+            query.update({'modelo_sensor' : modelo_sensor})
+            query.update({'direccion_lectura' : direccion_lectura})
+            query.update({'patilla_1_lectura' : patilla_1_lectura})
+            query.update({'patilla_2_lectura' : patilla_2_lectura})
+            query.update({'patilla_3_lectura' : patilla_3_lectura})
+            query.update({'patilla_4_lectura' : patilla_4_lectura})
+            #query.update({'fecha_creacion' : fecha_creacion})
+            query.update({'fecha_eliminacion' : fecha_eliminacion})
+            #setattr(query, 'modelo_sensor', modelo_sensor)
             session.commit()
+            sensor_modificado: Sensor = query.one() 
         except NoResultFound as ex:
-            raise PreguntaNoExisteError(
-                'The question with title ' + id + ' don\'t exists.'
+            session.rollback()
+            raise ErrorSensorNoExiste(
+                'El sensor ' + str(numero_sensor) + ' de ' +  tipo_sensor + ' de ' +  zona_sensor + 'no existe.'
                 ) from ex
-'''
+        return sensor_modificado

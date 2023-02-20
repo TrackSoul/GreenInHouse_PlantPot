@@ -10,7 +10,7 @@ class RegistroPlantaService():
 
     @staticmethod
     # def create_registro_planta(tipo_planta: Union[TipoPlanta,str], zona_planta:Union[ZonaPlanta,str] ,numero_planta:int, valor:float, schema: Esquema) -> CommonRegistroPlanta:
-    def createRegistroPlanta(esquema: Esquema, nombre_planta: str, tipo_planta: str, 
+    def create(esquema: Esquema, nombre_planta: str, tipo_planta: str, 
                                fecha_plantacion: datetime = datetime.now(), fecha_marchitacion: datetime = None) -> CommonRegistroPlanta:
         session: Session = esquema.new_session()
         out: CommonRegistroPlanta = None
@@ -28,18 +28,18 @@ class RegistroPlantaService():
         return out
     
     @staticmethod
-    def createRegistroPlantaFromCommon(esquema: Esquema, registro_planta: CommonRegistroPlanta) -> CommonRegistroPlanta:
-        return RegistroPlantaService.createRegistroPlanta(esquema, registro_planta.getNombrePlanta(), registro_planta.getTipoPlanta())
+    def createFromCommon(esquema: Esquema, registro_planta: CommonRegistroPlanta) -> CommonRegistroPlanta:
+        return RegistroPlantaService.create(esquema, registro_planta.getNombrePlanta(), registro_planta.getTipoPlanta())
 
     @staticmethod
-    def existsRegistroPlanta(esquema: Esquema, nombre_planta: str) -> bool:
+    def exists(esquema: Esquema, nombre_planta: str) -> bool:
         session: Session = esquema.new_session()
         registro_planta_exists: bool = RegistroPlantaSet.get(session, nombre_planta)
         esquema.remove_session()
         return registro_planta_exists
 
     @staticmethod
-    def listRegistroPlanta(esquema: Esquema) -> List[CommonRegistroPlanta]:
+    def list_all(esquema: Esquema) -> List[CommonRegistroPlanta]:
         out: List[CommonRegistroPlanta] = []
         session: Session = esquema.new_session()
         registros_planta: List[RegistroPlanta] = RegistroPlantaSet.list_all(session)
@@ -50,7 +50,7 @@ class RegistroPlantaService():
         return out
 
     @staticmethod
-    def getRegistroPlanta(esquema: Esquema, nombre_planta: str) -> CommonRegistroPlanta:
+    def get(esquema: Esquema, nombre_planta: str) -> CommonRegistroPlanta:
         session: Session = esquema.new_session()
         registro_planta: CommonRegistroPlanta = RegistroPlantaSet.get(session, nombre_planta)
         out= CommonRegistroPlanta(registro_planta.nombre_planta,registro_planta.tipo_planta,
