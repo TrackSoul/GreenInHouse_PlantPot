@@ -14,27 +14,27 @@ cfg: BackendConfiguration = BackendConfiguration()
 db: Esquema = Esquema(cfg)
 
 #datos de inicializacion del sistema
-tipo_planta_ninguno = RegistroTipoPlantaService.create_registro_tipo_planta(db,"Ninguno","Sin descripcion")
-planta_vacia = RegistroPlantaService.create_registro_planta(db,"Sin planta","Ninguno",None,None)
+tipo_planta_ninguno = RegistroTipoPlantaService.createRegistroTipoPlanta(db,"Ninguno","Sin descripcion")
+planta_vacia = RegistroPlantaService.createRegistroPlanta(db,"Sin planta","Ninguno",None,None)
 
-sensor_humedad_ambiente_1 = SensorService.create_sensor(db,TipoSensor.HUMEDAD,ZonaSensor.AMBIENTE,1,"DHT11",patilla_1_lectura=19)
+sensor_humedad_ambiente_1 = SensorService.createSensor(db,TipoSensor.HUMEDAD,ZonaSensor.AMBIENTE,1,"DHT11",patilla_1_lectura=19)
 sensor_temperatura_ambiente_1 = SensorCommon(TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,"DHT11",patilla_1_lectura=19)
-sensor_temperatura_ambiente_1 =SensorService.create_sensor_from_common(db,sensor_temperatura_ambiente_1)
+sensor_temperatura_ambiente_1 =SensorService.createSensorFromCommon(db,sensor_temperatura_ambiente_1)
 
 tipo_planta_tomatera = RegistroTipoPlantaCommon("Tomatera","Planta facil de cultivar")
-tipo_planta_tomatera = RegistroTipoPlantaService.create_registro_tipo_planta_from_common(db,tipo_planta_tomatera)
+tipo_planta_tomatera = RegistroTipoPlantaService.createRegistroTipoPlantaFromCommon(db,tipo_planta_tomatera)
 planta_mi_tomatera = RegistroPlantaCommon("Mi tomatera","Tomatera")
-planta_mi_tomatera = RegistroPlantaService.create_registro_planta_from_common(db,planta_mi_tomatera)
+planta_mi_tomatera = RegistroPlantaService.createRegistroPlantaFromCommon(db,planta_mi_tomatera)
 
-sensor_humedad_maceta_1 = SensorService.create_sensor(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,"SIN_MODELO",patilla_1_lectura=20)
+sensor_humedad_maceta_1 = SensorService.createSensor(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,"SIN_MODELO",patilla_1_lectura=20)
 
-sensor_planta_1 = SensorPlantaService.create_sensor_planta_relation_from_common(db,sensor_humedad_ambiente_1,planta_mi_tomatera)
-sensor_planta_2 = SensorPlantaService.create_sensor_planta_relation_from_common(db,sensor_temperatura_ambiente_1,planta_mi_tomatera)
+sensor_planta_1 = SensorPlantaService.createSensorPlantaRelationFromCommon(db,sensor_humedad_ambiente_1,planta_mi_tomatera)
+sensor_planta_2 = SensorPlantaService.createSensorPlantaRelationFromCommon(db,sensor_temperatura_ambiente_1,planta_mi_tomatera)
 
-RegistroSensorService.create_registro_sensor(db,TipoSensor.HUMEDAD,ZonaSensor.AMBIENTE,1,65.0, "%")
-RegistroSensorService.create_registro_sensor(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,65.0,"%")
-RegistroSensorService.create_registro_sensor(db,TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,29.0,"ºC")
-RegistroSensorService.create_registro_sensor(db,TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,29.0,"ºC")
+RegistroSensorService.createRegistroSensor(db,TipoSensor.HUMEDAD,ZonaSensor.AMBIENTE,1,65.0, "%")
+RegistroSensorService.createRegistroSensor(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,65.0,"%")
+RegistroSensorService.createRegistroSensor(db,TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,29.0,"ºC")
+RegistroSensorService.createRegistroSensor(db,TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,29.0,"ºC")
 
-RegistroSensorService.create_registro_sensor_from_common(db,sensor_humedad_ambiente_1.creaRegistro(75.0,"%"))
-RegistroSensorService.create_registro_sensor_from_common(db,sensor_temperatura_ambiente_1.creaRegistro(19.0,"ºC"))
+RegistroSensorService.createRegistroSensorFromCommon(db,sensor_humedad_ambiente_1.crearRegistroSensor(75.0,"%"))
+RegistroSensorService.createRegistroSensorFromCommon(db,sensor_temperatura_ambiente_1.crearRegistroSensor(19.0,"ºC"))

@@ -11,7 +11,7 @@ class SensorService():
 
     @staticmethod
     # def create_sensor(tipo_sensor: Union[TipoSensor,str], zona_sensor:Union[ZonaSensor,str] ,numero_sensor:int, valor:float, schema: Esquema) -> CommonSensor:
-    def create_sensor(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
+    def createSensor(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
                                modelo_sensor:str, direccion_lectura:str=None, patilla_1_lectura:int=None, patilla_2_lectura:int=None, 
                                patilla_3_lectura:int=None, patilla_4_lectura:int=None, 
                                fecha_creacion: datetime = datetime.now() ,fecha_eliminacion: datetime = None) -> CommonSensor:
@@ -37,22 +37,22 @@ class SensorService():
         return out
     
     @staticmethod
-    def create_sensor_from_common(esquema: Esquema, sensor: CommonSensor) -> CommonSensor:
-        return SensorService.create_sensor(esquema, sensor.getTipoSensor(), sensor.getZonaSensor(),sensor.getNumeroSensor(), 
+    def createSensorFromCommon(esquema: Esquema, sensor: CommonSensor) -> CommonSensor:
+        return SensorService.createSensor(esquema, sensor.getTipoSensor(), sensor.getZonaSensor(),sensor.getNumeroSensor(), 
                                            sensor.getModeloSensor(), sensor.getDireccionLectura(), sensor.getPatilla1Lectura(), 
                                            sensor.getPatilla2Lectura(), sensor.getPatilla3Lectura(), sensor.getPatilla4Lectura(),
                                            #sensor.getFechaCreacion(), sensor.getFechaEliminacion()
                                            )
 
     @staticmethod
-    def exists_sensor(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int):
+    def existsSensor(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> bool:
         session: Session = esquema.new_session()
         sensor_exists: bool = SensorSet.get(session, tipo_sensor, zona_sensor, numero_sensor)
         esquema.remove_session()
         return sensor_exists
 
     @staticmethod
-    def list_sensor(esquema: Esquema) -> List[CommonSensor]:
+    def listSensor(esquema: Esquema) -> List[CommonSensor]:
         out: List[CommonSensor] = []
         session: Session = esquema.new_session()
         registros_sensor: List[Sensor] = SensorSet.list_all(session)
@@ -65,7 +65,7 @@ class SensorService():
         return out
 
     @staticmethod
-    def get_sensor(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> CommonSensor:
+    def getSensor(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> CommonSensor:
         session : Session = esquema.new_session()
         sensor : Sensor = SensorSet.get(session, tipo_sensor, zona_sensor, numero_sensor)
         out= CommonSensor(sensor.tipo_sensor,sensor.zona_sensor,sensor.numero_sensor,sensor.modelo_sensor, 

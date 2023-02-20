@@ -11,7 +11,7 @@ class RegistroSensorService():
 
     @staticmethod
     # def create_registro_sensor(tipo_sensor: Union[TipoSensor,str], zona_sensor:Union[ZonaSensor,str] ,numero_sensor:int, valor:float, schema: Esquema) -> CommonRegistroSensor:
-    def create_registro_sensor(esquema: Esquema, tipo_sensor: TipoSensor, zona_sensor: ZonaSensor, 
+    def createRegistroSensor(esquema: Esquema, tipo_sensor: TipoSensor, zona_sensor: ZonaSensor, 
                                numero_sensor:int, valor:float, escala:str, fecha:datetime = datetime.now()) -> CommonRegistroSensor:
         session: Session = esquema.new_session()
         out: CommonRegistroSensor = None
@@ -33,20 +33,20 @@ class RegistroSensorService():
         return out
     
     @staticmethod
-    def create_registro_sensor_from_common(esquema: Esquema, registro_sensor: CommonRegistroSensor) -> CommonRegistroSensor:
-        return RegistroSensorService.create_registro_sensor(esquema, registro_sensor.getTipoSensor(), registro_sensor.getZonaSensor(), 
+    def createRegistroSensorFromCommon(esquema: Esquema, registro_sensor: CommonRegistroSensor) -> CommonRegistroSensor:
+        return RegistroSensorService.createRegistroSensor(esquema, registro_sensor.getTipoSensor(), registro_sensor.getZonaSensor(), 
                                                             registro_sensor.getNumeroSensor(), registro_sensor.getValor(), 
                                                             registro_sensor.getEscala())
 
     @staticmethod
-    def exists_registro_sensor(esquema: Esquema, id:int):
+    def existsRegistroSensor(esquema: Esquema, id:int) -> bool:
         session: Session = esquema.new_session()
         registro_sensor_exists: bool = RegistroSensorSet.get(session, id)
         esquema.remove_session()
         return registro_sensor_exists
 
     @staticmethod
-    def list_registro_sensor(esquema: Esquema) -> List[CommonRegistroSensor]:
+    def listRegistroSensor(esquema: Esquema) -> List[CommonRegistroSensor]:
         out: List[CommonRegistroSensor] = []
         session: Session = esquema.new_session()
         registros_sensor: List[RegistroSensor] = RegistroSensorSet.list_all(session)
@@ -59,7 +59,7 @@ class RegistroSensorService():
         return out
 
     @staticmethod
-    def get_registro_sensor(esquema: Esquema, id : int) -> CommonRegistroSensor:
+    def getRegistroSensor(esquema: Esquema, id : int) -> CommonRegistroSensor:
         session : Session = esquema.new_session()
         registro_sensor : RegistroSensor = RegistroSensorSet.get(session, id)
         out= CommonRegistroSensor(registro_sensor.tipo_sensor,registro_sensor.zona_sensor, registro_sensor.numero_sensor,
