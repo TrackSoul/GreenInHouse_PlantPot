@@ -48,18 +48,6 @@ if __name__ == '__main__':
 
     root_logger = logging.getLogger()
     root_logger.addHandler(default_handler)
-
-        
-    for reg in SensorService.listAll(db):
-        print(str(reg.toString()))
-    for reg in RegistroPlantaService.listAll(db):
-        print(str(reg.toString()))
-    for reg in RegistroTipoPlantaService.listAll(db):
-        print(str(reg.toString()))
-    for reg in SensorPlantaService.listAll(db):
-        print(str(reg.toString()))       
-    for reg in RegistroSensorService.listAll(db):
-        print(str(reg.toString()))
     
 
     '''

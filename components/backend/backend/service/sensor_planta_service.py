@@ -16,13 +16,13 @@ class SensorPlantaService():
         session: Session = esquema.new_session()
         out: CommonSensorPlanta = None
         try:
-            new_sensor_planta: SensorPlanta = SensorPlantaSet.create(session, tipo_sensor, zona_sensor, 
+            nuevo_sensor_planta: SensorPlanta = SensorPlantaSet.create(session, tipo_sensor, zona_sensor, 
                                                                            numero_sensor, nombre_planta, 
                                                                            fecha_asociacion, fecha_anulacion)
-            out= CommonSensorPlanta(new_sensor_planta.tipo_sensor, new_sensor_planta.zona_sensor,
-                                      new_sensor_planta.numero_sensor, new_sensor_planta.nombre_planta, 
-                                      new_sensor_planta.fecha_asociacion, new_sensor_planta.fecha_anulacion, 
-                                      new_sensor_planta.id)
+            out= CommonSensorPlanta(nuevo_sensor_planta.tipo_sensor, nuevo_sensor_planta.zona_sensor,
+                                      nuevo_sensor_planta.numero_sensor, nuevo_sensor_planta.nombre_planta, 
+                                      nuevo_sensor_planta.fecha_asociacion, nuevo_sensor_planta.fecha_anulacion, 
+                                      nuevo_sensor_planta.id_)
         except Exception as ex:
             raise ex
         finally:
@@ -32,7 +32,7 @@ class SensorPlantaService():
     @staticmethod
     def createFromCommon(esquema: Esquema, sensor_planta: CommonSensorPlanta) -> CommonSensorPlanta:
         return SensorPlantaService.create(esquema, sensor_planta.getTipoSensor(), sensor_planta.getZonaSensor(), 
-                                                        sensor_planta.getNumeroSensor(), sensor_planta.getNombrePlanta())
+                                          sensor_planta.getNumeroSensor(), sensor_planta.getNombrePlanta())
     
     @staticmethod
     def createRelationFromCommon(esquema: Esquema, sensor: CommonSensor, planta: CommonRegistroPlanta) -> CommonSensorPlanta:
@@ -40,12 +40,12 @@ class SensorPlantaService():
                                                         sensor.getNumeroSensor(), planta.getNombrePlanta())
 
     @staticmethod
-    def exists(esquema: Esquema, id:int) -> bool:
+    def exists(esquema: Esquema, id_:int) -> bool:
         session: Session = esquema.new_session()
-        sensor_planta_exists: bool = SensorPlantaSet.get(session, id)
+        sensor_planta_existe: bool = SensorPlantaSet.get(session, id_)
         esquema.remove_session()
-        return sensor_planta_exists
-
+        return sensor_planta_existe
+    
     @staticmethod
     def listAll(esquema: Esquema) -> List[CommonSensorPlanta]:
         out: List[CommonSensorPlanta] = []
@@ -55,7 +55,7 @@ class SensorPlantaService():
             out.append(CommonSensorPlanta(sensor_planta.tipo_sensor, sensor_planta.zona_sensor,
                                       sensor_planta.numero_sensor, sensor_planta.nombre_planta, 
                                       sensor_planta.fecha_asociacion, sensor_planta.fecha_anulacion,
-                                      sensor_planta.id))
+                                      sensor_planta.id_))
         esquema.remove_session()
         return out
 
@@ -68,25 +68,43 @@ class SensorPlantaService():
             out.append(CommonSensorPlanta(sensor_planta.tipo_sensor, sensor_planta.zona_sensor,
                                       sensor_planta.numero_sensor, sensor_planta.nombre_planta, 
                                       sensor_planta.fecha_asociacion, sensor_planta.fecha_anulacion,
-                                      sensor_planta.id))
+                                      sensor_planta.id_))
         esquema.remove_session()
         return out
 
     @staticmethod
-    def get(esquema: Esquema, id : int) -> CommonSensorPlanta:
+    def get(esquema: Esquema, id_ : int) -> CommonSensorPlanta:
         session : Session = esquema.new_session()
-        sensor_planta : SensorPlanta = SensorPlantaSet.get(session, id)
+        sensor_planta : SensorPlanta = SensorPlantaSet.get(session, id_)
         out= CommonSensorPlanta(sensor_planta.tipo_sensor, sensor_planta.zona_sensor,
                                   sensor_planta.numero_sensor, sensor_planta.nombre_planta, 
                                   sensor_planta.fecha_asociacion, sensor_planta.fecha_anulacion,
-                                  sensor_planta.id)
+                                  sensor_planta.id_)
         esquema.remove_session()
         return out
 
-'''
     @staticmethod
-    def update_pregunta(id:int,schema: Schema):
-        session: Session = schema.new_session()
-        Preguntas.update(session,id)
-        schema.remove_session()
-'''
+    def update(esquema: Esquema, id_: int, tipo_sensor: TipoSensor, zona_sensor: ZonaSensor, numero_sensor:int, 
+                nombre_planta:str, fecha_asociacion:datetime ,fecha_anulacion:datetime ) -> CommonSensorPlanta:
+        session: Session = esquema.new_session()
+        out: CommonSensorPlanta = None
+        try:
+            sensor_planta_modificado: SensorPlanta = SensorPlantaSet.update(session, tipo_sensor, zona_sensor, numero_sensor,
+                                                                        nombre_planta, fecha_asociacion, fecha_anulacion, id_)
+            out= CommonSensorPlanta(sensor_planta_modificado.tipo_sensor, sensor_planta_modificado.zona_sensor,
+                                      sensor_planta_modificado.numero_sensor, sensor_planta_modificado.nombre_planta, 
+                                      sensor_planta_modificado.fecha_asociacion, sensor_planta_modificado.fecha_anulacion, 
+                                      sensor_planta_modificado.id_)
+        except Exception as ex:
+            raise ex
+        finally:
+            esquema.remove_session()
+        return out
+
+    @staticmethod
+    def updateFromCommon(esquema: Esquema, sensor_planta: CommonSensorPlanta) -> CommonSensorPlanta:
+        return SensorPlantaService.create(esquema, sensor_planta.getTipoSensor(), sensor_planta.getZonaSensor(), 
+                                          sensor_planta.getNumeroSensor(), sensor_planta.getNombrePlanta(),
+                                          sensor_planta.getFechaAsociacion(),sensor_planta.getFechaAnulacion(),
+                                          sensor_planta.getId())
+

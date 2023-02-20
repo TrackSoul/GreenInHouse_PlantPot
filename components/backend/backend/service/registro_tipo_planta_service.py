@@ -8,13 +8,10 @@ from common.data import RegistroTipoPlanta as CommonRegistroTipoPlanta
 class RegistroTipoPlantaService():
 
     @staticmethod
-    # def create_registro_planta(tipo_planta: Union[TipoPlanta,str], zona_planta:Union[ZonaPlanta,str] ,numero_planta:int, valor:float, schema: Esquema) -> CommonRegistroPlanta:
     def create(esquema: Esquema, tipo_planta: str, descripcion_planta: str) -> CommonRegistroTipoPlanta:
         session: Session = esquema.new_session()
         out: CommonRegistroTipoPlanta = None
         try:
-            # if isinstance(tipo_planta, str):
-            #     tipo_planta = TipoPlanta[tipo_planta]
             new_registro_tipo_planta: RegistroTipoPlanta = RegistroTipoPlantaSet.create(session, tipo_planta, descripcion_planta)
             out= CommonRegistroTipoPlanta(new_registro_tipo_planta.tipo_planta,new_registro_tipo_planta.descripcion_planta)
         except Exception as ex:
@@ -52,10 +49,20 @@ class RegistroTipoPlantaService():
         esquema.remove_session()
         return out
 
-'''
     @staticmethod
-    def update_pregunta(id:int,schema: Schema):
-        session: Session = schema.new_session()
-        Preguntas.update(session,id)
-        schema.remove_session()
-'''
+    def update(esquema: Esquema, tipo_planta: str, descripcion_planta: str) -> CommonRegistroTipoPlanta:
+        session: Session = esquema.new_session()
+        out: CommonRegistroTipoPlanta = None
+        try:
+            registro_tipo_planta_modificado: RegistroTipoPlanta = RegistroTipoPlantaSet.update(session, tipo_planta, descripcion_planta)
+            out= CommonRegistroTipoPlanta(registro_tipo_planta_modificado.tipo_planta,registro_tipo_planta_modificado.descripcion_planta)
+        except Exception as ex:
+            raise ex
+        finally:
+            esquema.remove_session()
+        return out
+    
+    @staticmethod
+    def updateFromCommon(esquema: Esquema, registro_tipo_planta_common: CommonRegistroTipoPlanta) -> CommonRegistroTipoPlanta:
+        return RegistroTipoPlantaService.update(esquema, registro_tipo_planta_common.getTipoPlanta(), registro_tipo_planta_common.getDescripcionPlanta())
+

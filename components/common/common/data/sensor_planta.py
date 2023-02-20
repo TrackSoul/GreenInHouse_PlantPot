@@ -64,7 +64,7 @@ class SensorPlanta:
 
     def toJson(self) -> dict:
         dic={}
-        dic["id"]=self.getId()
+        dic["id_"]=self.getId()
         dic["tipo_sensor"]=self.getTipoSensor()
         dic["zona_sensor"]=self.getZonaSensor()
         dic["numero_sensor"]=self.getNumeroSensor()
@@ -74,6 +74,6 @@ class SensorPlanta:
         return dic
 
     def fromJson(dic: dict):
-        sensor = SensorPlanta(dic["id"],dic["tipo_sensor"],dic["zona_sensor"],dic["numero_sensor"],
+        sensor = SensorPlanta(dic["id_"],dic["tipo_sensor"],dic["zona_sensor"],dic["numero_sensor"],
                                 dic["nombre_planta"],dic["fecha_asociacion"],dic["fecha_anulacion"])
         return sensor

@@ -70,7 +70,8 @@ class SensorSet():
             raise ErrorSensorExiste(
                 'El sensor ' + str(numero_sensor) + ' de ' +  str(tipo_sensor) + ' de ' +  str(zona_sensor) + ' ya existe.'
                 ) from ex
-        return nuevo_sensor
+        finally:    
+            return nuevo_sensor
 
     @staticmethod
     def listAll(session: Session) -> List[Sensor]:
@@ -123,7 +124,8 @@ class SensorSet():
             raise ErrorSensorNoExiste(
                 'El sensor ' + str(numero_sensor) + ' de ' +  tipo_sensor + ' de ' +  zona_sensor + 'no existe.'
                 ) from ex
-        return sensor
+        finally:
+            return sensor
 
     @staticmethod
     def update(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
@@ -165,17 +167,26 @@ class SensorSet():
         if not numero_sensor:
             raise ValueError('Necesario especificar el numero de sensor.')
         sensor_modificado = None
+        sensor_modificado: Sensor = None
         try:
             query = session.query(Sensor).filter_by(tipo_sensor=tipo_sensor,zona_sensor=zona_sensor,numero_sensor=numero_sensor)
-            query.update({'modelo_sensor' : modelo_sensor})
-            query.update({'direccion_lectura' : direccion_lectura})
-            query.update({'patilla_1_lectura' : patilla_1_lectura})
-            query.update({'patilla_2_lectura' : patilla_2_lectura})
-            query.update({'patilla_3_lectura' : patilla_3_lectura})
-            query.update({'patilla_4_lectura' : patilla_4_lectura})
-            #query.update({'fecha_creacion' : fecha_creacion})
-            query.update({'fecha_eliminacion' : fecha_eliminacion})
-            #setattr(query, 'modelo_sensor', modelo_sensor)
+            sensor: Sensor = query.one()
+            if sensor.modelo_sensor != modelo_sensor:
+                query.update({'modelo_sensor' : modelo_sensor})
+            if sensor.direccion_lectura != direccion_lectura:
+                query.update({'direccion_lectura' : direccion_lectura})
+            if sensor.patilla_1_lectura != patilla_1_lectura:
+                query.update({'patilla_1_lectura' : patilla_1_lectura})
+            if sensor.patilla_2_lectura != patilla_2_lectura:
+                query.update({'patilla_2_lectura' : patilla_2_lectura})
+            if sensor.patilla_3_lectura != patilla_3_lectura:
+                query.update({'patilla_3_lectura' : patilla_3_lectura})
+            if sensor.patilla_4_lectura != patilla_4_lectura:
+                query.update({'patilla_4_lectura' : patilla_4_lectura})
+            # if sensor.fecha_creacion != fecha_creacion:
+                # query.update({'fecha_creacion' : fecha_creacion})
+            if sensor.fecha_eliminacion != fecha_eliminacion:
+                query.update({'fecha_eliminacion' : fecha_eliminacion})
             session.commit()
             sensor_modificado: Sensor = query.one() 
         except NoResultFound as ex:
@@ -183,4 +194,5 @@ class SensorSet():
             raise ErrorSensorNoExiste(
                 'El sensor ' + str(numero_sensor) + ' de ' +  tipo_sensor + ' de ' +  zona_sensor + 'no existe.'
                 ) from ex
-        return sensor_modificado
+        finally:
+            return sensor_modificado

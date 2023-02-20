@@ -8,9 +8,8 @@ from common.data import Sensor as CommonSensor
 from common.data import TipoSensor, ZonaSensor
 
 class SensorService():
-
+    
     @staticmethod
-    # def create_sensor(tipo_sensor: Union[TipoSensor,str], zona_sensor:Union[ZonaSensor,str] ,numero_sensor:int, valor:float, schema: Esquema) -> CommonSensor:
     def create(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
                                modelo_sensor:str, direccion_lectura:str=None, patilla_1_lectura:int=None, patilla_2_lectura:int=None, 
                                patilla_3_lectura:int=None, patilla_4_lectura:int=None, 
@@ -18,18 +17,14 @@ class SensorService():
         session: Session = esquema.new_session()
         out: CommonSensor = None
         try:
-            # if isinstance(tipo_sensor, str):
-            #     tipo_sensor = TipoSensor[tipo_sensor]
-            # if isinstance(zona_sensor, str):
-            #     zona_sensor = ZonaSensor[zona_sensor]
-            new_sensor: Sensor = SensorSet.create(session, tipo_sensor, zona_sensor, numero_sensor, modelo_sensor, 
+            nuevo_sensor: Sensor = SensorSet.create(session, tipo_sensor, zona_sensor, numero_sensor, modelo_sensor, 
                                                   direccion_lectura, patilla_1_lectura, patilla_2_lectura, 
                                                   patilla_3_lectura, patilla_4_lectura, 
                                                   fecha_creacion, fecha_eliminacion)
-            out= CommonSensor(new_sensor.tipo_sensor,new_sensor.zona_sensor,new_sensor.numero_sensor,new_sensor.modelo_sensor, 
-                              new_sensor.direccion_lectura, new_sensor.patilla_1_lectura, new_sensor.patilla_2_lectura,
-                              new_sensor.patilla_3_lectura, new_sensor.patilla_4_lectura, 
-                              new_sensor.fecha_creacion, new_sensor.fecha_eliminacion)
+            out= CommonSensor(nuevo_sensor.tipo_sensor,nuevo_sensor.zona_sensor,nuevo_sensor.numero_sensor,nuevo_sensor.modelo_sensor, 
+                              nuevo_sensor.direccion_lectura, nuevo_sensor.patilla_1_lectura, nuevo_sensor.patilla_2_lectura,
+                              nuevo_sensor.patilla_3_lectura, nuevo_sensor.patilla_4_lectura, 
+                              nuevo_sensor.fecha_creacion, nuevo_sensor.fecha_eliminacion)
         except Exception as ex:
             raise ex
         finally:
@@ -47,9 +42,9 @@ class SensorService():
     @staticmethod
     def exists(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> bool:
         session: Session = esquema.new_session()
-        sensor_exists: bool = SensorSet.get(session, tipo_sensor, zona_sensor, numero_sensor)
+        sensor_existe: bool = SensorSet.get(session, tipo_sensor, zona_sensor, numero_sensor)
         esquema.remove_session()
-        return sensor_exists
+        return sensor_existe
 
     @staticmethod
     def listAll(esquema: Esquema) -> List[CommonSensor]:
@@ -75,10 +70,31 @@ class SensorService():
         esquema.remove_session()
         return out
 
-'''
     @staticmethod
-    def update_pregunta(id:int,schema: Schema):
-        session: Session = schema.new_session()
-        Preguntas.update(session,id)
-        schema.remove_session()
-'''
+    def update(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
+                modelo_sensor:str, direccion_lectura:str, patilla_1_lectura:int, patilla_2_lectura:int, 
+                patilla_3_lectura:int, patilla_4_lectura:int, fecha_creacion: datetime ,fecha_eliminacion: datetime) -> CommonSensor:
+        session: Session = esquema.new_session()
+        out: CommonSensor = None
+        try:
+            sensor_modificado: Sensor = SensorSet.update(session, tipo_sensor, zona_sensor, numero_sensor, modelo_sensor, 
+                                                    direccion_lectura, patilla_1_lectura, patilla_2_lectura, 
+                                                    patilla_3_lectura, patilla_4_lectura, 
+                                                    fecha_creacion, fecha_eliminacion)
+            out= CommonSensor(sensor_modificado.tipo_sensor,sensor_modificado.zona_sensor,sensor_modificado.numero_sensor,
+                              sensor_modificado.modelo_sensor, sensor_modificado.direccion_lectura, sensor_modificado.patilla_1_lectura, 
+                              sensor_modificado.patilla_2_lectura, sensor_modificado.patilla_3_lectura, sensor_modificado.patilla_4_lectura, 
+                              sensor_modificado.fecha_creacion, sensor_modificado.fecha_eliminacion)
+        except Exception as ex:
+            raise ex
+        finally:
+            esquema.remove_session()
+        return out
+    
+    @staticmethod
+    def updateFromCommon(esquema: Esquema, sensor: CommonSensor) -> CommonSensor:
+        return SensorService.update(esquema, sensor.getTipoSensor(), sensor.getZonaSensor(),sensor.getNumeroSensor(), 
+                                    sensor.getModeloSensor(), sensor.getDireccionLectura(), sensor.getPatilla1Lectura(), 
+                                    sensor.getPatilla2Lectura(), sensor.getPatilla3Lectura(), sensor.getPatilla4Lectura(),
+                                    sensor.getFechaCreacion(), sensor.getFechaEliminacion())
+

@@ -25,6 +25,8 @@ class RegistroPlantaSet():
             - session (Session): Objeto de sesion.
             - nombre_planta (str): Nombre de planta.
             - tipo_planta (str): Tipo de planta.
+            - fecha_plantacion (datetime): Fecha en la que se planto la planta
+            - fecha_marchitacion (datetime): Fecha en la que se marchito la planta
 
         Raises:
             - ValueError: Si no es proporcionado alguno de los datos necesarios.
@@ -38,10 +40,10 @@ class RegistroPlantaSet():
         if not tipo_planta:
             raise ValueError('Necesario especificar el tipo de la planta.')
         try:
-            nuevo_registro = RegistroPlanta(nombre_planta, tipo_planta, fecha_plantacion, fecha_marchitacion)
-            session.add(nuevo_registro)
+            nuevo_registro_planta = RegistroPlanta(nombre_planta, tipo_planta, fecha_plantacion, fecha_marchitacion)
+            session.add(nuevo_registro_planta)
             session.commit()
-            return nuevo_registro
+            return nuevo_registro_planta
         except IntegrityError as ex:
             session.rollback()
             raise ErrorRegistroPlantaExiste(
@@ -54,16 +56,33 @@ class RegistroPlantaSet():
 
     @staticmethod
     def listAll(session: Session) -> List[RegistroPlanta]:
-        """Lists every user.
+        """
+        Listado de plantas.
 
         Args:
             - session (Session): Objeto de sesion.
 
         Returns:
-            - List[User]: Lista de registros del sensor.
+            - List[RegistroPlanta]: Listado de registros de plantas.
         """
         query = session.query(RegistroPlanta)
         return query.all()
+    
+    @staticmethod
+    def listAllFromType(session: Session, tipo_planta: str) -> List[RegistroPlanta]:
+        """
+        Listado de plantas.
+
+        Args:
+            - session (Session): Objeto de sesion.
+
+        Returns:
+            - List[RegistroPlanta]: Listado de registros de plantas.
+        """
+        plantas_de_tipo = None
+        query = session.query(RegistroPlanta).filter_by(tipo_planta=tipo_planta)
+        plantas_de_tipo: List[RegistroPlanta] = query.all()
+        return plantas_de_tipo
 
     @staticmethod
     def get(session: Session, nombre_planta: str) -> Optional[RegistroPlanta]:
@@ -78,26 +97,55 @@ class RegistroPlantaSet():
         """
         if not nombre_planta:
             raise ValueError('Necesario especificar el nombre de la planta.')
+        registro_planta: RegistroPlanta = None
         try:
             query = session.query(RegistroPlanta).filter_by(nombre_planta=nombre_planta)
-            planta: RegistroPlanta = query.one()
+            registro_planta: RegistroPlanta = query.one()
         except NoResultFound as ex:
             raise ErrorRegistroPlantaNoExiste(
                 'La planta con el nombre' + nombre_planta + 'no existe'
                 ) from ex
-        return RegistroPlanta
+        finally:
+            return registro_planta
 
-'''
     @staticmethod
-    def update(session: Session,id:int):
+    def update(session: Session, nombre_planta:str, tipo_planta:str, fecha_plantacion: datetime, fecha_marchitacion: datetime) -> RegistroPlanta:
+        """
+        Creacion de un nuevo registro de un sensor
 
-        if not id:
-            raise ValueError('An id is requiered.')
+        Nota:
+            Realiza commit de la transaccion.
+
+        Args:
+            - session (Session): Objeto de sesion.
+            - nombre_planta (str): Nombre de planta.
+            - tipo_planta (str): Tipo de planta.
+            - fecha_plantacion (datetime): Fecha en la que se planto la planta
+            - fecha_marchitacion (datetime): Fecha en la que se marchito la planta
+
+        Raises:
+            - ValueError: Si no es proporcionado alguno de los datos necesarios.
+            - ErrorRegistroSensorExiste: Si el registro del sensor ya existe.
+
+        Returns:
+            - Sensor: Registro creado del sensor.
+        """
+        if not nombre_planta:
+            raise ValueError('Necesario especificar el nombre de la planta.')
+        registro_planta_modificado: RegistroPlanta = None
         try:
-            session.query(Pregunta).filter(Pregunta.id == id).update({"visible": False})
+            query = session.query(RegistroPlanta).filter_by(nombre_planta=nombre_planta)
+            registro_planta: RegistroPlanta = query.one()
+
+            if registro_planta.tipo_planta != tipo_planta:
+                query.update({'tipo_planta' : tipo_planta})
             session.commit()
+            registro_planta_modificado: RegistroPlanta = query.one() 
+
         except NoResultFound as ex:
-            raise PreguntaNoExisteError(
-                'The question with title ' + id + ' don\'t exists.'
+            session.rollback()
+            raise ErrorRegistroPlantaNoExiste(
+                'La planta con el nombre' + nombre_planta + 'no existe'
                 ) from ex
-'''
+        finally:
+            return registro_planta_modificado

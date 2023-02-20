@@ -10,5 +10,6 @@ class TipoSensor(Enum):
     """
     HUMEDAD = 1
     TEMPERATURA = 2
-    LUZ = 3
+    TEMPERATURA_Y_HUMEDAD = 3
+    LUZ = 4
     OTRO = 99

@@ -13,7 +13,7 @@ class SensorPlanta(ModuloBase):
 
     def __init__(self, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, nombre_planta:str,
                  fecha_asociacion: datetime, fecha_anulacion: datetime):
-        self.id: int
+        self.id_: int
         self.tipo_sensor: TipoSensor = tipo_sensor
         self.zona_sensor: ZonaSensor = zona_sensor
         self.numero_sensor: int = numero_sensor
@@ -36,7 +36,7 @@ class SensorPlanta(ModuloBase):
             #str(self.tipo_sensor + str(self.numero_sensor)),
             'sensores_plantas',
             metadata,
-            Column('id', Integer, autoincrement='auto', primary_key=True),
+            Column('id_', Integer, autoincrement='auto', primary_key=True),
             Column('tipo_sensor', Enum(TipoSensor), nullable=False ),
             Column('zona_sensor', Enum(ZonaSensor), nullable=False ),
             Column('numero_sensor', Integer, nullable=False),

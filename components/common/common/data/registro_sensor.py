@@ -6,8 +6,8 @@ from common.data import TipoSensor, ZonaSensor
 class RegistroSensor:
 
     def __init__(self, tipo_sensor:TipoSensor, zona_sensor:ZonaSensor ,numero_sensor:int, valor:float, escala:str, 
-                 fecha:datetime = datetime.now(), id: int=0):
-        self.__id:int = id
+                 fecha:datetime = datetime.now(), id_: int=0):
+        self.__id:int = id_
         self.__tipo_sensor:TipoSensor = tipo_sensor
         self.__zona_sensor:ZonaSensor = zona_sensor
         self.__numero_sensor:int = numero_sensor
@@ -45,7 +45,7 @@ class RegistroSensor:
 
     def toJson(self) -> Dict:
         dict={}
-        dict["id"]=self.getId()
+        dict["id_"]=self.getId()
         dict["tipo_sensor"]=self.getTipoSensor()
         dict["zona_sensor"]=self.getZonaSensor()
         dict["numero_sensor"]=self.getNumeroSensor()
@@ -55,6 +55,6 @@ class RegistroSensor:
         return dict
 
     def fromJson(dict: dict):
-        sensor = RegistroSensor(dict["id"],dict["tipo_sensor"],dict["zona_sensor"],dict["numero_sensor"],
+        sensor = RegistroSensor(dict["id_"],dict["tipo_sensor"],dict["zona_sensor"],dict["numero_sensor"],
                                 dict["valor"],dict["escala"], dict["fecha"])
         return sensor
