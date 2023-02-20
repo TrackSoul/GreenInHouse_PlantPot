@@ -52,10 +52,10 @@ class SensorService():
         return sensor_exists
 
     @staticmethod
-    def list_all(esquema: Esquema) -> List[CommonSensor]:
+    def listAll(esquema: Esquema) -> List[CommonSensor]:
         out: List[CommonSensor] = []
         session: Session = esquema.new_session()
-        registros_sensor: List[Sensor] = SensorSet.list_all(session)
+        registros_sensor: List[Sensor] = SensorSet.listAll(session)
         for sensor in registros_sensor:
             out.append(CommonSensor(sensor.tipo_sensor,sensor.zona_sensor,sensor.numero_sensor,sensor.modelo_sensor, 
                               sensor.direccion_lectura, sensor.patilla_1_lectura, sensor.id, sensor.patilla_2_lectura,

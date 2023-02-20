@@ -99,26 +99,38 @@ class Sensor:
     def setFechaEliminacion(self, fecha_eliminacion:datetime):
         self.__fecha_eliminacion = fecha_eliminacion
 
-    def to_json(self) -> Dict:
-        dict={}
-        #dict["id"]=self.getId()
-        dict["tipo_sensor"]=self.getTipoSensor()
-        dict["zona_sensor"]=self.getZonaSensor()
-        dict["numero_sensor"]=self.getNumeroSensor()
-        dict["modelo_sensor"]=self.getModeloSensor()
-        dict["direccion_lectura"]=self.getDireccionLectura()
-        dict["patilla_1_lectura"]=self.getPatilla1Lectura()
-        dict["patilla_2_lectura"]=self.getPatilla2Lectura()
-        dict["patilla_3_lectura"]=self.getPatilla3Lectura()
-        dict["patilla_4_lectura"]=self.getPatilla4Lectura()
-        dict["fecha_creacion"]=self.getFechaCreacion()
-        dict["fecha_eliminacion"]=self.getFechaEliminacion()
-        return dict
+    def toString(self) -> str:
+        texto: str = str("El sensor " +  str(self.getNumeroSensor()) + " de " + str(self.getTipoSensor()) + 
+                          " de la zona " + str(self.getZonaSensor()) + " es del modelo " + str(self.getModeloSensor()) +
+                          " y tiene cinfigurados los siguientes parametros de comunicacion.\n" + 
+                          " \tDireccion de lectura: " + str(self.getDireccionLectura()) + " .\n" +
+                          " \tPatilla 1 de lectura: " + str(self.getPatilla1Lectura()) + " .\n" +
+                          " \tPatilla 2 de lectura: " + str(self.getPatilla2Lectura()) + " .\n" +
+                          " \tPatilla 3 de lectura: " + str(self.getPatilla3Lectura()) + " .\n" +
+                          " \tPatilla 4 de lectura: " + str(self.getPatilla4Lectura()) + " .\n" +
+                          " Fue creado en la fecha " + self.getFechaCreacion() + 
+                          " y eliminado en la fecha " + self.getFechaEliminacion())
+        return texto
+
+    def toJson(self) -> dict:
+        dic={}
+        dic["tipo_sensor"]=self.getTipoSensor()
+        dic["zona_sensor"]=self.getZonaSensor()
+        dic["numero_sensor"]=self.getNumeroSensor()
+        dic["modelo_sensor"]=self.getModeloSensor()
+        dic["direccion_lectura"]=self.getDireccionLectura()
+        dic["patilla_1_lectura"]=self.getPatilla1Lectura()
+        dic["patilla_2_lectura"]=self.getPatilla2Lectura()
+        dic["patilla_3_lectura"]=self.getPatilla3Lectura()
+        dic["patilla_4_lectura"]=self.getPatilla4Lectura()
+        dic["fecha_creacion"]=self.getFechaCreacion()
+        dic["fecha_eliminacion"]=self.getFechaEliminacion()
+        return dic
     
-    def from_json(dict: dict):
-        sensor = Sensor(tipo_sensor=dict["tipo_sensor"],zona_sensor=dict["zona_sensor"],numero_sensor=dict["numero_sensor"],
-                        modelo_sensor=dict["modelo_sensor"], direccion_lectura=dict["direccion_lectura"], 
-                        patilla_1_lectura=dict["patilla_1_lectura"], patilla_2_lectura=dict["patilla_2_lectura"], 
-                        patilla_3_lectura=dict["patilla_3_lectura"], patilla_4_lectura=dict["patilla_4_lectura"],
-                        fecha_creacion=dict["fecha_creacion"], fecha_eliminacion=dict["fecha_eliminacion"])
+    def fromJson(dic: dict):
+        sensor = Sensor(tipo_sensor=dic["tipo_sensor"],zona_sensor=dic["zona_sensor"],numero_sensor=dic["numero_sensor"],
+                        modelo_sensor=dic["modelo_sensor"], direccion_lectura=dic["direccion_lectura"], 
+                        patilla_1_lectura=dic["patilla_1_lectura"], patilla_2_lectura=dic["patilla_2_lectura"], 
+                        patilla_3_lectura=dic["patilla_3_lectura"], patilla_4_lectura=dic["patilla_4_lectura"],
+                        fecha_creacion=dic["fecha_creacion"], fecha_eliminacion=dic["fecha_eliminacion"])
         return sensor

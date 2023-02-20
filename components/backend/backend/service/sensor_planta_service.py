@@ -10,17 +10,12 @@ from common.data import TipoSensor, ZonaSensor
 class SensorPlantaService():
 
     @staticmethod
-    # def create_sensor_planta(tipo_sensor: Union[TipoSensor,str], zona_sensor:Union[ZonaSensor,str] ,numero_sensor:int, valor:float, schema: Esquema) -> CommonSensorPlanta:
     def create(esquema: Esquema, tipo_sensor: TipoSensor, zona_sensor: ZonaSensor, 
                                numero_sensor:int, nombre_planta:str = "Sin planta", 
                                fecha_asociacion:datetime = datetime.now() ,fecha_anulacion:datetime = None) -> CommonSensorPlanta:
         session: Session = esquema.new_session()
         out: CommonSensorPlanta = None
         try:
-            # if isinstance(tipo_sensor, str):
-            #     tipo_sensor = TipoSensor[tipo_sensor]
-            # if isinstance(zona_sensor, str):
-            #     zona_sensor = ZonaSensor[zona_sensor]
             new_sensor_planta: SensorPlanta = SensorPlantaSet.create(session, tipo_sensor, zona_sensor, 
                                                                            numero_sensor, nombre_planta, 
                                                                            fecha_asociacion, fecha_anulacion)
@@ -52,10 +47,23 @@ class SensorPlantaService():
         return sensor_planta_exists
 
     @staticmethod
-    def list_all(esquema: Esquema) -> List[CommonSensorPlanta]:
+    def listAll(esquema: Esquema) -> List[CommonSensorPlanta]:
         out: List[CommonSensorPlanta] = []
         session: Session = esquema.new_session()
-        registros_sensor: List[SensorPlanta] = SensorPlantaSet.list_all(session)
+        registros_sensor: List[SensorPlanta] = SensorPlantaSet.listAll(session)
+        for sensor_planta in registros_sensor:
+            out.append(CommonSensorPlanta(sensor_planta.tipo_sensor, sensor_planta.zona_sensor,
+                                      sensor_planta.numero_sensor, sensor_planta.nombre_planta, 
+                                      sensor_planta.fecha_asociacion, sensor_planta.fecha_anulacion,
+                                      sensor_planta.id))
+        esquema.remove_session()
+        return out
+
+    @staticmethod
+    def listAllSensorsPlant(esquema: Esquema, nombre_planta: str) -> List[CommonSensorPlanta]:
+        out: List[CommonSensorPlanta] = []
+        session: Session = esquema.new_session()
+        registros_sensor: List[SensorPlanta] = SensorPlantaSet.listAllSensorsPlant(session, nombre_planta)
         for sensor_planta in registros_sensor:
             out.append(CommonSensorPlanta(sensor_planta.tipo_sensor, sensor_planta.zona_sensor,
                                       sensor_planta.numero_sensor, sensor_planta.nombre_planta, 

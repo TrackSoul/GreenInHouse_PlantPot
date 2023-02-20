@@ -6,8 +6,8 @@ from common.data import TipoSensor, ZonaSensor
 class SensorPlanta:
 
     def __init__(self, tipo_sensor:TipoSensor, zona_sensor:ZonaSensor ,numero_sensor:str, nombre_planta:str,
-                 fecha_asociacion: datetime = None, fecha_anulacion: datetime = None, id: int = 0):
-        self.__id:int = id
+                 fecha_asociacion: datetime = None, fecha_anulacion: datetime = None, id_: int = 0):
+        self.__id:int = id_
         self.__tipo_sensor:TipoSensor = tipo_sensor
         self.__zona_sensor:ZonaSensor = zona_sensor
         self.__numero_sensor:int = numero_sensor
@@ -51,19 +51,25 @@ class SensorPlanta:
     def setFechaAnulacion(self, fecha_anulacion:datetime):
         self.__fecha_anulacion = fecha_anulacion
 
+    def toString(self) -> str:
+        texto: str = str("La planta " + str(self.getNombrePlanta()) + " esta asociada con el sensor " +  
+                          str(self.getNumeroSensor()) + " de " + str(self.getTipoSensor()) + " de la zona " + 
+                          str(self.getZonaSensor()) + " desde la fecha " + str(self.getFechaAsociacion()) + 
+                          " hasta la fecha " + str(self.getFechaAnulacion()) + " con el id " + str(self.getId()))
+        return texto
 
-    def to_json(self) -> Dict:
-        dict={}
-        dict["id"]=self.getId()
-        dict["tipo_sensor"]=self.getTipoSensor()
-        dict["zona_sensor"]=self.getZonaSensor()
-        dict["numero_sensor"]=self.getNumeroSensor()
-        dict["nombre_planta"]=self.getNombrePlanta()
-        dict["fecha_asociacion"]=self.getFechaAsociacion()
-        dict["fecha_anulacion"]=self.getFechaAnulacion()
-        return dict
+    def toJson(self) -> dict:
+        dic={}
+        dic["id"]=self.getId()
+        dic["tipo_sensor"]=self.getTipoSensor()
+        dic["zona_sensor"]=self.getZonaSensor()
+        dic["numero_sensor"]=self.getNumeroSensor()
+        dic["nombre_planta"]=self.getNombrePlanta()
+        dic["fecha_asociacion"]=self.getFechaAsociacion()
+        dic["fecha_anulacion"]=self.getFechaAnulacion()
+        return dic
 
-    def from_json(dict: dict):
-        sensor = SensorPlanta(dict["id"],dict["tipo_sensor"],dict["zona_sensor"],dict["numero_sensor"],
-                                dict["nombre_planta"],dict["fecha_asociacion"],dict["fecha_anulacion"])
+    def fromJson(dic: dict):
+        sensor = SensorPlanta(dic["id"],dic["tipo_sensor"],dic["zona_sensor"],dic["numero_sensor"],
+                                dic["nombre_planta"],dic["fecha_asociacion"],dic["fecha_anulacion"])
         return sensor

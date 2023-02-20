@@ -59,7 +59,7 @@ class RegistroSensorSet():
                 ) from ex
 
     @staticmethod
-    def list_all(session: Session) -> List[RegistroSensor]:
+    def listAll(session: Session) -> List[RegistroSensor]:
     #def list_all(session: Session, tipo_sensor:str ,numero_sensor:str) -> List[Sensor]:
         """Lists every user.
 

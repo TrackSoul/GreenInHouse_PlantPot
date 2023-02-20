@@ -39,10 +39,10 @@ class RegistroPlantaService():
         return registro_planta_exists
 
     @staticmethod
-    def list_all(esquema: Esquema) -> List[CommonRegistroPlanta]:
+    def listAll(esquema: Esquema) -> List[CommonRegistroPlanta]:
         out: List[CommonRegistroPlanta] = []
         session: Session = esquema.new_session()
-        registros_planta: List[RegistroPlanta] = RegistroPlantaSet.list_all(session)
+        registros_planta: List[RegistroPlanta] = RegistroPlantaSet.listAll(session)
         for registro_planta in registros_planta:
             out.append(CommonRegistroPlanta(registro_planta.nombre_planta,registro_planta.tipo_planta,
                                             registro_planta.fecha_plantacion,registro_planta.fecha_marchitacion))

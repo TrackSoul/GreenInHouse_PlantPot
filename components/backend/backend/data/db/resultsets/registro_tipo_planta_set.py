@@ -48,7 +48,7 @@ class RegistroTipoPlantaSet():
                 ) from ex
 
     @staticmethod
-    def list_all(session: Session) -> List[RegistroTipoPlanta]:
+    def listAll(session: Session) -> List[RegistroTipoPlanta]:
         """Lists every user.
 
         Args:
