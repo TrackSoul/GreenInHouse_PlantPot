@@ -38,7 +38,7 @@ class RegistroTipoPlantaService():
     def listAll(esquema: Esquema) -> List[CommonRegistroTipoPlanta]:
         out: List[CommonRegistroTipoPlanta] = []
         session: Session = esquema.new_session()
-        registros_tipo_planta: List[RegistroTipoPlanta] = RegistroTipoPlanta.listAll(session)
+        registros_tipo_planta: List[RegistroTipoPlanta] = RegistroTipoPlantaSet.listAll(session)
         for registro_tipo_planta in registros_tipo_planta:
             out.append(CommonRegistroTipoPlanta(registro_tipo_planta.tipo_planta,registro_tipo_planta.descripcion_planta))
         esquema.remove_session()

@@ -108,8 +108,11 @@ class Sensor:
                           " \tPatilla 2 de lectura: " + str(self.getPatilla2Lectura()) + " .\n" +
                           " \tPatilla 3 de lectura: " + str(self.getPatilla3Lectura()) + " .\n" +
                           " \tPatilla 4 de lectura: " + str(self.getPatilla4Lectura()) + " .\n" +
-                          " Fue creado en la fecha " + self.getFechaCreacion() + 
-                          " y eliminado en la fecha " + self.getFechaEliminacion())
+                          "Fue creado en la fecha " + str(self.getFechaCreacion()))
+        if self.getFechaEliminacion() is None:
+            texto: str  = str(texto + " y sigue activo.")
+        else:
+            texto: str  = str(texto + " y fue eliminado en la fecha " + str(self.getFechaEliminacion()) + " .")
         return texto
 
     def toJson(self) -> dict:

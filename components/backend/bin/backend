@@ -16,9 +16,9 @@ import backend
 from backend.data.config import BackendConfiguration
 from backend.data.db import Esquema
 
-from backend.service import SensorService, RegistroSensorService, RegistroPlantaService, RegistroTipoPlantaService
+from backend.service import SensorService, RegistroSensorService, RegistroPlantaService, RegistroTipoPlantaService, SensorPlantaService
 from common.data import TipoSensor, ZonaSensor, RegistroPlanta as RegistroPlantaCommon, RegistroTipoPlanta as RegistroTipoPlantaCommon
-from common.data import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon
+from common.data import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon, SensorPlanta as SensorPlantaCommon
 
 if __name__ == '__main__':
     cfg: BackendConfiguration = BackendConfiguration()
@@ -49,8 +49,18 @@ if __name__ == '__main__':
     root_logger = logging.getLogger()
     root_logger.addHandler(default_handler)
 
-    # for reg in RegistroSensorService.list_registro_sensor(db):
-    #     print(str(reg.getId()))
+        
+    for reg in SensorService.listAll(db):
+        print(str(reg.toString()))
+    for reg in RegistroPlantaService.listAll(db):
+        print(str(reg.toString()))
+    for reg in RegistroTipoPlantaService.listAll(db):
+        print(str(reg.toString()))
+    for reg in SensorPlantaService.listAll(db):
+        print(str(reg.toString()))       
+    for reg in RegistroSensorService.listAll(db):
+        print(str(reg.toString()))
+    
 
     '''
     app.run(

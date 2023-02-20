@@ -44,7 +44,7 @@ class RegistroSensor(ModuloBase):
             Column('escala', String, nullable=False),
             Column('fecha', TIMESTAMP, nullable=False),
             ForeignKeyConstraint(['tipo_sensor','zona_sensor','numero_sensor'],
-                                 ['sensores.tipo_sensor','sensores.zona_sensor','sensores.numero_sensor'])
+                                 ['sensores.tipo_sensor','sensores.zona_sensor','sensores.numero_sensor']),
         )
 
     @staticmethod

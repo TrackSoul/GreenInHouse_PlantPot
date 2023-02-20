@@ -58,8 +58,8 @@ class SensorService():
         registros_sensor: List[Sensor] = SensorSet.listAll(session)
         for sensor in registros_sensor:
             out.append(CommonSensor(sensor.tipo_sensor,sensor.zona_sensor,sensor.numero_sensor,sensor.modelo_sensor, 
-                              sensor.direccion_lectura, sensor.patilla_1_lectura, sensor.id, sensor.patilla_2_lectura,
-                              sensor.patilla_3_lectura, sensor.id, sensor.patilla_4_lectura,
+                              sensor.direccion_lectura, sensor.patilla_1_lectura, sensor.patilla_2_lectura,
+                              sensor.patilla_3_lectura, sensor.patilla_4_lectura,
                               sensor.fecha_creacion, sensor.fecha_eliminacion))
         esquema.remove_session()
         return out
@@ -69,8 +69,8 @@ class SensorService():
         session : Session = esquema.new_session()
         sensor : Sensor = SensorSet.get(session, tipo_sensor, zona_sensor, numero_sensor)
         out= CommonSensor(sensor.tipo_sensor,sensor.zona_sensor,sensor.numero_sensor,sensor.modelo_sensor, 
-                          sensor.direccion_lectura, sensor.patilla_1_lectura, sensor.id, sensor.patilla_2_lectura,
-                          sensor.patilla_3_lectura, sensor.id, sensor.patilla_4_lectura,
+                          sensor.direccion_lectura, sensor.patilla_1_lectura, sensor.patilla_2_lectura,
+                          sensor.patilla_3_lectura, sensor.patilla_4_lectura,
                           sensor.fecha_creacion, sensor.fecha_eliminacion)
         esquema.remove_session()
         return out

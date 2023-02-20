@@ -36,7 +36,14 @@ class RegistroSensor:
     def getFecha(self) -> datetime:
         return self.__fecha
 
-    def to_json(self) -> Dict:
+    def toString(self) -> str:
+        texto: str = str("El registro " + str(self.getId()) + " del sensor " +  str(self.getNumeroSensor()) + 
+                          " de " + str(self.getTipoSensor()) + " de la zona " + str(self.getZonaSensor()) + 
+                          " es " + str(self.getValor()) + str(self.getEscala()) +
+                          " y fue creado en la fecha " + str(self.getFecha()) + " .")
+        return texto
+
+    def toJson(self) -> Dict:
         dict={}
         dict["id"]=self.getId()
         dict["tipo_sensor"]=self.getTipoSensor()
@@ -47,7 +54,7 @@ class RegistroSensor:
         dict["fecha"]=self.getFecha()#.isoformat()
         return dict
 
-    def from_json(dict: dict):
+    def fromJson(dict: dict):
         sensor = RegistroSensor(dict["id"],dict["tipo_sensor"],dict["zona_sensor"],dict["numero_sensor"],
                                 dict["valor"],dict["escala"], dict["fecha"])
         return sensor

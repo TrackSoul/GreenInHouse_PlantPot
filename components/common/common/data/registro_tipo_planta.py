@@ -18,13 +18,18 @@ class RegistroTipoPlanta:
 
     def setDescripcionPlanta(self, descripcion_planta: str):
         self.__descripcion_planta = descripcion_planta
-  
-    def to_json(self) -> Dict:
+
+    def toString(self) -> str:
+        texto: str = str("El tipo planta " + str(self.getTipoPlanta()) + " es: " +  
+                          str(self.getDescripcionPlanta()))
+        return texto
+
+    def toJson(self) -> Dict:
         dict={}
-        dict["tipo_planta"]=self.__tipo_planta()
-        dict["descripcion_planta"]=self.__descripcion_planta()
+        dict["tipo_planta"]=self.getTipoPlanta()
+        dict["descripcion_planta"]=self.getDescripcionPlanta()
         return dict
 
-    def from_json(dict: dict):
+    def fromJson(dict: dict):
         tipo_planta = RegistroTipoPlanta(dict["tipo_planta"],dict["descripcion_planta"])
         return tipo_planta

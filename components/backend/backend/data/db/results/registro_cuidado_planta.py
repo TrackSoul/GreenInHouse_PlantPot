@@ -69,7 +69,7 @@ class RegistroCuidadoPlanta(ModuloBase):
             Column('horas_luz_minimas', Float, nullable=False ),
             Column('horas_luz_maximas', Float, nullable=False ),
             Column('dia_inicio', Integer, nullable=False ),
-            Column('dia_final', Integer, nullable=False )
+            Column('dia_final', Integer, nullable=False ),
         )
 
     @staticmethod

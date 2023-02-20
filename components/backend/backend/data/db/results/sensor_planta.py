@@ -44,7 +44,7 @@ class SensorPlanta(ModuloBase):
             Column('fecha_asociacion', TIMESTAMP, nullable=True),
             Column('fecha_anulacion', TIMESTAMP, nullable=True),
             ForeignKeyConstraint(['tipo_sensor','zona_sensor','numero_sensor'],
-                                 ['sensores.tipo_sensor','sensores.zona_sensor','sensores.numero_sensor'])
+                                 ['sensores.tipo_sensor','sensores.zona_sensor','sensores.numero_sensor']),
         )
 
     @staticmethod

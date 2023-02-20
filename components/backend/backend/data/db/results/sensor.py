@@ -54,7 +54,7 @@ class Sensor(ModuloBase):
             Column('patilla_3_lectura', Integer, nullable=True),
             Column('patilla_4_lectura', Integer, nullable=True),
             Column('fecha_creacion', TIMESTAMP, nullable=False ),
-            Column('fecha_eliminiacion', TIMESTAMP, nullable=True )
+            Column('fecha_eliminacion', TIMESTAMP, nullable=True ),
         )
 
     @staticmethod

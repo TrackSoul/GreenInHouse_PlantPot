@@ -61,7 +61,7 @@ class SensorPlantaSet():
         return nuevo_sensor_planta
 
     @staticmethod
-    def list_all(session: Session) -> List[SensorPlanta]:
+    def listAll(session: Session) -> List[SensorPlanta]:
         """
         Lista de sensores asociados a una planta.
 

@@ -32,15 +32,25 @@ class RegistroPlanta:
 
     def setFechaMarchitacion(self, fecha_marchitacion: datetime):
         self.__fecha_marchitacion = fecha_marchitacion
-    
-    def to_json(self) -> Dict:
+
+    def toString(self) -> str:
+        texto: str = str("La planta " + str(self.getNombrePlanta()) + " es del tipo " +  
+                          str(self.getTipoPlanta()) + " y fue plantada en la fecha " + 
+                          str(self.getFechaPlantacion()))
+        if self.getFechaMarchitacion() is None:
+            texto: str = str(texto + " y sigue viva.")
+        else:
+            texto: str = str(texto + " y se marchitó en la fecha " + str(self.getFechaMarchitacion()) + " .")
+        return texto
+
+    def toJson(self) -> Dict:
         dict={}
-        dict["nombre_planta"]=self.__nombre_planta()
-        dict["tipo_planta"]=self.__tipo_planta()
-        dict["fecha_plantacion"]=self.__fecha_plantacion()
-        dict["fecha_marchitacion"]=self.__fecha_marchitacion()
+        dict["nombre_planta"]=self.getNombrePlanta()
+        dict["tipo_planta"]=self.getTipoPlanta()
+        dict["fecha_plantacion"]=self.getFechaPlantacion()
+        dict["fecha_marchitacion"]=self.setFechaMarchitacion()
         return dict
 
-    def from_json(dict: dict):
+    def fromJson(dict: dict):
         planta = RegistroPlanta(dict["nombre_planta"],dict["tipo_planta"],dict["fecha_plantacion"],dict["fecha_marchitacion"])
         return planta

@@ -54,8 +54,12 @@ class SensorPlanta:
     def toString(self) -> str:
         texto: str = str("La planta " + str(self.getNombrePlanta()) + " esta asociada con el sensor " +  
                           str(self.getNumeroSensor()) + " de " + str(self.getTipoSensor()) + " de la zona " + 
-                          str(self.getZonaSensor()) + " desde la fecha " + str(self.getFechaAsociacion()) + 
-                          " hasta la fecha " + str(self.getFechaAnulacion()) + " con el id " + str(self.getId()))
+                          str(self.getZonaSensor()) + " mediante el id " + str(self.getId()) + 
+                          " desde la fecha " + str(self.getFechaAsociacion()))
+        if self.getFechaAnulacion() is None:
+            texto: str  = str(texto + " hasta la actualidad.")
+        else:
+            texto: str  = str(texto + " hasta la fecha " + str(self.getFechaAnulacion()) + " .")
         return texto
 
     def toJson(self) -> dict:
