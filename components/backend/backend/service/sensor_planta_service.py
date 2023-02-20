@@ -84,8 +84,8 @@ class SensorPlantaService():
         return out
 
     @staticmethod
-    def update(esquema: Esquema, id_: int, tipo_sensor: TipoSensor, zona_sensor: ZonaSensor, numero_sensor:int, 
-                nombre_planta:str, fecha_asociacion:datetime ,fecha_anulacion:datetime ) -> CommonSensorPlanta:
+    def update(esquema: Esquema, tipo_sensor: TipoSensor, zona_sensor: ZonaSensor, numero_sensor:int, 
+                nombre_planta:str, fecha_asociacion:datetime ,fecha_anulacion:datetime, id_: int ) -> CommonSensorPlanta:
         session: Session = esquema.new_session()
         out: CommonSensorPlanta = None
         try:
@@ -103,7 +103,7 @@ class SensorPlantaService():
 
     @staticmethod
     def updateFromCommon(esquema: Esquema, sensor_planta: CommonSensorPlanta) -> CommonSensorPlanta:
-        return SensorPlantaService.create(esquema, sensor_planta.getTipoSensor(), sensor_planta.getZonaSensor(), 
+        return SensorPlantaService.update(esquema, sensor_planta.getTipoSensor(), sensor_planta.getZonaSensor(), 
                                           sensor_planta.getNumeroSensor(), sensor_planta.getNombrePlanta(),
                                           sensor_planta.getFechaAsociacion(),sensor_planta.getFechaAnulacion(),
                                           sensor_planta.getId())

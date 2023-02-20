@@ -1,6 +1,3 @@
-#import hashlib
-#from flask import current_app
-
 from datetime import datetime
 from typing import List, Optional
 from sqlalchemy.exc import IntegrityError  # type: ignore

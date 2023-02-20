@@ -38,6 +38,9 @@ class SensorPlanta:
 
     def getNombrePlanta(self) -> str:
          return self.__nombre_planta
+    
+    def setNombrePlanta(self, nombre_planta:str):
+        self.__nombre_planta = nombre_planta
 
     def getFechaAsociacion(self) -> Optional[datetime]:
         return self.__fecha_asociacion

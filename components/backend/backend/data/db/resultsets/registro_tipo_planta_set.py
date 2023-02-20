@@ -1,6 +1,3 @@
-#import hashlib
-#from flask import current_app
-
 from typing import List, Optional
 from sqlalchemy.exc import IntegrityError  # type: ignore
 from sqlalchemy.orm.session import Session  # type: ignore
