@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional,Dict,List
 from enum import Enum
-from common.data import TipoSensor, ZonaSensor, RegistroSensor
+from common.data.util import TipoSensor, ZonaSensor, RegistroSensor
 
 class Sensor:
 

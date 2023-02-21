@@ -5,7 +5,7 @@ from sqlalchemy.orm.session import Session  # type: ignore
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore
 from backend.data.db.results import RegistroSensor
 from backend.data.db.exc import ErrorSensorExiste, ErrorSensorNoExiste, ErrorRegistroSensorExiste, ErrorRegistroSensorNoExiste
-from common.data import TipoSensor, ZonaSensor
+from common.data.util import TipoSensor, ZonaSensor
 
 class RegistroSensorSet():
     """ 

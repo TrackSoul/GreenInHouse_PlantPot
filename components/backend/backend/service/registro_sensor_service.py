@@ -4,8 +4,8 @@ from sqlalchemy.orm.session import Session # type: ignore
 from backend.data.db.esquema import Esquema
 from backend.data.db.results import RegistroSensor
 from backend.data.db.resultsets import RegistroSensorSet
-from common.data import RegistroSensor as CommonRegistroSensor
-from common.data import TipoSensor, ZonaSensor
+from common.data.util import RegistroSensor as CommonRegistroSensor
+from common.data.util import TipoSensor, ZonaSensor
 
 class RegistroSensorService():
 

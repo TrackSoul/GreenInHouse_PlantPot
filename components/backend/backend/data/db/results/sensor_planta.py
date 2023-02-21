@@ -4,7 +4,7 @@ from sqlalchemy import Table, MetaData, Column, String, Enum, Integer, Float, TI
 from sqlalchemy import ForeignKey, ForeignKeyConstraint  # type: ignore
 from sqlalchemy.orm import relationship  # type: ignore
 from backend.data.db.results import ModuloBase
-from common.data import TipoSensor, ZonaSensor
+from common.data.util import TipoSensor, ZonaSensor
 
 class SensorPlanta(ModuloBase):
     """ 

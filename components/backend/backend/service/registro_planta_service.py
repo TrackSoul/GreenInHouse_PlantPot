@@ -4,7 +4,7 @@ from sqlalchemy.orm.session import Session # type: ignore
 from backend.data.db.esquema import Esquema
 from backend.data.db.results import RegistroPlanta
 from backend.data.db.resultsets import RegistroPlantaSet
-from common.data import RegistroPlanta as CommonRegistroPlanta
+from common.data.util import RegistroPlanta as CommonRegistroPlanta
 
 class RegistroPlantaService():
 
