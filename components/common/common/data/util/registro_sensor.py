@@ -5,14 +5,14 @@ from common.data.util import TipoSensor, ZonaSensor
 
 class RegistroSensor:
 
-    def __init__(self, tipo_sensor:TipoSensor, zona_sensor:ZonaSensor ,numero_sensor:int, valor:float, escala:str, 
+    def __init__(self, tipo_sensor:TipoSensor, zona_sensor:ZonaSensor ,numero_sensor:int, valor:float, unidad_medida:str, 
                  fecha:datetime = datetime.now(), id_: int=0):
         self.__id:int = id_
         self.__tipo_sensor:TipoSensor = tipo_sensor
         self.__zona_sensor:ZonaSensor = zona_sensor
         self.__numero_sensor:int = numero_sensor
         self.__valor:float = valor
-        self.__escala:str = escala
+        self.__unidad_medida:str = unidad_medida
         self.__fecha:datetime = fecha
         
     def getId(self) -> Optional[int]:
@@ -30,8 +30,8 @@ class RegistroSensor:
     def getValor(self) -> float:
         return self.__valor
       
-    def getEscala(self) -> str:
-        return self.__escala
+    def getUnidadMedida(self) -> str:
+        return self.__unidad_medida
 
     def getFecha(self) -> datetime:
         return self.__fecha
@@ -39,7 +39,7 @@ class RegistroSensor:
     def toString(self) -> str:
         texto: str = str("El registro " + str(self.getId()) + " del sensor " +  str(self.getNumeroSensor()) + 
                           " de " + str(self.getTipoSensor()) + " de la zona " + str(self.getZonaSensor()) + 
-                          " es " + str(self.getValor()) + str(self.getEscala()) +
+                          " es " + str(self.getValor()) + str(self.getUnidadMedida()) +
                           " y fue creado en la fecha " + str(self.getFecha()) + " .")
         return texto
 
@@ -50,11 +50,11 @@ class RegistroSensor:
         dict["zona_sensor"]=self.getZonaSensor()
         dict["numero_sensor"]=self.getNumeroSensor()
         dict["valor"]=self.getValor()
-        dict["escala"]=self.getEscala()
+        dict["unidad_medida"]=self.getUnidadMedida()
         dict["fecha"]=self.getFecha()#.isoformat()
         return dict
 
     def fromJson(dict: dict):
         sensor = RegistroSensor(dict["id_"],dict["tipo_sensor"],dict["zona_sensor"],dict["numero_sensor"],
-                                dict["valor"],dict["escala"], dict["fecha"])
+                                dict["valor"],dict["unidad_medida"], dict["fecha"])
         return sensor

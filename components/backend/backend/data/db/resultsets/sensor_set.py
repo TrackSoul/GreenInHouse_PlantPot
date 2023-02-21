@@ -14,8 +14,8 @@ class SensorSet():
     @staticmethod
     def create(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
                modelo_sensor:str, direccion_lectura:str, patilla_1_lectura:int, patilla_2_lectura:int, 
-               patilla_3_lectura:int, patilla_4_lectura:int,
-               fecha_creacion:datetime ,fecha_eliminacion:datetime) -> Optional[Sensor]:
+               patilla_3_lectura:int, patilla_4_lectura:int, unidad_medida_1:str, unidad_medida_2:str,
+               unidad_medida_3:str, unidad_medida_4:str, fecha_creacion:datetime ,fecha_eliminacion:datetime) -> Optional[Sensor]:              
         """
         Creacion de un nuevo sensor
 
@@ -33,6 +33,10 @@ class SensorSet():
             - patilla_2_lectura (int): Patilla 2 de lectura del sensor.
             - patilla_3_lectura (int): Patilla 3 de lectura del sensor.
             - patilla_4_lectura (int): Patilla 4 de lectura del sensor.
+            - unidad_medida_1 (int): Unidad de medida de lectura 1 del sensor.
+            - unidad_medida_2 (int): Unidad de medida de lectura 2 del sensor.
+            - unidad_medida_3 (int): Unidad de medida de lectura 3 del sensor.
+            - unidad_medida_4 (int): Unidad de medida de lectura 4 del sensor.
             - fecha_creacion (datetime): Fecha de creacion del sensor.
             - fecha_eliminacion (datetime): Fecha de eliminacion del sensor.
 
@@ -57,7 +61,8 @@ class SensorSet():
         try:
             nuevo_sensor = Sensor(tipo_sensor, zona_sensor, numero_sensor, modelo_sensor, 
                                   direccion_lectura, patilla_1_lectura, patilla_2_lectura, 
-                                  patilla_3_lectura, patilla_4_lectura, 
+                                  patilla_3_lectura, patilla_4_lectura, unidad_medida_1, 
+                                  unidad_medida_2, unidad_medida_3, unidad_medida_4, 
                                   fecha_creacion, fecha_eliminacion)
             session.add(nuevo_sensor)
             session.commit()
@@ -127,8 +132,8 @@ class SensorSet():
     @staticmethod
     def update(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
                modelo_sensor:str, direccion_lectura:str, patilla_1_lectura:int, patilla_2_lectura:int, 
-               patilla_3_lectura:int, patilla_4_lectura:int,
-               fecha_creacion:datetime ,fecha_eliminacion:datetime) -> Optional[Sensor]:
+               patilla_3_lectura:int, patilla_4_lectura:int, unidad_medida_1:str, unidad_medida_2:str,
+               unidad_medida_3:str, unidad_medida_4:str, fecha_creacion:datetime ,fecha_eliminacion:datetime) -> Optional[Sensor]:
         """
         Creacion de un nuevo registro de un sensor
 
@@ -146,6 +151,10 @@ class SensorSet():
             - patilla_2_lectura (int): Patilla 2 de lectura del sensor.
             - patilla_3_lectura (int): Patilla 3 de lectura del sensor.
             - patilla_4_lectura (int): Patilla 4 de lectura del sensor.
+            - unidad_medida_1 (int): Unidad de medida de lectura 1 del sensor.
+            - unidad_medida_2 (int): Unidad de medida de lectura 2 del sensor.
+            - unidad_medida_3 (int): Unidad de medida de lectura 3 del sensor.
+            - unidad_medida_4 (int): Unidad de medida de lectura 4 del sensor.
             - fecha_creacion (datetime): Fecha de creacion del sensor.
             - fecha_eliminacion (datetime): Fecha de eliminacion del sensor.
 
@@ -180,6 +189,14 @@ class SensorSet():
                 query.update({'patilla_3_lectura' : patilla_3_lectura})
             if sensor.patilla_4_lectura != patilla_4_lectura:
                 query.update({'patilla_4_lectura' : patilla_4_lectura})
+            if sensor.unidad_medida_1 != unidad_medida_1:
+                query.update({'unidad_medida_1' : unidad_medida_1})
+            if sensor.unidad_medida_2 != unidad_medida_2:
+                query.update({'unidad_medida_2' : unidad_medida_2})
+            if sensor.unidad_medida_3 != unidad_medida_3:
+                query.update({'unidad_medida_3' : unidad_medida_3})
+            if sensor.unidad_medida_4 != unidad_medida_4:
+                query.update({'unidad_medida_4' : unidad_medida_4})
             # if sensor.fecha_creacion != fecha_creacion:
                 # query.update({'fecha_creacion' : fecha_creacion})
             if sensor.fecha_eliminacion != fecha_eliminacion:

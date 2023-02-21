@@ -8,7 +8,8 @@ class Sensor:
     def __init__(self, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
                  modelo_sensor:str, direccion_lectura:str=None, patilla_1_lectura:int=None, 
                  patilla_2_lectura:int=None, patilla_3_lectura:int=None, patilla_4_lectura:int=None,
-                 fecha_creacion:datetime=None ,fecha_eliminacion:datetime=None):
+                 unidad_medida_1:str = None, unidad_medida_2:str = None, unidad_medida_3:str = None, 
+                 unidad_medida_4:str = None, fecha_creacion:datetime=None ,fecha_eliminacion:datetime=None,):
         self.__tipo_sensor: TipoSensor = tipo_sensor
         self.__zona_sensor: ZonaSensor = zona_sensor
         self.__numero_sensor: int = numero_sensor
@@ -18,6 +19,10 @@ class Sensor:
         self.__patilla_2_lectura: int = patilla_2_lectura
         self.__patilla_3_lectura: int = patilla_3_lectura
         self.__patilla_4_lectura: int = patilla_4_lectura
+        self.__unidad_medida_1:str = unidad_medida_1
+        self.__unidad_medida_2:str = unidad_medida_2
+        self.__unidad_medida_3:str = unidad_medida_3
+        self.__unidad_medida_4:str = unidad_medida_4
         self.__fecha_creacion: datetime = fecha_creacion
         self.__fecha_eliminacion: datetime = fecha_eliminacion
         
@@ -28,8 +33,8 @@ class Sensor:
 
     #def leerSensor() -> [float, str]:
 
-    def crearRegistroSensor(self, valor: float, escala: str) -> RegistroSensor:
-        return RegistroSensor(self.getTipoSensor(),self.getZonaSensor(),self.getNumeroSensor(),valor,escala)
+    #def crearRegistroSensor(self, valor: float, escala: str) -> RegistroSensor:
+    #    return RegistroSensor(self.getTipoSensor(),self.getZonaSensor(),self.getNumeroSensor(),valor,escala)
     
     #def leerSesnorYCrearRegistroSensor()
 
@@ -87,6 +92,30 @@ class Sensor:
     def setPatilla4Lectura(self, patilla_4_lectura:int):
         self.__patilla_4_lectura = patilla_4_lectura
 
+    def getUnidadMedida1(self) -> str:
+        return self.__unidad_medida_1
+    
+    def setUnidadMedida1(self, unidad_medida_1:str):
+        self.__unidad_medida_1 = unidad_medida_1
+
+    def getUnidadMedida2(self) -> str:
+        return self.__unidad_medida_2
+    
+    def setUnidadMedida2(self, unidad_medida_2:str):
+        self.__unidad_medida_2 = unidad_medida_2
+
+    def getUnidadMedida3(self) -> str:
+        return self.__unidad_medida_3
+    
+    def setUnidadMedida3(self, unidad_medida_3:str):
+        self.__unidad_medida_3 = unidad_medida_3    
+
+    def getUnidadMedida4(self) -> str:
+        return self.__unidad_medida_4
+    
+    def setUnidadMedida4(self, unidad_medida_4:str):
+        self.__unidad_medida_4 = unidad_medida_4
+
     def getFechaCreacion(self) -> Optional[datetime]:
         return self.__fecha_creacion
     
@@ -103,11 +132,15 @@ class Sensor:
         texto: str = str("El sensor " +  str(self.getNumeroSensor()) + " de " + str(self.getTipoSensor()) + 
                           " de la zona " + str(self.getZonaSensor()) + " es del modelo " + str(self.getModeloSensor()) +
                           " y tiene cinfigurados los siguientes parametros de comunicacion.\n" + 
-                          " \tDireccion de lectura: " + str(self.getDireccionLectura()) + " .\n" +
-                          " \tPatilla 1 de lectura: " + str(self.getPatilla1Lectura()) + " .\n" +
-                          " \tPatilla 2 de lectura: " + str(self.getPatilla2Lectura()) + " .\n" +
-                          " \tPatilla 3 de lectura: " + str(self.getPatilla3Lectura()) + " .\n" +
-                          " \tPatilla 4 de lectura: " + str(self.getPatilla4Lectura()) + " .\n" +
+                          "\tDireccion de lectura: " + str(self.getDireccionLectura()) + " .\n" +
+                          "\tPatilla 1 de lectura: " + str(self.getPatilla1Lectura()) + " .\n" +
+                          "\tPatilla 2 de lectura: " + str(self.getPatilla2Lectura()) + " .\n" +
+                          "\tPatilla 3 de lectura: " + str(self.getPatilla3Lectura()) + " .\n" +
+                          "\tPatilla 4 de lectura: " + str(self.getPatilla4Lectura()) + " .\n" +
+                          "\tUnidad de medida 1: " + str(self.getUnidadMedida1()) + " .\n" +
+                          "\tUnidad de medida 2: " + str(self.getUnidadMedida2()) + " .\n" +
+                          "\tUnidad de medida 3: " + str(self.getUnidadMedida3()) + " .\n" +
+                          "\tUnidad de medida 4: " + str(self.getUnidadMedida4()) + " .\n" +
                           "Fue creado en la fecha " + str(self.getFechaCreacion()))
         if self.getFechaEliminacion() is None:
             texto: str  = str(texto + " y sigue activo.")
@@ -126,6 +159,10 @@ class Sensor:
         dic["patilla_2_lectura"]=self.getPatilla2Lectura()
         dic["patilla_3_lectura"]=self.getPatilla3Lectura()
         dic["patilla_4_lectura"]=self.getPatilla4Lectura()
+        dic["unidad_medida_1"]=self.getUnidadMedida1()
+        dic["unidad_medida_2"]=self.getUnidadMedida2()
+        dic["unidad_medida_3"]=self.getUnidadMedida3()
+        dic["unidad_medida_4"]=self.getUnidadMedida4()
         dic["fecha_creacion"]=self.getFechaCreacion()
         dic["fecha_eliminacion"]=self.getFechaEliminacion()
         return dic
@@ -135,5 +172,7 @@ class Sensor:
                         modelo_sensor=dic["modelo_sensor"], direccion_lectura=dic["direccion_lectura"], 
                         patilla_1_lectura=dic["patilla_1_lectura"], patilla_2_lectura=dic["patilla_2_lectura"], 
                         patilla_3_lectura=dic["patilla_3_lectura"], patilla_4_lectura=dic["patilla_4_lectura"],
+                        unidad_medida_1=dic["unidad_medida_1"], unidad_medida_2=dic["unidad_medida_2"],
+                        unidad_medida_3=dic["unidad_medida_3"],unidad_medida_4=dic["unidad_medida_4"],
                         fecha_creacion=dic["fecha_creacion"], fecha_eliminacion=dic["fecha_eliminacion"])
         return sensor

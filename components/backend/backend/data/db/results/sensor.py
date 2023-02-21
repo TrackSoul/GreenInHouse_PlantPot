@@ -14,7 +14,8 @@ class Sensor(ModuloBase):
     def __init__(self, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
                  modelo_sensor:str, direccion_lectura:str, patilla_1_lectura:int, 
                  patilla_2_lectura:int, patilla_3_lectura:int, patilla_4_lectura:int,
-                 fecha_creacion:datetime ,fecha_eliminacion:datetime):
+                 unidad_medida_1:str, unidad_medida_2:str, unidad_medida_3:str, 
+                 unidad_medida_4:str, fecha_creacion:datetime ,fecha_eliminacion:datetime):
         #self.id: int
         self.tipo_sensor: TipoSensor = tipo_sensor
         self.zona_sensor: ZonaSensor = zona_sensor
@@ -25,6 +26,10 @@ class Sensor(ModuloBase):
         self.patilla_2_lectura: int = patilla_2_lectura
         self.patilla_3_lectura: int = patilla_3_lectura
         self.patilla_4_lectura: int = patilla_4_lectura
+        self.unidad_medida_1: int = unidad_medida_1
+        self.unidad_medida_2: int = unidad_medida_2
+        self.unidad_medida_3: int = unidad_medida_3
+        self.unidad_medida_4: int = unidad_medida_4
         self.fecha_creacion: datetime = fecha_creacion
         self.fecha_eliminacion: datetime = fecha_eliminacion
 
@@ -53,6 +58,10 @@ class Sensor(ModuloBase):
             Column('patilla_2_lectura', Integer, nullable=True),
             Column('patilla_3_lectura', Integer, nullable=True),
             Column('patilla_4_lectura', Integer, nullable=True),
+            Column('unidad_medida_1', Integer, nullable=True),
+            Column('unidad_medida_2', Integer, nullable=True),
+            Column('unidad_medida_3', Integer, nullable=True),
+            Column('unidad_medida_4', Integer, nullable=True),
             Column('fecha_creacion', TIMESTAMP, nullable=False ),
             Column('fecha_eliminacion', TIMESTAMP, nullable=True ),
         )
