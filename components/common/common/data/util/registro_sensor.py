@@ -36,7 +36,7 @@ class RegistroSensor:
     def getFecha(self) -> datetime:
         return self.__fecha
 
-    def toString(self) -> str:
+    def __str__(self) -> str:
         texto: str = str("El registro " + str(self.getId()) + " del sensor " +  str(self.getNumeroSensor()) + 
                           " de " + str(self.getTipoSensor()) + " de la zona " + str(self.getZonaSensor()) + 
                           " es " + str(self.getValor()) + str(self.getUnidadMedida()) +

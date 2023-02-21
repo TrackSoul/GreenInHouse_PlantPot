@@ -1,19 +1,20 @@
 from datetime import datetime
 from typing import Optional,Dict,List
 from enum import Enum
-from common.data.util import TipoSensor, ZonaSensor, RegistroSensor
+from common.data.util import RegistroSensor
+from common.data.util import TipoSensor, ZonaSensor, ModeloSensor
 
 class Sensor:
 
     def __init__(self, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
-                 modelo_sensor:str, direccion_lectura:str=None, patilla_1_lectura:int=None, 
+                 modelo_sensor:ModeloSensor, direccion_lectura:str=None, patilla_1_lectura:int=None, 
                  patilla_2_lectura:int=None, patilla_3_lectura:int=None, patilla_4_lectura:int=None,
                  unidad_medida_1:str = None, unidad_medida_2:str = None, unidad_medida_3:str = None, 
                  unidad_medida_4:str = None, fecha_creacion:datetime=None ,fecha_eliminacion:datetime=None,):
         self.__tipo_sensor: TipoSensor = tipo_sensor
         self.__zona_sensor: ZonaSensor = zona_sensor
         self.__numero_sensor: int = numero_sensor
-        self.__modelo_sensor: str = modelo_sensor
+        self.__modelo_sensor: ModeloSensor = modelo_sensor
         self.__direccion_lectura: str = direccion_lectura
         self.__patilla_1_lectura: int = patilla_1_lectura
         self.__patilla_2_lectura: int = patilla_2_lectura
@@ -25,18 +26,6 @@ class Sensor:
         self.__unidad_medida_4:str = unidad_medida_4
         self.__fecha_creacion: datetime = fecha_creacion
         self.__fecha_eliminacion: datetime = fecha_eliminacion
-        
-    # TODO
-    # Crear factoria de sensores que genere un objeto con el que leer el sensor especipfico
-    # y que conozca ya su modelo, para saber como leer dicho sensor
-    #
-
-    #def leerSensor() -> [float, str]:
-
-    #def crearRegistroSensor(self, valor: float, escala: str) -> RegistroSensor:
-    #    return RegistroSensor(self.getTipoSensor(),self.getZonaSensor(),self.getNumeroSensor(),valor,escala)
-    
-    #def leerSesnorYCrearRegistroSensor()
 
     def getTipoSensor(self) -> TipoSensor:
         return self.__tipo_sensor
@@ -56,10 +45,10 @@ class Sensor:
     def setNumeroSensor(self, numero_sensor:int):
         self.__numero_sensor = numero_sensor
 
-    def getModeloSensor(self) -> str:
+    def getModeloSensor(self) -> ModeloSensor:
         return self.__modelo_sensor
     
-    def setModeloSensor(self, modelo_sensor:str):
+    def setModeloSensor(self, modelo_sensor:ModeloSensor):
         self.__modelo_sensor = modelo_sensor
 
     def getDireccionLectura(self) -> Optional[str]:
@@ -128,7 +117,19 @@ class Sensor:
     def setFechaEliminacion(self, fecha_eliminacion:datetime):
         self.__fecha_eliminacion = fecha_eliminacion
 
-    def toString(self) -> str:
+    def __eq__(self, other)  -> bool:
+      return (other and self.getTipoSensor() == other.getTipoSensor() and self.getZonaSensor() == other.getZonaSensor() and
+          self.getNumeroSensor() == other.getNumeroSensor() and self.getModeloSensor() == other.getModeloSensor() and
+          self.getDireccionLectura() == other.getDireccionLectura() and self.getPatilla1Lectura() == other.getPatilla1Lectura() and
+          self.getPatilla2Lectura() == other.getPatilla2Lectura() and self.getPatilla3Lectura() == other.getPatilla3Lectura() and
+          self.getPatilla4Lectura() == other.getPatilla4Lectura() and self.getUnidadMedida1() == other.getUnidadMedida1() and
+          self.getUnidadMedida2() == other.getUnidadMedida2() and self.getUnidadMedida3() == other.getUnidadMedida3() and
+          self.getUnidadMedida4() == other.getUnidadMedida4())
+
+    def __ne__(self, other) -> bool:
+      return not self.__eq__(other)
+
+    def __str__(self) -> str:
         texto: str = str("El sensor " +  str(self.getNumeroSensor()) + " de " + str(self.getTipoSensor()) + 
                           " de la zona " + str(self.getZonaSensor()) + " es del modelo " + str(self.getModeloSensor()) +
                           " y tiene cinfigurados los siguientes parametros de comunicacion.\n" + 
@@ -147,6 +148,10 @@ class Sensor:
         else:
             texto: str  = str(texto + " y fue eliminado en la fecha " + str(self.getFechaEliminacion()) + " .")
         return texto
+
+    def getCode(self) -> int:
+        return (int(self.getModeloSensor())*100000000+int(self.getTipoSensor())*1000000+int(self.getZonaSensor())*10000+self.getNumeroSensor())
+
 
     def toJson(self) -> dict:
         dic={}

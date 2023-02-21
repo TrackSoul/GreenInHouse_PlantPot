@@ -54,7 +54,7 @@ class SensorPlanta:
     def setFechaAnulacion(self, fecha_anulacion:datetime):
         self.__fecha_anulacion = fecha_anulacion
 
-    def toString(self) -> str:
+    def __str__(self) -> str:
         texto: str = str("La planta " + str(self.getNombrePlanta()) + " esta asociada con el sensor " +  
                           str(self.getNumeroSensor()) + " de " + str(self.getTipoSensor()) + " de la zona " + 
                           str(self.getZonaSensor()) + " mediante el id " + str(self.getId()) + 

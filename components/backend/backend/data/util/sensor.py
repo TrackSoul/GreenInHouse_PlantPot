@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional,Dict,List,Tuple
 from enum import Enum
 from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon
-from common.data.util import TipoSensor, ZonaSensor
+from common.data.util import TipoSensor, ZonaSensor, ModeloSensor
 
 class Sensor (SensorCommon):
 
@@ -16,6 +16,7 @@ class Sensor (SensorCommon):
                  direccion_lectura, patilla_1_lectura, patilla_2_lectura, patilla_3_lectura, 
                  patilla_4_lectura, unidad_medida_1, unidad_medida_2, unidad_medida_3, unidad_medida_4,                
                  fecha_creacion, fecha_eliminacion)
+        print(self.getCode())
         #self.__electronica_sensor: 
         
     # TODO

@@ -33,7 +33,7 @@ class RegistroPlanta:
     def setFechaMarchitacion(self, fecha_marchitacion: datetime):
         self.__fecha_marchitacion = fecha_marchitacion
 
-    def toString(self) -> str:
+    def __str__(self) -> str:
         texto: str = str("La planta " + str(self.getNombrePlanta()) + " es del tipo " +  
                           str(self.getTipoPlanta()) + " y fue plantada en la fecha " + 
                           str(self.getFechaPlantacion()))

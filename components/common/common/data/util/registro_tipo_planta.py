@@ -19,7 +19,7 @@ class RegistroTipoPlanta:
     def setDescripcionPlanta(self, descripcion_planta: str):
         self.__descripcion_planta = descripcion_planta
 
-    def toString(self) -> str:
+    def __str__(self) -> str:
         texto: str = str("El tipo planta " + str(self.getTipoPlanta()) + " es: " +  
                           str(self.getDescripcionPlanta()))
         return texto

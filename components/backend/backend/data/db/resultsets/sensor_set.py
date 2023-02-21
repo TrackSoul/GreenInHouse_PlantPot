@@ -5,7 +5,7 @@ from sqlalchemy.orm.session import Session  # type: ignore
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore
 from backend.data.db.results import Sensor
 from backend.data.db.exc import ErrorSensorExiste, ErrorSensorNoExiste
-from common.data.util import TipoSensor, ZonaSensor
+from common.data.util import TipoSensor, ZonaSensor, ModeloSensor
 
 class SensorSet():
     """ 
@@ -13,7 +13,7 @@ class SensorSet():
     """
     @staticmethod
     def create(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
-               modelo_sensor:str, direccion_lectura:str, patilla_1_lectura:int, patilla_2_lectura:int, 
+               modelo_sensor: ModeloSensor, direccion_lectura:str, patilla_1_lectura:int, patilla_2_lectura:int, 
                patilla_3_lectura:int, patilla_4_lectura:int, unidad_medida_1:str, unidad_medida_2:str,
                unidad_medida_3:str, unidad_medida_4:str, fecha_creacion:datetime ,fecha_eliminacion:datetime) -> Optional[Sensor]:              
         """
@@ -27,7 +27,7 @@ class SensorSet():
             - tipo_sensor (TipoSensor): Tipo de sensor.
             - zona_sensor (ZonaSensor): Zona del sensor.
             - numero_sensor (int): Numero de sensor.
-            - modelo_sensor (str): modelo_sensor del sensor.
+            - modelo_sensor (ModeloSensor): modelo_sensor del sensor.
             - direccion_lectura (str): Direccion de lectura del sensor.
             - patilla_1_lectura (int): Patilla 1 de lectura del sensor.
             - patilla_2_lectura (int): Patilla 2 de lectura del sensor.
@@ -131,7 +131,7 @@ class SensorSet():
 
     @staticmethod
     def update(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
-               modelo_sensor:str, direccion_lectura:str, patilla_1_lectura:int, patilla_2_lectura:int, 
+               modelo_sensor:ModeloSensor, direccion_lectura:str, patilla_1_lectura:int, patilla_2_lectura:int, 
                patilla_3_lectura:int, patilla_4_lectura:int, unidad_medida_1:str, unidad_medida_2:str,
                unidad_medida_3:str, unidad_medida_4:str, fecha_creacion:datetime ,fecha_eliminacion:datetime) -> Optional[Sensor]:
         """
@@ -145,7 +145,7 @@ class SensorSet():
             - tipo_sensor (TipoSensor): Tipo de sensor.
             - zona_sensor (ZonaSensor): Zona del sensor.
             - numero_sensor (int): Numero de sensor.
-            - modelo_sensor (str): modelo_sensor del sensor.
+            - modelo_sensor (ModeloSensor): modelo_sensor del sensor.
             - direccion_lectura (str): Direccion de lectura del sensor.
             - patilla_1_lectura (int): Patilla 1 de lectura del sensor.
             - patilla_2_lectura (int): Patilla 2 de lectura del sensor.
