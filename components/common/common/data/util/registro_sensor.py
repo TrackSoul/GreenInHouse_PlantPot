@@ -1,18 +1,18 @@
 from datetime import datetime
 from typing import Optional,Dict,List
 from enum import Enum
-from common.data.util import TipoSensor, ZonaSensor
+from common.data.util import TipoSensor, ZonaSensor, TipoMedida, UnidadMedida
 
 class RegistroSensor:
 
-    def __init__(self, tipo_sensor:TipoSensor, zona_sensor:ZonaSensor ,numero_sensor:int, valor:float, unidad_medida:str, 
-                 fecha:datetime = datetime.now(), id_: int=0):
+    def __init__(self, tipo_sensor:TipoSensor, zona_sensor:ZonaSensor ,numero_sensor:int, valor:float, 
+                 unidad_medida: UnidadMedida,  fecha:datetime = datetime.now(), id_: int=0):
         self.__id:int = id_
         self.__tipo_sensor:TipoSensor = tipo_sensor
         self.__zona_sensor:ZonaSensor = zona_sensor
         self.__numero_sensor:int = numero_sensor
         self.__valor:float = valor
-        self.__unidad_medida:str = unidad_medida
+        self.__unidad_medida:UnidadMedida = unidad_medida
         self.__fecha:datetime = fecha
         
     def getId(self) -> Optional[int]:
@@ -30,7 +30,7 @@ class RegistroSensor:
     def getValor(self) -> float:
         return self.__valor
       
-    def getUnidadMedida(self) -> str:
+    def getUnidadMedida(self) -> UnidadMedida:
         return self.__unidad_medida
 
     def getFecha(self) -> datetime:

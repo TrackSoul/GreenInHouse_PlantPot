@@ -38,16 +38,16 @@ sensor_planta_1 = SensorPlantaService.createRelationFromCommon(db,sensor_humedad
 sensor_planta_2 = SensorPlantaService.createRelationFromCommon(db,sensor_temperatura_ambiente_1,planta_mi_tomatera)
 sensor_planta_3 = SensorPlantaService.createRelationFromCommon(db,sensor_temperatura_y_humedad_ambiente_1,planta_mi_tomatera)
 
-RegistroSensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.AMBIENTE,1,65.0, "%")
-RegistroSensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,65.0,"%")
-RegistroSensorService.create(db,TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,29.0,"ºC")
-RegistroSensorService.create(db,TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,29.0,"ºC")
+RegistroSensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.AMBIENTE,1,65.0, UnidadMedida.PORCENTAJE)
+RegistroSensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,65.0,UnidadMedida.PORCENTAJE)
+RegistroSensorService.create(db,TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,29.0,UnidadMedida.GRADOS_CENTIGRADOS)
+RegistroSensorService.create(db,TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,29.0,UnidadMedida.GRADOS_CENTIGRADOS)
 
-RegistroSensorService.createFromCommon(db,sensor_humedad_ambiente_1.crearRegistroSensor(75.0,"%"))
-RegistroSensorService.createFromCommon(db,sensor_temperatura_ambiente_1.crearRegistroSensor(19.0,"ºC"))
+RegistroSensorService.createFromCommon(db,sensor_humedad_ambiente_1.crearRegistroSensor(75.0,UnidadMedida.PORCENTAJE))
+RegistroSensorService.createFromCommon(db,sensor_temperatura_ambiente_1.crearRegistroSensor(19.0,UnidadMedida.GRADOS_CENTIGRADOS))
 
-RegistroSensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1.crearRegistroSensor(70.0,"%"))
-RegistroSensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1.crearRegistroSensor(22.0,"ºC"))
+RegistroSensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1.crearRegistroSensor(70.0,UnidadMedida.PORCENTAJE))
+RegistroSensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1.crearRegistroSensor(22.0,UnidadMedida.GRADOS_CENTIGRADOS))
 
         
 for reg in SensorService.listAll(db):

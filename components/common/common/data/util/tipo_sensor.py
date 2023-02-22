@@ -33,7 +33,7 @@ class TipoSensor(Enum):
     def getTiposMedida(self) -> List[TipoMedida]:
         return self.__tipos_medida
 
-    def getTipoMedida(self, val:int) -> TipoMedida:
+    def getTipoMedida(self, val:int=0) -> TipoMedida:
         #try:
         if val < len(self.__tipos_medida):
             return self.__tipos_medida[val]

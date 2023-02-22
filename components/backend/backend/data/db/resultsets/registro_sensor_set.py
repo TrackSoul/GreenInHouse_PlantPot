@@ -5,7 +5,7 @@ from sqlalchemy.orm.session import Session  # type: ignore
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore
 from backend.data.db.results import RegistroSensor
 from backend.data.db.exc import ErrorSensorExiste, ErrorSensorNoExiste, ErrorRegistroSensorExiste, ErrorRegistroSensorNoExiste
-from common.data.util import TipoSensor, ZonaSensor
+from common.data.util import TipoSensor, ZonaSensor, TipoMedida, UnidadMedida
 
 class RegistroSensorSet():
     """ 
@@ -13,7 +13,7 @@ class RegistroSensorSet():
     """
     @staticmethod
     def create(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
-               valor:float, escala:str, fecha: datetime ) -> RegistroSensor:
+               valor:float, unidad_medida: UnidadMedida, fecha: datetime ) -> RegistroSensor:
         """
         Creacion de un nuevo registro de un sensor
 
@@ -25,7 +25,7 @@ class RegistroSensorSet():
             - tipo_sensor (str): Tipo de sensor.
             - numero_sensor (str): Numero de sensor.
             - valor (float): Valor de lectura del sensor.
-            - escala (str): Esala/unidad de medida asociada al valor
+            - unidad_medida (UnidadMedida): Esala/unidad de medida asociada al valor
             - fecha (datetime): Fecha de creacion del registro
 
         Raises:
@@ -43,11 +43,11 @@ class RegistroSensorSet():
             raise ValueError('Necesario especificar el numero de sensor.')
         if not valor:
             raise ValueError('Necesario especificar el valor del sensor.')
-        if not escala:
-            raise ValueError('Necesario especificar la escala del sensor.')
+        if not unidad_medida:
+            raise ValueError('Necesario especificar la unidad_medida del sensor.')
         nuevo_registro_sensor: RegistroSensor = None
         try:
-            nuevo_registro_sensor = RegistroSensor(tipo_sensor, zona_sensor, numero_sensor, valor, escala, fecha)
+            nuevo_registro_sensor = RegistroSensor(tipo_sensor, zona_sensor, numero_sensor, valor, unidad_medida, fecha)
             session.add(nuevo_registro_sensor)
             session.commit()
         except IntegrityError as ex:
@@ -99,7 +99,7 @@ class RegistroSensorSet():
 
     @staticmethod
     def update(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
-               valor:float, escala:str, fecha: datetime, id_: str) -> RegistroSensor:
+               valor:float, unidad_medida: UnidadMedida, fecha: datetime, id_: str) -> RegistroSensor:
         """
         Creacion de un nuevo registro de un sensor
 
@@ -111,7 +111,7 @@ class RegistroSensorSet():
             - tipo_sensor (str): Tipo de sensor.
             - numero_sensor (str): Numero de sensor.
             - valor (float): Valor de lectura del sensor.
-            - escala (str): Esala/unidad de medida asociada al valor
+            - unidad_medida (UnidadMedida): Esala/unidad de medida asociada al valor
             - fecha (datetime): Fecha de creacion del registro
             - id_ (int): Id del registro
 
@@ -130,8 +130,8 @@ class RegistroSensorSet():
             raise ValueError('Necesario especificar el numero del sensor.')
         if not valor:
             raise ValueError('Necesario especificar el valor del registro del sensor.')
-        if not escala:
-            raise ValueError('Necesario especificar la escala del registro del sensor.')
+        if not unidad_medida:
+            raise ValueError('Necesario especificar la unidad_medida del registro del sensor.')
         if not fecha:
             raise ValueError('Necesario especificar la fecha de creacion del registro del sensor')
         if not id_:
@@ -148,8 +148,8 @@ class RegistroSensorSet():
                 query.update({'numero_sensor' : numero_sensor})
             if registro_sensor.valor != valor:
                 query.update({'valor' : valor})
-            if registro_sensor.escala != escala:
-                query.update({'escala' : escala})
+            if registro_sensor.unidad_medida != unidad_medida:
+                query.update({'unidad_medida' : unidad_medida})
             if registro_sensor.fecha != fecha:
                 query.update({'fecha' : fecha})
             session.commit()

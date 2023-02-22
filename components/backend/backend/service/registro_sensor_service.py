@@ -5,13 +5,13 @@ from backend.data.db.esquema import Esquema
 from backend.data.db.results import RegistroSensor
 from backend.data.db.resultsets import RegistroSensorSet
 from common.data.util import RegistroSensor as CommonRegistroSensor
-from common.data.util import TipoSensor, ZonaSensor
+from common.data.util import TipoSensor, ZonaSensor, TipoMedida, UnidadMedida
 
 class RegistroSensorService():
 
     @staticmethod
     def create(esquema: Esquema, tipo_sensor: TipoSensor, zona_sensor: ZonaSensor, 
-                        numero_sensor:int, valor:float, unidad_medida:str, fecha:datetime = datetime.now()) -> CommonRegistroSensor:
+                        numero_sensor:int, valor:float, unidad_medida: UnidadMedida, fecha:datetime = datetime.now()) -> CommonRegistroSensor:
         session: Session = esquema.new_session()
         out: CommonRegistroSensor = None
         try:
@@ -65,7 +65,7 @@ class RegistroSensorService():
 
     @staticmethod
     def update(esquema: Esquema, tipo_sensor: TipoSensor, zona_sensor: ZonaSensor, numero_sensor:int, valor:float, 
-               unidad_medida: str, fecha: datetime, id_: int) -> CommonRegistroSensor:
+               unidad_medida: UnidadMedida, fecha: datetime, id_: int) -> CommonRegistroSensor:
         session: Session = esquema.new_session()
         out: CommonRegistroSensor = None
         try:

@@ -1,9 +1,8 @@
 """ 
 Enumeracion de tipos de sensores.
 """
-#from typing import List
+
 from enum import Enum
-#from common.data.util.unidad_medida import UnidadMedida
 
 class TipoMedida(Enum):
     """ 
@@ -28,6 +27,11 @@ class TipoMedida(Enum):
         return self.__nombre
 
 '''
+
+from typing import List
+from enum import Enum
+from common.data.util.unidad_medida import UnidadMedida
+
 class TipoMedida(Enum):
     """ 
     Enumeracion con los tipos de sensores
