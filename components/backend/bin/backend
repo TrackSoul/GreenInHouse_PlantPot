@@ -50,6 +50,8 @@ if __name__ == '__main__':
     root_logger.addHandler(default_handler)
     
 
+
+
     '''
     app.run(
         host=cfg.get_service_host(),

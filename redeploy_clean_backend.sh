@@ -1,18 +1,18 @@
 #!/bin/bash
 
 original_path=$(pwd)
-path_intall=~/GrenInHouse
+path_install=~/GreenInHouse
 
 rm -f /tmp/GreenInHouseBackend.sqlite3.db
 
-yes | cp -arf "$original_path"/. "$path_intall"
+yes | cp -arf "$original_path"/. "$s"
 
-source "$path_intall"/venv_backend/.venv/bin/activate
+source "$s"/venv_backend/.venv/bin/activate
 
-cd "$path_intall"/components/common
+cd "$s"/components/common
 ./install.sh
 
-cd "$path_intall"/components/backend
+cd "$s"/components/backend
 ./install.sh
 ./initialize.sh
 ./start.sh

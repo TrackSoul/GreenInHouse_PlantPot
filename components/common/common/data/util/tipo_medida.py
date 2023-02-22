@@ -4,6 +4,7 @@ Enumeracion de tipos de sensores.
 
 from enum import Enum
 
+
 class TipoMedida(Enum):
     """ 
     Enumeracion con los tipos de sensores

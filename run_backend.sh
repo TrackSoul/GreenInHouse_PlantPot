@@ -1,7 +1,7 @@
 #!/bin/bash
 
-path_intall=~/GrenInHouse
-source "$path_intall"/venv_backend/.venv/bin/activate
+path_install=~/GreenInHouse
+source "$path_install"/venv_backend/.venv/bin/activate
 
-cd "$path_intall"/components/backend
+cd "$path_install"/components/backend
 ./start.sh
