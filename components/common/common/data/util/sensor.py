@@ -2,15 +2,16 @@ from datetime import datetime
 from typing import Optional,Dict,List
 from enum import Enum
 from common.data.util import RegistroSensor
-from common.data.util import TipoSensor, ZonaSensor, ModeloSensor
+from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 
 class Sensor:
 
     def __init__(self, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
                  modelo_sensor:ModeloSensor, direccion_lectura:str=None, patilla_1_lectura:int=None, 
                  patilla_2_lectura:int=None, patilla_3_lectura:int=None, patilla_4_lectura:int=None,
-                 unidad_medida_1:str = None, unidad_medida_2:str = None, unidad_medida_3:str = None, 
-                 unidad_medida_4:str = None, fecha_creacion:datetime=None ,fecha_eliminacion:datetime=None,):
+                 unidad_medida_1:UnidadMedida = UnidadMedida.SIN_UNIDAD, unidad_medida_2:UnidadMedida = UnidadMedida.SIN_UNIDAD, 
+                 unidad_medida_3:UnidadMedida = UnidadMedida.SIN_UNIDAD, unidad_medida_4:UnidadMedida = UnidadMedida.SIN_UNIDAD, 
+                 fecha_creacion:datetime=None ,fecha_eliminacion:datetime=None,):
         self.__tipo_sensor: TipoSensor = tipo_sensor
         self.__zona_sensor: ZonaSensor = zona_sensor
         self.__numero_sensor: int = numero_sensor
@@ -20,10 +21,10 @@ class Sensor:
         self.__patilla_2_lectura: int = patilla_2_lectura
         self.__patilla_3_lectura: int = patilla_3_lectura
         self.__patilla_4_lectura: int = patilla_4_lectura
-        self.__unidad_medida_1:str = unidad_medida_1
-        self.__unidad_medida_2:str = unidad_medida_2
-        self.__unidad_medida_3:str = unidad_medida_3
-        self.__unidad_medida_4:str = unidad_medida_4
+        self.__unidad_medida_1:UnidadMedida = unidad_medida_1
+        self.__unidad_medida_2:UnidadMedida = unidad_medida_2
+        self.__unidad_medida_3:UnidadMedida = unidad_medida_3
+        self.__unidad_medida_4:UnidadMedida = unidad_medida_4
         self.__fecha_creacion: datetime = fecha_creacion
         self.__fecha_eliminacion: datetime = fecha_eliminacion
 
@@ -81,28 +82,28 @@ class Sensor:
     def setPatilla4Lectura(self, patilla_4_lectura:int):
         self.__patilla_4_lectura = patilla_4_lectura
 
-    def getUnidadMedida1(self) -> str:
+    def getUnidadMedida1(self) -> UnidadMedida:
         return self.__unidad_medida_1
     
-    def setUnidadMedida1(self, unidad_medida_1:str):
+    def setUnidadMedida1(self, unidad_medida_1:UnidadMedida):
         self.__unidad_medida_1 = unidad_medida_1
 
-    def getUnidadMedida2(self) -> str:
+    def getUnidadMedida2(self) -> UnidadMedida:
         return self.__unidad_medida_2
     
-    def setUnidadMedida2(self, unidad_medida_2:str):
+    def setUnidadMedida2(self, unidad_medida_2:UnidadMedida):
         self.__unidad_medida_2 = unidad_medida_2
 
-    def getUnidadMedida3(self) -> str:
+    def getUnidadMedida3(self) -> UnidadMedida:
         return self.__unidad_medida_3
     
-    def setUnidadMedida3(self, unidad_medida_3:str):
+    def setUnidadMedida3(self, unidad_medida_3:UnidadMedida):
         self.__unidad_medida_3 = unidad_medida_3    
 
-    def getUnidadMedida4(self) -> str:
+    def getUnidadMedida4(self) -> UnidadMedida:
         return self.__unidad_medida_4
     
-    def setUnidadMedida4(self, unidad_medida_4:str):
+    def setUnidadMedida4(self, unidad_medida_4:UnidadMedida):
         self.__unidad_medida_4 = unidad_medida_4
 
     def getFechaCreacion(self) -> Optional[datetime]:
@@ -132,7 +133,7 @@ class Sensor:
     def __str__(self) -> str:
         texto: str = str("El sensor " +  str(self.getNumeroSensor()) + " de " + str(self.getTipoSensor()) + 
                           " de la zona " + str(self.getZonaSensor()) + " es del modelo " + str(self.getModeloSensor()) +
-                          " y tiene cinfigurados los siguientes parametros de comunicacion.\n" + 
+                          " y tiene configurados los siguientes parametros de comunicacion.\n" + 
                           "\tDireccion de lectura: " + str(self.getDireccionLectura()) + " .\n" +
                           "\tPatilla 1 de lectura: " + str(self.getPatilla1Lectura()) + " .\n" +
                           "\tPatilla 2 de lectura: " + str(self.getPatilla2Lectura()) + " .\n" +

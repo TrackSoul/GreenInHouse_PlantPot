@@ -6,16 +6,17 @@ from backend.data.db.results import Sensor
 from backend.data.db.resultsets import SensorSet
 from backend.data.util import Sensor as SensorBackend
 from common.data.util import Sensor as SensorCommon
-from common.data.util import TipoSensor, ZonaSensor, ModeloSensor
+from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 
 class SensorService():
     
     @staticmethod
     def create(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
                                modelo_sensor:ModeloSensor, direccion_lectura:str=None, patilla_1_lectura:int=None, patilla_2_lectura:int=None, 
-                               patilla_3_lectura:int=None, patilla_4_lectura:int=None, unidad_medida_1:str = None,
-                               unidad_medida_2:str = None, unidad_medida_3:str = None, unidad_medida_4:str = None,
-                               fecha_creacion: datetime = datetime.now() ,fecha_eliminacion: datetime = None) -> SensorBackend:
+                               patilla_3_lectura:int=None, patilla_4_lectura:int=None, unidad_medida_1:UnidadMedida = UnidadMedida.SIN_UNIDAD,
+                               unidad_medida_2:UnidadMedida = UnidadMedida.SIN_UNIDAD, unidad_medida_3:UnidadMedida = UnidadMedida.SIN_UNIDAD,
+                               unidad_medida_4:UnidadMedida = UnidadMedida.SIN_UNIDAD, fecha_creacion: datetime = datetime.now() ,
+                               fecha_eliminacion: datetime = None) -> SensorBackend:
         session: Session = esquema.new_session()
         out: SensorBackend = None
         try:
@@ -80,8 +81,9 @@ class SensorService():
     @staticmethod
     def update(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
                 modelo_sensor:ModeloSensor, direccion_lectura:str, patilla_1_lectura:int, patilla_2_lectura:int, 
-                patilla_3_lectura:int, patilla_4_lectura:int, unidad_medida_1:str, unidad_medida_2:str,
-                 unidad_medida_3:str, unidad_medida_4:str, fecha_creacion: datetime ,fecha_eliminacion: datetime) -> SensorBackend:
+                patilla_3_lectura:int, patilla_4_lectura:int, unidad_medida_1:UnidadMedida, unidad_medida_2:UnidadMedida,
+                unidad_medida_3:UnidadMedida, unidad_medida_4:UnidadMedida, fecha_creacion: datetime,
+                fecha_eliminacion: datetime) -> SensorBackend:
         session: Session = esquema.new_session()
         out: SensorBackend = None
         try:

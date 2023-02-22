@@ -7,7 +7,7 @@ from backend.data.config import BackendConfiguration
 from backend.data.db import Esquema
 from backend.data.util import Sensor as SensorBackend
 from backend.service import SensorService, RegistroSensorService, RegistroPlantaService, RegistroTipoPlantaService, SensorPlantaService
-from common.data.util import TipoSensor, ZonaSensor, ModeloSensor
+from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 from common.data.util import RegistroPlanta as RegistroPlantaCommon, RegistroTipoPlanta as RegistroTipoPlantaCommon
 from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon, SensorPlanta as SensorPlantaCommon
 
@@ -20,8 +20,8 @@ tipo_planta_ninguno = RegistroTipoPlantaService.create(db,"Ninguno","Sin descrip
 planta_vacia = RegistroPlantaService.create(db,"Sin planta","Ninguno",None,None)
 
 #datos de pruebas
-sensor_humedad_ambiente_1 = SensorService.create(db,"HUMEDAD","AMBIENTE",1,"DHT11",patilla_1_lectura=19, unidad_medida_1="ºC")
-sensor_temperatura_ambiente_1 = SensorCommon(TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,"DHT11",patilla_1_lectura=19, unidad_medida_1="%")
+sensor_humedad_ambiente_1 = SensorService.create(db,"HUMEDAD","AMBIENTE",1,"DHT11",patilla_1_lectura=19, unidad_medida_1=UnidadMedida.GRADOS_CENTIGRADOS)
+sensor_temperatura_ambiente_1 = SensorCommon(TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,"DHT11",patilla_1_lectura=19, unidad_medida_1=UnidadMedida.PORCENTAJE)
 sensor_temperatura_ambiente_1 = SensorService.createFromCommon(db,sensor_temperatura_ambiente_1)
 
 sensor_temperatura_y_humedad_ambiente_1 = SensorCommon(TipoSensor.TEMPERATURA_Y_HUMEDAD,ZonaSensor.AMBIENTE,1,"DHT11",patilla_1_lectura=21)

@@ -5,7 +5,7 @@ from sqlalchemy.orm.session import Session  # type: ignore
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore
 from backend.data.db.results import Sensor
 from backend.data.db.exc import ErrorSensorExiste, ErrorSensorNoExiste
-from common.data.util import TipoSensor, ZonaSensor, ModeloSensor
+from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 
 class SensorSet():
     """ 
@@ -13,9 +13,10 @@ class SensorSet():
     """
     @staticmethod
     def create(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
-               modelo_sensor: ModeloSensor, direccion_lectura:str, patilla_1_lectura:int, patilla_2_lectura:int, 
-               patilla_3_lectura:int, patilla_4_lectura:int, unidad_medida_1:str, unidad_medida_2:str,
-               unidad_medida_3:str, unidad_medida_4:str, fecha_creacion:datetime ,fecha_eliminacion:datetime) -> Optional[Sensor]:              
+               modelo_sensor: ModeloSensor, direccion_lectura:str, patilla_1_lectura:int, 
+               patilla_2_lectura:int,patilla_3_lectura:int, patilla_4_lectura:int,  
+               unidad_medida_1:UnidadMedida,unidad_medida_2:UnidadMedida, unidad_medida_3:UnidadMedida, 
+               unidad_medida_4:UnidadMedida, fecha_creacion:datetime ,fecha_eliminacion:datetime) -> Optional[Sensor]:              
         """
         Creacion de un nuevo sensor
 
@@ -33,10 +34,10 @@ class SensorSet():
             - patilla_2_lectura (int): Patilla 2 de lectura del sensor.
             - patilla_3_lectura (int): Patilla 3 de lectura del sensor.
             - patilla_4_lectura (int): Patilla 4 de lectura del sensor.
-            - unidad_medida_1 (int): Unidad de medida de lectura 1 del sensor.
-            - unidad_medida_2 (int): Unidad de medida de lectura 2 del sensor.
-            - unidad_medida_3 (int): Unidad de medida de lectura 3 del sensor.
-            - unidad_medida_4 (int): Unidad de medida de lectura 4 del sensor.
+            - unidad_medida_1 (UnidadMedida): Unidad de medida de lectura 1 del sensor.
+            - unidad_medida_2 (UnidadMedida): Unidad de medida de lectura 2 del sensor.
+            - unidad_medida_3 (UnidadMedida): Unidad de medida de lectura 3 del sensor.
+            - unidad_medida_4 (UnidadMedida): Unidad de medida de lectura 4 del sensor.
             - fecha_creacion (datetime): Fecha de creacion del sensor.
             - fecha_eliminacion (datetime): Fecha de eliminacion del sensor.
 
@@ -132,8 +133,9 @@ class SensorSet():
     @staticmethod
     def update(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
                modelo_sensor:ModeloSensor, direccion_lectura:str, patilla_1_lectura:int, patilla_2_lectura:int, 
-               patilla_3_lectura:int, patilla_4_lectura:int, unidad_medida_1:str, unidad_medida_2:str,
-               unidad_medida_3:str, unidad_medida_4:str, fecha_creacion:datetime ,fecha_eliminacion:datetime) -> Optional[Sensor]:
+               patilla_3_lectura:int, patilla_4_lectura:int, unidad_medida_1:UnidadMedida, 
+               unidad_medida_2:UnidadMedida, unidad_medida_3:UnidadMedida, unidad_medida_4:UnidadMedida, 
+               fecha_creacion:datetime ,fecha_eliminacion:datetime) -> Optional[Sensor]:
         """
         Creacion de un nuevo registro de un sensor
 
@@ -151,10 +153,10 @@ class SensorSet():
             - patilla_2_lectura (int): Patilla 2 de lectura del sensor.
             - patilla_3_lectura (int): Patilla 3 de lectura del sensor.
             - patilla_4_lectura (int): Patilla 4 de lectura del sensor.
-            - unidad_medida_1 (int): Unidad de medida de lectura 1 del sensor.
-            - unidad_medida_2 (int): Unidad de medida de lectura 2 del sensor.
-            - unidad_medida_3 (int): Unidad de medida de lectura 3 del sensor.
-            - unidad_medida_4 (int): Unidad de medida de lectura 4 del sensor.
+            - unidad_medida_1 (UnidadMedida): Unidad de medida de lectura 1 del sensor.
+            - unidad_medida_2 (UnidadMedida): Unidad de medida de lectura 2 del sensor.
+            - unidad_medida_3 (UnidadMedida): Unidad de medida de lectura 3 del sensor.
+            - unidad_medida_4 (UnidadMedida): Unidad de medida de lectura 4 del sensor.
             - fecha_creacion (datetime): Fecha de creacion del sensor.
             - fecha_eliminacion (datetime): Fecha de eliminacion del sensor.
 

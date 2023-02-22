@@ -9,6 +9,7 @@ class ModeloSensor(Enum):
     """ 
     Enumeracion con las zonas de los sensores
     """
+    SIN_MODELO = 0, "Sin modelo", TipoSensor.SIN_TIPO, ZonaSensor.SIN_ZONA
     DHT11 = 1, "DHT11", TipoSensor.TEMPERATURA_Y_HUMEDAD, ZonaSensor.AMBIENTE
     LDR = 2, "LDR", TipoSensor.LUMINOSIDAD, ZonaSensor.AMBIENTE
     LM35 = 3, "LM35", TipoSensor.TEMPERATURA, ZonaSensor.AMBIENTE

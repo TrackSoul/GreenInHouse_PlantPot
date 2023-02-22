@@ -8,6 +8,7 @@ class ZonaSensor(Enum):
     """ 
     Enumeracion con las zonas de los sensores
     """
+    SIN_ZONA = 0, "Sin zona"
     AMBIENTE = 1, "Ambiente"
     MACETA = 2, "Maceta"
     SUELO = 3, "Suelo"
