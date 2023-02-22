@@ -1,10 +1,43 @@
 """ 
 Enumeracion de tipos de sensores.
 """
-
+from typing import List
 from enum import Enum
 from common.data.util import UnidadMedida
 
+class TipoSensor(Enum):
+    """ 
+    Enumeracion con los tipos de sensores
+    """
+    HUMEDAD = 1, "Humedad", [UnidadMedida.PORCENTAJE]
+    TEMPERATURA = 2, "Temperatura", [UnidadMedida.GRADOS_CENTIGRADOS, UnidadMedida.GRADOS_FARENHEIT]
+    TEMPERATURA_Y_HUMEDAD = 3, "Temperatura y Humedad", [UnidadMedida.GRADOS_CENTIGRADOS, UnidadMedida.GRADOS_FARENHEIT , UnidadMedida.PORCENTAJE]
+    LUMINOSIDAD = 4, "Luminosidad", [UnidadMedida.LUMENES]
+    OTRO = 99, "Otro", [UnidadMedida.OTRA]
+
+    def __new__(cls, value, nombre, 
+                unidades_medida: List[UnidadMedida]):
+        member = object.__new__(cls)
+        member.__value = value
+        member.__nombre = nombre
+        member.__unidades_medida: List[UnidadMedida] = unidades_medida
+        return member
+
+    def __int__(self):
+        return self.__value
+
+    def __str__(self):
+        return self.__nombre
+
+    def getUnidadMedida(self, val:int) -> UnidadMedida:
+        #try:
+        if val < len(self.unidades_medida):
+            return self.unidades_medida[val]
+        #except IndexError as ex:
+        else:
+            return UnidadMedida.SIN_UNIDAD
+
+'''
 class TipoSensor(Enum):
     """ 
     Enumeracion con los tipos de sensores
@@ -46,3 +79,4 @@ class TipoSensor(Enum):
 
     def getUnidadMedida4(self) -> UnidadMedida:
         return self.__unidad_medida_4
+'''
