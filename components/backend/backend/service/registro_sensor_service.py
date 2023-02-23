@@ -54,6 +54,20 @@ class RegistroSensorService():
         return out
 
     @staticmethod
+    def listAllToJson(esquema: Esquema) -> List[Dict]:
+        out: List[Dict] = []
+        session: Session = esquema.new_session()
+        registros_sensor: List[RegistroSensor] = RegistroSensorSet.listAll(session)
+        
+        for registro_sensor in registros_sensor:
+            out.append(CommonRegistroSensor(registro_sensor.tipo_sensor,registro_sensor.zona_sensor,
+                                      registro_sensor.numero_sensor,registro_sensor.valor, 
+                                      registro_sensor.unidad_medida, registro_sensor.fecha, 
+                                      registro_sensor.id_))
+        esquema.remove_session()
+        return out
+
+    @staticmethod
     def get(esquema: Esquema, id_ : int) -> CommonRegistroSensor:
         session : Session = esquema.new_session()
         registro_sensor : RegistroSensor = RegistroSensorSet.get(session, id_)
