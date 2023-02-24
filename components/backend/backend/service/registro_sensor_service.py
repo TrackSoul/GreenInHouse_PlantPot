@@ -60,10 +60,7 @@ class RegistroSensorService():
         registros_sensor: List[RegistroSensor] = RegistroSensorSet.listAll(session)
         
         for registro_sensor in registros_sensor:
-            out.append(CommonRegistroSensor(registro_sensor.tipo_sensor,registro_sensor.zona_sensor,
-                                      registro_sensor.numero_sensor,registro_sensor.valor, 
-                                      registro_sensor.unidad_medida, registro_sensor.fecha, 
-                                      registro_sensor.id_))
+            out.append(registros_sensor.toJson())
         esquema.remove_session()
         return out
 

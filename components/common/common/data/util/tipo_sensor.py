@@ -41,6 +41,7 @@ class TipoSensor(Enum):
         else:
             return TipoMedida.SIN_TIPO
 
+
 '''
 class TipoSensor(Enum):
     """ 

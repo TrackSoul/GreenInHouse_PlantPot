@@ -67,6 +67,7 @@ class RegistroSensor(ModuloBase):
         dict["fecha"]=self.getFecha()#.isoformat()
         return dict
 
+    @staticmethod
     def fromJson(dict: dict):
         sensor = RegistroSensor(dict["id_"],dict["tipo_sensor"],dict["zona_sensor"],dict["numero_sensor"],
                                 dict["valor"],dict["unidad_medida"], dict["fecha"])

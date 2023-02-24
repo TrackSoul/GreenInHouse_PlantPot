@@ -4,7 +4,7 @@ from enum import Enum
 from common.data.util import RegistroSensor
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 
-'''
+
 class Sensor:
 
     def __init__(self, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
@@ -69,7 +69,7 @@ class Sensor:
         else:
             return None
     
-    def setPatillaLectura(self, unidad_medida: UnidadMedida, val: int = 0):
+    def setUnidadMedida(self, unidad_medida: UnidadMedida, val: int = 0):
         if val < len(self.__unidades_medida):
             self.__unidades_medida[val] = unidad_medida
 
@@ -329,3 +329,4 @@ class Sensor:
                         unidad_medida_3=dic["unidad_medida_3"],unidad_medida_4=dic["unidad_medida_4"],
                         fecha_creacion=dic["fecha_creacion"], fecha_eliminacion=dic["fecha_eliminacion"])
         return sensor
+'''

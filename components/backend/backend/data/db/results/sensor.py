@@ -12,24 +12,24 @@ class Sensor(ModuloBase):
     """
 
     def __init__(self, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
-                 modelo_sensor:ModeloSensor, direccion_lectura:str, patilla_1_lectura:int, 
-                 patilla_2_lectura:int, patilla_3_lectura:int, patilla_4_lectura:int,
-                 unidad_medida_1:UnidadMedida, unidad_medida_2:UnidadMedida, 
-                 unidad_medida_3:UnidadMedida, unidad_medida_4:UnidadMedida, 
+                 modelo_sensor:ModeloSensor, direccion_lectura:str, patilla_0_lectura:int, 
+                 patilla_1_lectura:int, patilla_2_lectura:int, patilla_3_lectura:int,
+                 unidad_medida_0:UnidadMedida, unidad_medida_1:UnidadMedida, 
+                 unidad_medida_2:UnidadMedida, unidad_medida_3:UnidadMedida, 
                  fecha_creacion:datetime ,fecha_eliminacion:datetime):
         self.tipo_sensor: TipoSensor = tipo_sensor
         self.zona_sensor: ZonaSensor = zona_sensor
         self.numero_sensor: int = numero_sensor
         self.modelo_sensor: ModeloSensor = modelo_sensor
         self.direccion_lectura: str = direccion_lectura
+        self.patilla_0_lectura: int = patilla_0_lectura
         self.patilla_1_lectura: int = patilla_1_lectura
         self.patilla_2_lectura: int = patilla_2_lectura
         self.patilla_3_lectura: int = patilla_3_lectura
-        self.patilla_4_lectura: int = patilla_4_lectura
+        self.unidad_medida_0: UnidadMedida = unidad_medida_0
         self.unidad_medida_1: UnidadMedida = unidad_medida_1
         self.unidad_medida_2: UnidadMedida = unidad_medida_2
         self.unidad_medida_3: UnidadMedida = unidad_medida_3
-        self.unidad_medida_4: UnidadMedida = unidad_medida_4
         self.fecha_creacion: datetime = fecha_creacion
         self.fecha_eliminacion: datetime = fecha_eliminacion
 
@@ -52,14 +52,14 @@ class Sensor(ModuloBase):
             Column('numero_sensor', Integer, primary_key=True),
             Column('modelo_sensor', Enum(ModeloSensor), nullable=False),
             Column('direccion_lectura', String(100), nullable=True),
+            Column('patilla_0_lectura', Integer, nullable=True),
             Column('patilla_1_lectura', Integer, nullable=True),
             Column('patilla_2_lectura', Integer, nullable=True),
             Column('patilla_3_lectura', Integer, nullable=True),
-            Column('patilla_4_lectura', Integer, nullable=True),
+            Column('unidad_medida_0', Enum(UnidadMedida), nullable=True),
             Column('unidad_medida_1', Enum(UnidadMedida), nullable=True),
             Column('unidad_medida_2', Enum(UnidadMedida), nullable=True),
             Column('unidad_medida_3', Enum(UnidadMedida), nullable=True),
-            Column('unidad_medida_4', Enum(UnidadMedida), nullable=True),
             Column('fecha_creacion', TIMESTAMP, nullable=False ),
             Column('fecha_eliminacion', TIMESTAMP, nullable=True ),
         )
