@@ -3,6 +3,7 @@ from typing import Optional,Dict,List,Tuple
 from enum import Enum
 from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
+#from backend.data.electronic import SensorElectronica
 
 class Sensor (SensorCommon):
 
@@ -18,7 +19,7 @@ class Sensor (SensorCommon):
                  patilla_3_lectura, unidad_medida_0, unidad_medida_1, unidad_medida_2, unidad_medida_3,                
                  fecha_creacion, fecha_eliminacion)
         #print(self.getCode())
-        #self.__electronica_sensor: 
+        #self.__sensor_electronica: SensorElectronica = sensor_electronica
         
     # TODO
     # Crear factoria de sensores que genere un objeto con el que leer el sensor especipfico
@@ -27,14 +28,7 @@ class Sensor (SensorCommon):
 
     #def leerSensor() -> List[List[float, str]]:
 
-    def crearRegistroSensor(self, valor: float, unidad_medida: UnidadMedida) -> RegistroSensorCommon:
-        return RegistroSensorCommon(self.getTipoSensor(),self.getZonaSensor(),self.getNumeroSensor(),valor,unidad_medida)
 
-    def crearRegistrosSensor(self, lista_valor_unidad_medida: List[Tuple[float, UnidadMedida]]) -> List[RegistroSensorCommon]:
-        lista_registros_sensor  = []
-        for registro_sensor in lista_registros_sensor:
-            lista_registros_sensor.append(self.crearRegistroSensor(registro_sensor[0],registro_sensor[1]))
-        return lista_registros_sensor
 
     #def leerSesnorYCrearRegistroSensor()
      

@@ -5,7 +5,7 @@ path_install=~/GreenInHouse
 
 rm -f /tmp/GreenInHouseBackend.sqlite3.db
 
-yes | cp -arf "$original_path"/. "$s"
+yes | cp -arf "$original_path"/. "$path_install"
 
 source "$path_install"/venv_backend/.venv/bin/activate
 

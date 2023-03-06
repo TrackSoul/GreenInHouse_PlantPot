@@ -16,15 +16,15 @@ class SensorService():
                                patilla_2_lectura:int=None, patilla_3_lectura:int=None, unidad_medida_0:UnidadMedida = UnidadMedida.SIN_UNIDAD,
                                unidad_medida_1:UnidadMedida = UnidadMedida.SIN_UNIDAD, unidad_medida_2:UnidadMedida = UnidadMedida.SIN_UNIDAD,
                                unidad_medida_3:UnidadMedida = UnidadMedida.SIN_UNIDAD, fecha_creacion: datetime = datetime.now() ,
-                               fecha_eliminacion: datetime = None) -> SensorBackend:
+                               fecha_eliminacion: datetime = None) -> SensorCommon:
         session: Session = esquema.new_session()
-        out: SensorBackend = None
+        out: SensorCommon = None
         try:
             nuevo_sensor: Sensor = SensorSet.create(session, tipo_sensor, zona_sensor, numero_sensor, modelo_sensor, 
                                                   direccion_lectura, patilla_0_lectura, patilla_1_lectura, 
                                                   patilla_2_lectura, patilla_3_lectura, unidad_medida_0, unidad_medida_1, 
                                                   unidad_medida_2, unidad_medida_3, fecha_creacion, fecha_eliminacion)
-            out= SensorBackend(nuevo_sensor.tipo_sensor,nuevo_sensor.zona_sensor,nuevo_sensor.numero_sensor,nuevo_sensor.modelo_sensor, 
+            out= SensorCommon(nuevo_sensor.tipo_sensor,nuevo_sensor.zona_sensor,nuevo_sensor.numero_sensor,nuevo_sensor.modelo_sensor, 
                               nuevo_sensor.direccion_lectura, nuevo_sensor.patilla_0_lectura, nuevo_sensor.patilla_1_lectura,
                               nuevo_sensor.patilla_2_lectura, nuevo_sensor.patilla_3_lectura, nuevo_sensor.unidad_medida_0,
                               nuevo_sensor.unidad_medida_1, nuevo_sensor.unidad_medida_2, nuevo_sensor.unidad_medida_3,
@@ -36,7 +36,7 @@ class SensorService():
         return out
     
     @staticmethod
-    def createFromCommon(esquema: Esquema, sensor: SensorCommon) -> SensorBackend:
+    def createFromCommon(esquema: Esquema, sensor: SensorCommon) -> SensorCommon:
         return SensorService.create(esquema, sensor.getTipoSensor(), sensor.getZonaSensor(),sensor.getNumeroSensor(), 
                                            sensor.getModeloSensor(), sensor.getDireccionLectura(), sensor.getPatillaLectura(0), 
                                            sensor.getPatillaLectura(1), sensor.getPatillaLectura(2), sensor.getPatillaLectura(3), 
@@ -53,12 +53,12 @@ class SensorService():
         return sensor_existe
 
     @staticmethod
-    def listAll(esquema: Esquema) -> List[SensorBackend]:
-        out: List[SensorBackend] = []
+    def listAll(esquema: Esquema) -> List[SensorCommon]:
+        out: List[SensorCommon] = []
         session: Session = esquema.new_session()
         registros_sensor: List[Sensor] = SensorSet.listAll(session)
         for sensor in registros_sensor:
-            out.append(SensorBackend(sensor.tipo_sensor,sensor.zona_sensor,sensor.numero_sensor,sensor.modelo_sensor, 
+            out.append(SensorCommon(sensor.tipo_sensor,sensor.zona_sensor,sensor.numero_sensor,sensor.modelo_sensor, 
                               sensor.direccion_lectura, sensor.patilla_0_lectura, sensor.patilla_1_lectura,
                               sensor.patilla_2_lectura, sensor.patilla_3_lectura, sensor.unidad_medida_0,
                               sensor.unidad_medida_1, sensor.unidad_medida_2, sensor.unidad_medida_3,
@@ -67,10 +67,10 @@ class SensorService():
         return out
 
     @staticmethod
-    def get(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> SensorBackend:
+    def get(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> SensorCommon:
         session : Session = esquema.new_session()
         sensor : Sensor = SensorSet.get(session, tipo_sensor, zona_sensor, numero_sensor)
-        out= SensorBackend(sensor.tipo_sensor,sensor.zona_sensor,sensor.numero_sensor,sensor.modelo_sensor, 
+        out= SensorCommon(sensor.tipo_sensor,sensor.zona_sensor,sensor.numero_sensor,sensor.modelo_sensor, 
                           sensor.direccion_lectura, sensor.patilla_0_lectura, sensor.patilla_1_lectura,
                           sensor.patilla_2_lectura, sensor.patilla_3_lectura, sensor.unidad_medida_0,
                           sensor.unidad_medida_1, sensor.unidad_medida_2, sensor.unidad_medida_3,
@@ -83,16 +83,16 @@ class SensorService():
                 modelo_sensor:ModeloSensor, direccion_lectura:str, patilla_0_lectura:int, patilla_1_lectura:int, 
                 patilla_2_lectura:int, patilla_3_lectura:int, unidad_medida_0:UnidadMedida, unidad_medida_1:UnidadMedida,
                 unidad_medida_2:UnidadMedida, unidad_medida_3:UnidadMedida, fecha_creacion: datetime,
-                fecha_eliminacion: datetime) -> SensorBackend:
+                fecha_eliminacion: datetime) -> SensorCommon:
         session: Session = esquema.new_session()
-        out: SensorBackend = None
+        out: SensorCommon = None
         try:
             sensor_modificado: Sensor = SensorSet.update(session, tipo_sensor, zona_sensor, numero_sensor, modelo_sensor, 
                                                     direccion_lectura, patilla_0_lectura, patilla_1_lectura, 
                                                     patilla_2_lectura, patilla_3_lectura, unidad_medida_0, 
                                                     unidad_medida_1, unidad_medida_2, unidad_medida_3,
                                                     fecha_creacion, fecha_eliminacion)
-            out= SensorBackend(sensor_modificado.tipo_sensor,sensor_modificado.zona_sensor,sensor_modificado.numero_sensor,
+            out= SensorCommon(sensor_modificado.tipo_sensor,sensor_modificado.zona_sensor,sensor_modificado.numero_sensor,
                               sensor_modificado.modelo_sensor, sensor_modificado.direccion_lectura, sensor_modificado.patilla_0_lectura, 
                               sensor_modificado.patilla_1_lectura, sensor_modificado.patilla_2_lectura, sensor_modificado.patilla_3_lectura, 
                               sensor_modificado.unidad_medida_0, sensor_modificado.unidad_medida_1, sensor_modificado.unidad_medida_2, 
@@ -104,7 +104,7 @@ class SensorService():
         return out
     
     @staticmethod
-    def updateFromCommon(esquema: Esquema, sensor: SensorCommon) -> SensorBackend:
+    def updateFromCommon(esquema: Esquema, sensor: SensorCommon) -> SensorCommon:
         return SensorService.update(esquema, sensor.getTipoSensor(), sensor.getZonaSensor(),sensor.getNumeroSensor(), 
                                     sensor.getModeloSensor(), sensor.getDireccionLectura(), sensor.getPatillaLectura(0), 
                                     sensor.getPatillaLectura(1), sensor.getPatillaLectura(2), sensor.getPatillaLectura(3),

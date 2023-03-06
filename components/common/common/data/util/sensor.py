@@ -1,8 +1,7 @@
 from datetime import datetime
-from typing import Optional,Dict,List
-from enum import Enum
-from common.data.util import RegistroSensor
+from typing import Optional, Dict, List, Tuple
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
+from common.data.util import RegistroSensor as RegistroSensorCommon
 
 
 class Sensor:
@@ -85,6 +84,15 @@ class Sensor:
     def setFechaEliminacion(self, fecha_eliminacion:datetime):
         self.__fecha_eliminacion = fecha_eliminacion
 
+    def crearRegistroSensor(self, valor: float, unidad_medida: UnidadMedida) -> RegistroSensorCommon:
+        return RegistroSensorCommon(self.getTipoSensor(),self.getZonaSensor(),self.getNumeroSensor(),valor,unidad_medida)
+
+    def crearRegistrosSensor(self, lista_valor_unidad_medida: List[Tuple[float, UnidadMedida]]) -> List[RegistroSensorCommon]:
+        lista_registros_sensor  = []
+        for registro_sensor in lista_registros_sensor:
+            lista_registros_sensor.append(self.crearRegistroSensor(registro_sensor[0],registro_sensor[1]))
+        return lista_registros_sensor
+
     def __eq__(self, other)  -> bool:
       return (other and self.getTipoSensor() == other.getTipoSensor() and self.getZonaSensor() == other.getZonaSensor() and
           self.getNumeroSensor() == other.getNumeroSensor() and self.getModeloSensor() == other.getModeloSensor() and
@@ -149,6 +157,7 @@ class Sensor:
                         unidad_medida_2=dic["unidad_medida_2"], unidad_medida_3=dic["unidad_medida_3"],
                         fecha_creacion=dic["fecha_creacion"], fecha_eliminacion=dic["fecha_eliminacion"])
         return sensor
+    
 
 '''
 class Sensor:
@@ -300,7 +309,15 @@ class Sensor:
     def getCode(self) -> int:
         return (int(self.getModeloSensor())*100000000+int(self.getTipoSensor())*1000000+int(self.getZonaSensor())*10000+self.getNumeroSensor())
 
+    def crearRegistroSensor(self, valor: float, unidad_medida: UnidadMedida) -> RegistroSensorCommon:
+        return RegistroSensorCommon(self.getTipoSensor(),self.getZonaSensor(),self.getNumeroSensor(),valor,unidad_medida)
 
+    def crearRegistrosSensor(self, lista_valor_unidad_medida: List[Tuple[float, UnidadMedida]]) -> List[RegistroSensorCommon]:
+        lista_registros_sensor  = []
+        for registro_sensor in lista_registros_sensor:
+            lista_registros_sensor.append(self.crearRegistroSensor(registro_sensor[0],registro_sensor[1]))
+        return lista_registros_sensor
+        
     def toJson(self) -> dict:
         dic={}
         dic["tipo_sensor"]=self.getTipoSensor()
