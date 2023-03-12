@@ -21,10 +21,10 @@ planta_vacia = RegistroPlantaService.create(db,"Sin planta","Ninguno",None,None)
 
 #datos de pruebas
 sensor_humedad_ambiente_1 = SensorService.create(db,"HUMEDAD","AMBIENTE",1,"DHT11",patilla_0_lectura=19, unidad_medida_0=UnidadMedida.GRADOS_CENTIGRADOS)
-sensor_temperatura_ambiente_1 = SensorCommon(TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,"DHT11",patilla_0_lectura=19, unidad_medida_0=UnidadMedida.PORCENTAJE)
+sensor_temperatura_ambiente_1 = SensorBackend(TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,"DHT11",patilla_0_lectura=19, unidad_medida_0=UnidadMedida.PORCENTAJE)
 sensor_temperatura_ambiente_1 = SensorService.createFromCommon(db,sensor_temperatura_ambiente_1)
 
-sensor_temperatura_y_humedad_ambiente_1 = SensorCommon(TipoSensor.TEMPERATURA_Y_HUMEDAD,ZonaSensor.AMBIENTE,1,"DHT11",patilla_0_lectura=21)
+sensor_temperatura_y_humedad_ambiente_1 = SensorBackend(TipoSensor.TEMPERATURA_Y_HUMEDAD,ZonaSensor.AMBIENTE,1,"DHT11",patilla_0_lectura=21)
 sensor_temperatura_y_humedad_ambiente_1 =SensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1)
 
 tipo_planta_tomatera = RegistroTipoPlantaCommon("Tomatera","Planta facil de cultivar")
@@ -43,11 +43,11 @@ RegistroSensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,65.0,Unid
 RegistroSensorService.create(db,TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,29.0,UnidadMedida.GRADOS_CENTIGRADOS)
 RegistroSensorService.create(db,TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,29.0,UnidadMedida.GRADOS_CENTIGRADOS)
 
-RegistroSensorService.createFromCommon(db,sensor_humedad_ambiente_1.crearRegistroSensor(75.0,UnidadMedida.PORCENTAJE))
-RegistroSensorService.createFromCommon(db,sensor_temperatura_ambiente_1.crearRegistroSensor(19.0,UnidadMedida.GRADOS_CENTIGRADOS))
+# RegistroSensorService.createFromCommon(db,sensor_humedad_ambiente_1.crearRegistroSensor(75.0,UnidadMedida.PORCENTAJE))
+# RegistroSensorService.createFromCommon(db,sensor_temperatura_ambiente_1.crearRegistroSensor(19.0,UnidadMedida.GRADOS_CENTIGRADOS))
 
-RegistroSensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1.crearRegistroSensor(70.0,UnidadMedida.PORCENTAJE))
-RegistroSensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1.crearRegistroSensor(22.0,UnidadMedida.GRADOS_CENTIGRADOS))
+# RegistroSensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1.crearRegistroSensor(70.0,UnidadMedida.PORCENTAJE))
+# RegistroSensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1.crearRegistroSensor(22.0,UnidadMedida.GRADOS_CENTIGRADOS))
 
         
 for reg in SensorService.listAll(db):

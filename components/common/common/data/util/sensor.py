@@ -84,14 +84,8 @@ class Sensor:
     def setFechaEliminacion(self, fecha_eliminacion:datetime):
         self.__fecha_eliminacion = fecha_eliminacion
 
-    def crearRegistroSensor(self, valor: float, unidad_medida: UnidadMedida) -> RegistroSensorCommon:
-        return RegistroSensorCommon(self.getTipoSensor(),self.getZonaSensor(),self.getNumeroSensor(),valor,unidad_medida)
-
-    def crearRegistrosSensor(self, lista_valor_unidad_medida: List[Tuple[float, UnidadMedida]]) -> List[RegistroSensorCommon]:
-        lista_registros_sensor  = []
-        for registro_sensor in lista_registros_sensor:
-            lista_registros_sensor.append(self.crearRegistroSensor(registro_sensor[0],registro_sensor[1]))
-        return lista_registros_sensor
+    def getCode(self) -> int:
+        return (int(self.getModeloSensor())*100000000+int(self.getTipoSensor())*1000000+int(self.getZonaSensor())*10000+self.getNumeroSensor())
 
     def __eq__(self, other)  -> bool:
       return (other and self.getTipoSensor() == other.getTipoSensor() and self.getZonaSensor() == other.getZonaSensor() and
@@ -124,10 +118,6 @@ class Sensor:
         else:
             texto: str  = str(texto + " y fue eliminado en la fecha " + str(self.getFechaEliminacion()) + " .")
         return texto
-
-    def getCode(self) -> int:
-        return (int(self.getModeloSensor())*100000000+int(self.getTipoSensor())*1000000+int(self.getZonaSensor())*10000+self.getNumeroSensor())
-
 
     def toJson(self) -> dict:
         dic={}
@@ -274,6 +264,9 @@ class Sensor:
     def setFechaEliminacion(self, fecha_eliminacion:datetime):
         self.__fecha_eliminacion = fecha_eliminacion
 
+    def getCode(self) -> int:
+        return (int(self.getModeloSensor())*100000000+int(self.getTipoSensor())*1000000+int(self.getZonaSensor())*10000+self.getNumeroSensor())
+
     def __eq__(self, other)  -> bool:
       return (other and self.getTipoSensor() == other.getTipoSensor() and self.getZonaSensor() == other.getZonaSensor() and
           self.getNumeroSensor() == other.getNumeroSensor() and self.getModeloSensor() == other.getModeloSensor() and
@@ -306,18 +299,6 @@ class Sensor:
             texto: str  = str(texto + " y fue eliminado en la fecha " + str(self.getFechaEliminacion()) + " .")
         return texto
 
-    def getCode(self) -> int:
-        return (int(self.getModeloSensor())*100000000+int(self.getTipoSensor())*1000000+int(self.getZonaSensor())*10000+self.getNumeroSensor())
-
-    def crearRegistroSensor(self, valor: float, unidad_medida: UnidadMedida) -> RegistroSensorCommon:
-        return RegistroSensorCommon(self.getTipoSensor(),self.getZonaSensor(),self.getNumeroSensor(),valor,unidad_medida)
-
-    def crearRegistrosSensor(self, lista_valor_unidad_medida: List[Tuple[float, UnidadMedida]]) -> List[RegistroSensorCommon]:
-        lista_registros_sensor  = []
-        for registro_sensor in lista_registros_sensor:
-            lista_registros_sensor.append(self.crearRegistroSensor(registro_sensor[0],registro_sensor[1]))
-        return lista_registros_sensor
-        
     def toJson(self) -> dict:
         dic={}
         dic["tipo_sensor"]=self.getTipoSensor()

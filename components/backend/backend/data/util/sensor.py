@@ -28,7 +28,14 @@ class Sensor (SensorCommon):
 
     #def leerSensor() -> List[List[float, str]]:
 
+    def crearRegistroSensor(self, valor: float, unidad_medida: UnidadMedida) -> RegistroSensorCommon:
+        return RegistroSensorCommon(self.getTipoSensor(),self.getZonaSensor(),self.getNumeroSensor(),valor,unidad_medida)
 
+    def crearRegistrosSensor(self, lista_valor_unidad_medida: List[Tuple[float, UnidadMedida]]) -> List[RegistroSensorCommon]:
+        lista_registros_sensor  = []
+        for registro_sensor in lista_registros_sensor:
+            lista_registros_sensor.append(self.crearRegistroSensor(registro_sensor[0],registro_sensor[1]))
+        return lista_registros_sensor
 
     #def leerSesnorYCrearRegistroSensor()
      
