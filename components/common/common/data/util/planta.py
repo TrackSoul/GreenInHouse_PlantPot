@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional,Dict,List
 
-class RegistroPlanta:
+class Planta:
 
     def __init__(self, nombre_planta:str, tipo_planta:str, fecha_plantacion: datetime = None, fecha_marchitacion: datetime = None):
         self.__nombre_planta:str = nombre_planta
@@ -52,5 +52,5 @@ class RegistroPlanta:
         return dict
 
     def fromJson(dict: dict):
-        planta = RegistroPlanta(dict["nombre_planta"],dict["tipo_planta"],dict["fecha_plantacion"],dict["fecha_marchitacion"])
+        planta = Planta(dict["nombre_planta"],dict["tipo_planta"],dict["fecha_plantacion"],dict["fecha_marchitacion"])
         return planta

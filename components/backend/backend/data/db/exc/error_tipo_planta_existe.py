@@ -1,9 +1,9 @@
 """ 
-Clase del modulo ErrorRegistroPlantaExiste
+Clase del modulo ErrorTipoPlantaExiste
 """
 
 
-class ErrorRegistroPlantaExiste(Exception):
+class ErrorTipoPlantaExiste(Exception):
     """ 
     Excepcion lanzada cuando el registro de la planta a crear ya existe
     """

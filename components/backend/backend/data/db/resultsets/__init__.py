@@ -1,5 +1,5 @@
 from .registro_sensor_set import RegistroSensorSet
-from .registro_planta_set import RegistroPlantaSet
-from .registro_tipo_planta_set import RegistroTipoPlantaSet
+from .planta_set import PlantaSet
+from .tipo_planta_set import TipoPlantaSet
 from .sensor_set import SensorSet
 from .sensor_planta_set import SensorPlantaSet

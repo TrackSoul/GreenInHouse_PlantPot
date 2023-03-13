@@ -4,7 +4,7 @@ from sqlalchemy.orm.session import Session # type: ignore
 from backend.data.db.esquema import Esquema
 from backend.data.db.results import SensorPlanta
 from backend.data.db.resultsets import SensorPlantaSet
-from common.data.util import SensorPlanta as SensorPlantaCommon, Sensor as SensorCommon, RegistroPlanta as RegistroPlantaCommon
+from common.data.util import SensorPlanta as SensorPlantaCommon, Sensor as SensorCommon, Planta as PlantaCommon
 from common.data.util import TipoSensor, ZonaSensor
 
 class SensorPlantaService():
@@ -35,7 +35,7 @@ class SensorPlantaService():
                                           sensor_planta.getNumeroSensor(), sensor_planta.getNombrePlanta())
     
     @staticmethod
-    def createRelationFromCommon(esquema: Esquema, sensor: SensorCommon, planta: RegistroPlantaCommon) -> SensorPlantaCommon:
+    def createRelationFromCommon(esquema: Esquema, sensor: SensorCommon, planta: PlantaCommon) -> SensorPlantaCommon:
         return SensorPlantaService.create(esquema, sensor.getTipoSensor(), sensor.getZonaSensor(), 
                                                         sensor.getNumeroSensor(), planta.getNombrePlanta())
 
@@ -86,7 +86,7 @@ class SensorPlantaService():
         return out
 
     @staticmethod
-    def listAllSensorsPlantFromCommon(esquema: Esquema, planta: RegistroPlantaCommon) -> List[SensorPlantaCommon]:
+    def listAllSensorsPlantFromCommon(esquema: Esquema, planta: PlantaCommon) -> List[SensorPlantaCommon]:
         return SensorPlantaService.listAllSensorsPlant(esquema, planta.getNombrePlanta())
 
     @staticmethod
@@ -103,7 +103,7 @@ class SensorPlantaService():
         return out
 
     @staticmethod
-    def listAllActiveSensorsPlantFromCommon(esquema: Esquema, planta: RegistroPlantaCommon) -> List[SensorPlantaCommon]:
+    def listAllActiveSensorsPlantFromCommon(esquema: Esquema, planta: PlantaCommon) -> List[SensorPlantaCommon]:
         return SensorPlantaService.listAllActiveSensorsPlant(esquema, planta.getNombrePlanta())
 
     @staticmethod
@@ -211,5 +211,5 @@ class SensorPlantaService():
         return lista_sensores_planta
 
     @staticmethod
-    def unsubscribeAllFromPlantFromCommon(esquema: Esquema, planta: RegistroPlantaCommon) -> List[SensorPlantaCommon]:
+    def unsubscribeAllFromPlantFromCommon(esquema: Esquema, planta: PlantaCommon) -> List[SensorPlantaCommon]:
         return SensorPlantaService.unsubscribeAllFromPlant(esquema, planta.getNombrePlanta())

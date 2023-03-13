@@ -5,7 +5,7 @@ from sqlalchemy import ForeignKey  # type: ignore
 from sqlalchemy.orm import relationship  # type: ignore
 from backend.data.db.results import ModuloBase
 
-class RegistroPlanta(ModuloBase):
+class Planta(ModuloBase):
     """ 
     Definicion y almacenamiento de los registros del sensor.
     """

@@ -3,15 +3,15 @@ from typing import List, Optional
 from sqlalchemy.exc import IntegrityError  # type: ignore
 from sqlalchemy.orm.session import Session  # type: ignore
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore
-from backend.data.db.results.registro_planta import RegistroPlanta
-from backend.data.db.exc import ErrorRegistroPlantaExiste, ErrorRegistroPlantaNoExiste, ErrorRegistroTipoPlantaNoExiste
+from backend.data.db.results.planta import Planta
+from backend.data.db.exc import ErrorPlantaExiste, ErrorPlantaNoExiste, ErrorTipoPlantaNoExiste
 
-class RegistroPlantaSet():
+class PlantaSet():
     """ 
     Clase responsable a nivel de tabla de las operaciones con los registros.
     """
     @staticmethod
-    def create(session: Session, nombre_planta:str, tipo_planta:str, fecha_plantacion: datetime, fecha_marchitacion: datetime) -> RegistroPlanta:
+    def create(session: Session, nombre_planta:str, tipo_planta:str, fecha_plantacion: datetime, fecha_marchitacion: datetime) -> Planta:
         """
         Creacion de un nuevo registro de un sensor
 
@@ -37,22 +37,22 @@ class RegistroPlantaSet():
         if not tipo_planta:
             raise ValueError('Necesario especificar el tipo de la planta.')
         try:
-            nuevo_registro_planta = RegistroPlanta(nombre_planta, tipo_planta, fecha_plantacion, fecha_marchitacion)
-            session.add(nuevo_registro_planta)
+            nuevo_planta = Planta(nombre_planta, tipo_planta, fecha_plantacion, fecha_marchitacion)
+            session.add(nuevo_planta)
             session.commit()
-            return nuevo_registro_planta
+            return nuevo_planta
         except IntegrityError as ex:
             session.rollback()
-            raise ErrorRegistroPlantaExiste(
+            raise ErrorPlantaExiste(
                 'El nombre de planta ' + str(nombre_planta) + ' ya está registrado.'
                 ) from ex
         except NoResultFound as ex:
-            raise ErrorRegistroTipoPlantaNoExiste(
+            raise ErrorTipoPlantaNoExiste(
                 'El tipo de planta ' + tipo_planta + 'no existe'
                 ) from ex
 
     @staticmethod
-    def listAll(session: Session) -> List[RegistroPlanta]:
+    def listAll(session: Session) -> List[Planta]:
         """
         Listado de plantas.
 
@@ -60,15 +60,15 @@ class RegistroPlantaSet():
             - session (Session): Objeto de sesion.
 
         Returns:
-            - List[RegistroPlanta]: Listado de registros de plantas.
+            - List[Planta]: Listado de registros de plantas.
         """
         plantas = None
-        query = session.query(RegistroPlanta)
-        plantas: List[RegistroPlanta] = query.all()
+        query = session.query(Planta)
+        plantas: List[Planta] = query.all()
         return plantas
 
     @staticmethod
-    def listAllActive(session: Session) -> List[RegistroPlanta]:
+    def listAllActive(session: Session) -> List[Planta]:
         """
         Listado de plantas.
 
@@ -76,15 +76,15 @@ class RegistroPlantaSet():
             - session (Session): Objeto de sesion.
 
         Returns:
-            - List[RegistroPlanta]: Listado de registros de plantas.
+            - List[Planta]: Listado de registros de plantas.
         """
         plantas = None
-        query = session.query(RegistroPlanta).filter_by(fecha_marchitacion=None)
-        plantas: List[RegistroPlanta] = query.all()
+        query = session.query(Planta).filter_by(fecha_marchitacion=None)
+        plantas: List[Planta] = query.all()
         return plantas
 
     @staticmethod
-    def listAllFromType(session: Session, tipo_planta: str) -> List[RegistroPlanta]:
+    def listAllFromType(session: Session, tipo_planta: str) -> List[Planta]:
         """
         Listado de plantas.
 
@@ -92,15 +92,15 @@ class RegistroPlantaSet():
             - session (Session): Objeto de sesion.
 
         Returns:
-            - List[RegistroPlanta]: Listado de registros de plantas.
+            - List[Planta]: Listado de registros de plantas.
         """
         plantas_de_tipo = None
-        query = session.query(RegistroPlanta).filter_by(tipo_planta=tipo_planta)
-        plantas_de_tipo: List[RegistroPlanta] = query.all()
+        query = session.query(Planta).filter_by(tipo_planta=tipo_planta)
+        plantas_de_tipo: List[Planta] = query.all()
         return plantas_de_tipo
 
     @staticmethod
-    def listAllActiveFromType(session: Session, tipo_planta: str) -> List[RegistroPlanta]:
+    def listAllActiveFromType(session: Session, tipo_planta: str) -> List[Planta]:
         """
         Listado de plantas.
 
@@ -108,15 +108,15 @@ class RegistroPlantaSet():
             - session (Session): Objeto de sesion.
 
         Returns:
-            - List[RegistroPlanta]: Listado de registros de plantas.
+            - List[Planta]: Listado de registros de plantas.
         """
         plantas_de_tipo = None
-        query = session.query(RegistroPlanta).filter_by(fecha_marchitacion=None,tipo_planta=tipo_planta)
-        plantas_de_tipo: List[RegistroPlanta] = query.all()
+        query = session.query(Planta).filter_by(fecha_marchitacion=None,tipo_planta=tipo_planta)
+        plantas_de_tipo: List[Planta] = query.all()
         return plantas_de_tipo
 
     @staticmethod
-    def get(session: Session, nombre_planta: str) -> Optional[RegistroPlanta]:
+    def get(session: Session, nombre_planta: str) -> Optional[Planta]:
         """ Determines whether a user exists or not.
 
         Args:
@@ -128,19 +128,19 @@ class RegistroPlantaSet():
         """
         if not nombre_planta:
             raise ValueError('Necesario especificar el nombre de la planta.')
-        registro_planta: RegistroPlanta = None
+        planta: Planta = None
         try:
-            query = session.query(RegistroPlanta).filter_by(nombre_planta=nombre_planta)
-            registro_planta: RegistroPlanta = query.one()
+            query = session.query(Planta).filter_by(nombre_planta=nombre_planta)
+            planta: Planta = query.one()
         except NoResultFound as ex:
-            raise ErrorRegistroPlantaNoExiste(
+            raise ErrorPlantaNoExiste(
                 'La planta con el nombre' + nombre_planta + 'no existe'
                 ) from ex
         finally:
-            return registro_planta
+            return planta
 
     @staticmethod
-    def update(session: Session, nombre_planta:str, tipo_planta:str, fecha_plantacion: datetime, fecha_marchitacion: datetime) -> RegistroPlanta:
+    def update(session: Session, nombre_planta:str, tipo_planta:str, fecha_plantacion: datetime, fecha_marchitacion: datetime) -> Planta:
         """
         Creacion de un nuevo registro de un sensor
 
@@ -163,22 +163,22 @@ class RegistroPlantaSet():
         """
         if not nombre_planta:
             raise ValueError('Necesario especificar el nombre de la planta.')
-        registro_planta_modificado: RegistroPlanta = None
+        planta_modificado: Planta = None
         try:
-            query = session.query(RegistroPlanta).filter_by(nombre_planta=nombre_planta)
-            registro_planta: RegistroPlanta = query.one()
+            query = session.query(Planta).filter_by(nombre_planta=nombre_planta)
+            planta: Planta = query.one()
 
-            if registro_planta.tipo_planta != tipo_planta:
+            if planta.tipo_planta != tipo_planta:
                 query.update({'tipo_planta' : tipo_planta})
-            if registro_planta.fecha_marchitacion != fecha_marchitacion:
+            if planta.fecha_marchitacion != fecha_marchitacion:
                 query.update({'fecha_marchitacion' : fecha_marchitacion})
             session.commit()
-            registro_planta_modificado: RegistroPlanta = query.one() 
+            planta_modificado: Planta = query.one() 
 
         except NoResultFound as ex:
             session.rollback()
-            raise ErrorRegistroPlantaNoExiste(
+            raise ErrorPlantaNoExiste(
                 'La planta con el nombre' + nombre_planta + 'no existe'
                 ) from ex
         finally:
-            return registro_planta_modificado
+            return planta_modificado

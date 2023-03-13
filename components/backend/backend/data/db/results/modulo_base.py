@@ -4,8 +4,8 @@ Modulo ResultBase.
 
 from abc import ABC, abstractmethod
 from typing import Dict
-from sqlalchemy import Table, MetaData  # type: ignore
-from sqlalchemy.orm import registry  # type: ignore
+from sqlalchemy import Table, MetaData
+from sqlalchemy.orm import registry
 
 
 class ModuloBase(ABC):
@@ -19,14 +19,13 @@ class ModuloBase(ABC):
         Mapeado de los registros de las instancias en la base de datos
 
         Args:
-            - cls (type): This class.
-            - schema_registry (registry): A generalized registry to map classes
-                        (used to gather the entities' definitions and mapping)
+            - cls (type): Esta clase
+            - schema_registry (registry): Una generalizacion de registry para mapear las clases
         """
         esquema_db.map_imperatively(
             cls,
-            cls._table_definition(esquema_db.metadata),  # type: ignore
-            properties=cls._mapping_properties()  # type: ignore
+            cls._table_definition(esquema_db.metadata),
+            properties=cls._mapping_properties()
         )
 
     @staticmethod

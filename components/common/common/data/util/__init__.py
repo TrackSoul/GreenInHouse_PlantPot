@@ -8,7 +8,7 @@ from .tipo_sensor import TipoSensor
 from .zona_sensor import ZonaSensor
 from .modelo_sensor import ModeloSensor
 from .registro_sensor import RegistroSensor
-from .registro_planta import RegistroPlanta
-from .registro_tipo_planta import RegistroTipoPlanta
+from .planta import Planta
+from .tipo_planta import TipoPlanta
 from .sensor import Sensor
 from .sensor_planta import SensorPlanta

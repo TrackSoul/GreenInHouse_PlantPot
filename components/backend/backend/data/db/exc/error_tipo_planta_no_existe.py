@@ -1,9 +1,9 @@
 """ 
-Clase del modulo ErrorRegistroTipoPlantaNoExiste
+Clase del modulo ErrorTipoPlantaNoExiste
 """
 
 
-class ErrorRegistroTipoPlantaNoExiste(Exception):
+class ErrorTipoPlantaNoExiste(Exception):
     """ 
     Excepcion lanzada cuando el registro de la planta a recuperar no existe
     """

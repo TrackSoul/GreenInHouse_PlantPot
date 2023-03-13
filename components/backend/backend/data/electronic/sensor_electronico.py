@@ -5,4 +5,5 @@ from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, U
 
 class SensorElectronico ():
 
-    def __init__(slef,):
+    def __init__(slef):
+        pass()

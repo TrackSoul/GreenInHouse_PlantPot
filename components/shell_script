@@ -16,9 +16,9 @@ import backend
 from backend.data.config import BackendConfiguration
 from backend.data.db import Esquema
 from datetime import datetime
-from backend.data.db.results import RegistroSensor, Sensor, RegistroPlanta, RegistroTipoPlanta
-from backend.service import SensorService, RegistroSensorService, RegistroPlantaService, RegistroTipoPlantaService
-from common.data import TipoSensor, ZonaSensor, RegistroPlanta as RegistroPlantaCommon, RegistroTipoPlanta as RegistroTipoPlantaCommon
+from backend.data.db.results import RegistroSensor, Sensor, Planta, TipoPlanta
+from backend.service import SensorService, RegistroSensorService, PlantaService, TipoPlantaService
+from common.data import TipoSensor, ZonaSensor, Planta as PlantaCommon, TipoPlanta as TipoPlantaCommon
 from common.data import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon
 
 cfg: BackendConfiguration = BackendConfiguration()

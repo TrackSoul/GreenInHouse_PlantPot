@@ -4,7 +4,7 @@ from sqlalchemy.exc import IntegrityError  # type: ignore
 from sqlalchemy.orm.session import Session  # type: ignore
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore
 from backend.data.db.results import SensorPlanta
-from backend.data.db.exc import ErrorSensorNoExiste, ErrorRegistroPlantaNoExiste, ErrorSensorPlantaExiste, ErrorSensorPlantaNoExiste
+from backend.data.db.exc import ErrorSensorNoExiste, ErrorPlantaNoExiste, ErrorSensorPlantaExiste, ErrorSensorPlantaNoExiste
 from common.data.util import TipoSensor, ZonaSensor
 
 class SensorPlantaSet():
