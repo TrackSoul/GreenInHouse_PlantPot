@@ -107,6 +107,145 @@ class SensorSet():
         query = session.query(Sensor).filter_by(fecha_eliminacion=None)
         sensores: List[Sensor] = query.all()
         return sensores
+    
+    @staticmethod
+    def listAllFromType(session: Session, tipo_sensor: TipoSensor) -> List[Sensor]:
+        """
+        Lista con todos los sensores.
+
+        Args:
+            - session (Session): Objeto de sesion.
+            - tipo_sensor (TipoSensor): Tipo de sensor.
+
+        Returns:
+            - List[Sensor]: Lista de sensores.
+        """
+        sensores = None
+        query = session.query(Sensor).filter_by(tipo_sensor=tipo_sensor)
+        sensores: List[Sensor] = query.all()
+        return sensores
+
+    @staticmethod
+    def listAllActiveFromType(session: Session, tipo_sensor: TipoSensor) -> List[Sensor]:
+        """
+        Lista con todos los sensores.
+
+        Args:
+            - session (Session): Objeto de sesion.
+            - tipo_sensor (TipoSensor): Tipo de sensor.
+            
+        Returns:
+            - List[Sensor]: Lista de sensores.
+        """
+        sensores = None
+        query = session.query(Sensor).filter_by(tipo_sensor=tipo_sensor, fecha_eliminacion=None)
+        sensores: List[Sensor] = query.all()
+        return sensores
+    
+    @staticmethod
+    def listAllFromZone(session: Session, zona_sensor: ZonaSensor) -> List[Sensor]:
+        """
+        Lista con todos los sensores.
+
+        Args:
+            - session (Session): Objeto de sesion.
+            - zona_sensor (ZonaSensor): Zona del sensor.
+            - modelo_sensor (ModeloSensor): modelo_sensor del sensor.
+
+        Returns:
+            - List[Sensor]: Lista de sensores.
+        """
+        sensores = None
+        query = session.query(Sensor).filter_by(zona_sensor=zona_sensor)
+        sensores: List[Sensor] = query.all()
+        return sensores
+
+    @staticmethod
+    def listAllActiveFromZone(session: Session, zona_sensor: ZonaSensor) -> List[Sensor]:
+        """
+        Lista con todos los sensores.
+
+        Args:
+            - session (Session): Objeto de sesion.
+            - zona_sensor (ZonaSensor): Zona del sensor.
+            
+        Returns:
+            - List[Sensor]: Lista de sensores.
+        """
+        sensores = None
+        query = session.query(Sensor).filter_by(zona_sensor=zona_sensor, fecha_eliminacion=None)
+        sensores: List[Sensor] = query.all()
+        return sensores
+
+    @staticmethod
+    def listAllFromTypeAndZone(session: Session, tipo_sensor: TipoSensor, zona_sensor: ZonaSensor) -> List[Sensor]:
+        """
+        Lista con todos los sensores.
+
+        Args:
+            - session (Session): Objeto de sesion.
+            - zona_sensor (ZonaSensor): Zona del sensor.
+            - modelo_sensor (ModeloSensor): modelo_sensor del sensor.
+
+        Returns:
+            - List[Sensor]: Lista de sensores.
+        """
+        sensores = None
+        query = session.query(Sensor).filter_by(tipo_sensor=tipo_sensor, zona_sensor=zona_sensor)
+        sensores: List[Sensor] = query.all()
+        return sensores
+
+    @staticmethod
+    def listAllActiveFromTypeAndZone(session: Session, tipo_sensor: TipoSensor, zona_sensor: ZonaSensor) -> List[Sensor]:
+        """
+        Lista con todos los sensores.
+
+        Args:
+            - session (Session): Objeto de sesion.
+            - zona_sensor (ZonaSensor): Zona del sensor.
+            
+        Returns:
+            - List[Sensor]: Lista de sensores.
+        """
+        sensores = None
+        query = session.query(Sensor).filter_by(tipo_sensor=tipo_sensor, zona_sensor=zona_sensor, fecha_eliminacion=None)
+        sensores: List[Sensor] = query.all()
+        return sensores
+
+
+    @staticmethod
+    def listAllFromModel(session: Session, modelo: ModeloSensor) -> List[Sensor]:
+        """
+        Lista con todos los sensores.
+
+        Args:
+            - session (Session): Objeto de sesion.
+            - modelo_sensor (ModeloSensor): modelo_sensor del sensor.
+
+        Returns:
+            - List[Sensor]: Lista de sensores.
+        """
+        sensores = None
+        query = session.query(Sensor).filter_by(modelo_sensor=modelo)
+        sensores: List[Sensor] = query.all()
+        return sensores
+
+    @staticmethod
+    def listAllActiveFromModel(session: Session, modelo: ModeloSensor) -> List[Sensor]:
+        """
+        Lista con todos los sensores.
+
+        Args:
+            - session (Session): Objeto de sesion.
+            - modelo_sensor (ModeloSensor): modelo_sensor del sensor.
+
+        Returns:
+            - List[Sensor]: Lista de sensores.
+        """
+        sensores = None
+        query = session.query(Sensor).filter_by(modelo_sensor=modelo, fecha_eliminacion=None)
+        sensores: List[Sensor] = query.all()
+        return sensores
 
     @staticmethod
     def get(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int,) -> Optional[Sensor]:

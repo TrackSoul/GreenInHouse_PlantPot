@@ -80,6 +80,118 @@ class SensorService():
                               sensor.fecha_creacion, sensor.fecha_eliminacion))
         esquema.remove_session()
         return out
+    
+    @staticmethod
+    def listAllFromType(esquema: Esquema, tipo_sensor: TipoSensor) -> List[SensorCommon]:
+        out: List[SensorCommon] = []
+        session: Session = esquema.new_session()
+        registros_sensor: List[Sensor] = SensorSet.listAllFromType(session,tipo_sensor)
+        for sensor in registros_sensor:
+            out.append(SensorCommon(sensor.tipo_sensor,sensor.zona_sensor,sensor.numero_sensor,sensor.modelo_sensor, 
+                              sensor.direccion_lectura, sensor.patilla_0_lectura, sensor.patilla_1_lectura,
+                              sensor.patilla_2_lectura, sensor.patilla_3_lectura, sensor.unidad_medida_0,
+                              sensor.unidad_medida_1, sensor.unidad_medida_2, sensor.unidad_medida_3,
+                              sensor.fecha_creacion, sensor.fecha_eliminacion))
+        esquema.remove_session()
+        return out
+
+    @staticmethod
+    def listAllActiveFromType(esquema: Esquema, tipo_sensor: TipoSensor) -> List[SensorCommon]:
+        out: List[SensorCommon] = []
+        session: Session = esquema.new_session()
+        registros_sensor: List[Sensor] = SensorSet.listAllActiveFromType(session,tipo_sensor)
+        for sensor in registros_sensor:
+            out.append(SensorCommon(sensor.tipo_sensor,sensor.zona_sensor,sensor.numero_sensor,sensor.modelo_sensor, 
+                              sensor.direccion_lectura, sensor.patilla_0_lectura, sensor.patilla_1_lectura,
+                              sensor.patilla_2_lectura, sensor.patilla_3_lectura, sensor.unidad_medida_0,
+                              sensor.unidad_medida_1, sensor.unidad_medida_2, sensor.unidad_medida_3,
+                              sensor.fecha_creacion, sensor.fecha_eliminacion))
+        esquema.remove_session()
+        return out
+    
+    @staticmethod
+    def listAllFromZone(esquema: Esquema, zona_sensor: ZonaSensor) -> List[SensorCommon]:
+        out: List[SensorCommon] = []
+        session: Session = esquema.new_session()
+        registros_sensor: List[Sensor] = SensorSet.listAllFromZone(session,zona_sensor)
+        for sensor in registros_sensor:
+            out.append(SensorCommon(sensor.tipo_sensor,sensor.zona_sensor,sensor.numero_sensor,sensor.modelo_sensor, 
+                              sensor.direccion_lectura, sensor.patilla_0_lectura, sensor.patilla_1_lectura,
+                              sensor.patilla_2_lectura, sensor.patilla_3_lectura, sensor.unidad_medida_0,
+                              sensor.unidad_medida_1, sensor.unidad_medida_2, sensor.unidad_medida_3,
+                              sensor.fecha_creacion, sensor.fecha_eliminacion))
+        esquema.remove_session()
+        return out
+
+    @staticmethod
+    def listAllActiveFromZone(esquema: Esquema, zona_sensor: ZonaSensor) -> List[SensorCommon]:
+        out: List[SensorCommon] = []
+        session: Session = esquema.new_session()
+        registros_sensor: List[Sensor] = SensorSet.listAllActiveFromZone(session,zona_sensor)
+        for sensor in registros_sensor:
+            out.append(SensorCommon(sensor.tipo_sensor,sensor.zona_sensor,sensor.numero_sensor,sensor.modelo_sensor, 
+                              sensor.direccion_lectura, sensor.patilla_0_lectura, sensor.patilla_1_lectura,
+                              sensor.patilla_2_lectura, sensor.patilla_3_lectura, sensor.unidad_medida_0,
+                              sensor.unidad_medida_1, sensor.unidad_medida_2, sensor.unidad_medida_3,
+                              sensor.fecha_creacion, sensor.fecha_eliminacion))
+        esquema.remove_session()
+        return out
+    
+    @staticmethod
+    def listAllFromTypeAndZone(esquema: Esquema, tipo_sensor: TipoSensor, zona_sensor: ZonaSensor) -> List[SensorCommon]:
+        out: List[SensorCommon] = []
+        session: Session = esquema.new_session()
+        registros_sensor: List[Sensor] = SensorSet.listAllFromTypeAndZone(session,tipo_sensor,zona_sensor)
+        for sensor in registros_sensor:
+            out.append(SensorCommon(sensor.tipo_sensor,sensor.zona_sensor,sensor.numero_sensor,sensor.modelo_sensor, 
+                              sensor.direccion_lectura, sensor.patilla_0_lectura, sensor.patilla_1_lectura,
+                              sensor.patilla_2_lectura, sensor.patilla_3_lectura, sensor.unidad_medida_0,
+                              sensor.unidad_medida_1, sensor.unidad_medida_2, sensor.unidad_medida_3,
+                              sensor.fecha_creacion, sensor.fecha_eliminacion))
+        esquema.remove_session()
+        return out
+
+    @staticmethod
+    def listAllActiveFromTypeAndZone(esquema: Esquema, tipo_sensor: TipoSensor, zona_sensor: ZonaSensor) -> List[SensorCommon]:
+        out: List[SensorCommon] = []
+        session: Session = esquema.new_session()
+        registros_sensor: List[Sensor] = SensorSet.listAllActiveFromTypeAndZone(session,tipo_sensor,zona_sensor)
+        for sensor in registros_sensor:
+            out.append(SensorCommon(sensor.tipo_sensor,sensor.zona_sensor,sensor.numero_sensor,sensor.modelo_sensor, 
+                              sensor.direccion_lectura, sensor.patilla_0_lectura, sensor.patilla_1_lectura,
+                              sensor.patilla_2_lectura, sensor.patilla_3_lectura, sensor.unidad_medida_0,
+                              sensor.unidad_medida_1, sensor.unidad_medida_2, sensor.unidad_medida_3,
+                              sensor.fecha_creacion, sensor.fecha_eliminacion))
+        esquema.remove_session()
+        return out
+
+    @staticmethod
+    def listAllFromModel(esquema: Esquema, modelo_sensor: ModeloSensor) -> List[SensorCommon]:
+        out: List[SensorCommon] = []
+        session: Session = esquema.new_session()
+        registros_sensor: List[Sensor] = SensorSet.listAllFromModel(session,modelo_sensor)
+        for sensor in registros_sensor:
+            out.append(SensorCommon(sensor.tipo_sensor,sensor.zona_sensor,sensor.numero_sensor,sensor.modelo_sensor, 
+                              sensor.direccion_lectura, sensor.patilla_0_lectura, sensor.patilla_1_lectura,
+                              sensor.patilla_2_lectura, sensor.patilla_3_lectura, sensor.unidad_medida_0,
+                              sensor.unidad_medida_1, sensor.unidad_medida_2, sensor.unidad_medida_3,
+                              sensor.fecha_creacion, sensor.fecha_eliminacion))
+        esquema.remove_session()
+        return out
+
+    @staticmethod
+    def listAllActiveFromModel(esquema: Esquema, modelo_sensor: ModeloSensor) -> List[SensorCommon]:
+        out: List[SensorCommon] = []
+        session: Session = esquema.new_session()
+        registros_sensor: List[Sensor] = SensorSet.listAllActiveFromModel(session,modelo_sensor)
+        for sensor in registros_sensor:
+            out.append(SensorCommon(sensor.tipo_sensor,sensor.zona_sensor,sensor.numero_sensor,sensor.modelo_sensor, 
+                              sensor.direccion_lectura, sensor.patilla_0_lectura, sensor.patilla_1_lectura,
+                              sensor.patilla_2_lectura, sensor.patilla_3_lectura, sensor.unidad_medida_0,
+                              sensor.unidad_medida_1, sensor.unidad_medida_2, sensor.unidad_medida_3,
+                              sensor.fecha_creacion, sensor.fecha_eliminacion))
+        esquema.remove_session()
+        return out
 
     @staticmethod
     def get(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> SensorCommon:

@@ -97,6 +97,7 @@ class SensorPlantaSet():
 
         Args:
             - session (Session): Objeto de sesion.
+            - nombre_planta (str): Nombre de la planta asociada al sensor.
 
         Returns:
             - List[SensorPlanta]: Sensores asociados a una planta.
@@ -113,6 +114,7 @@ class SensorPlantaSet():
 
         Args:
             - session (Session): Objeto de sesion.
+            - nombre_planta (str): Nombre de la planta asociada al sensor.
 
         Returns:
             - List[SensorPlanta]: Sensores asociados a una planta.
@@ -129,6 +131,9 @@ class SensorPlantaSet():
 
         Args:
             - session (Session): Objeto de sesion.
+            - tipo_sensor (TipoSensor): Tipo de sensor.
+            - zona_sensor (ZonaSensor): Zona del sensor.
+            - numero_sensor (int): Numero de sensor.
 
         Returns:
             - List[SensorPlanta]: Sensores asociados a una planta.
@@ -145,6 +150,9 @@ class SensorPlantaSet():
 
         Args:
             - session (Session): Objeto de sesion.
+            - tipo_sensor (TipoSensor): Tipo de sensor.
+            - zona_sensor (ZonaSensor): Zona del sensor.
+            - numero_sensor (int): Numero de sensor.
 
         Returns:
             - List[SensorPlanta]: Sensores asociados a una planta.
