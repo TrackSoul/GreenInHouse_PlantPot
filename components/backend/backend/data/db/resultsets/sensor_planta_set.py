@@ -75,6 +75,22 @@ class SensorPlantaSet():
         return sensores_planta
 
     @staticmethod
+    def listAllActive(session: Session) -> List[SensorPlanta]:
+        """
+        Lista de sensores asociados a plantas.
+
+        Args:
+            - session (Session): Objeto de sesion.
+
+        Returns:
+            - List[SensorPlanta]: Sensores asociados a una planta.
+        """
+        sensores_planta = None
+        query = session.query(SensorPlanta).filter_by(fecha_anulacion=None)
+        sensores_planta: List[SensorPlanta] = query.all()
+        return sensores_planta
+
+    @staticmethod
     def listAllSensorsPlant(session: Session, nombre_planta:str) -> List[SensorPlanta]:
         """
         Lista de sensores asociados a una planta en concreto.
@@ -87,6 +103,54 @@ class SensorPlantaSet():
         """
         sensores_planta = None
         query = session.query(SensorPlanta).filter_by(nombre_planta=nombre_planta)
+        sensores_planta: List[SensorPlanta] = query.all()
+        return sensores_planta
+
+    @staticmethod
+    def listAllActiveSensorsPlant(session: Session, nombre_planta:str) -> List[SensorPlanta]:
+        """
+        Lista de sensores asociados a una planta en concreto.
+
+        Args:
+            - session (Session): Objeto de sesion.
+
+        Returns:
+            - List[SensorPlanta]: Sensores asociados a una planta.
+        """
+        sensores_planta = None
+        query = session.query(SensorPlanta).filter_by(nombre_planta=nombre_planta,fecha_anulacion=None)
+        sensores_planta: List[SensorPlanta] = query.all()
+        return sensores_planta
+
+    @staticmethod
+    def listAllPlantsSensor(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> List[SensorPlanta]:
+        """
+        Lista de sensores asociados a una planta en concreto.
+
+        Args:
+            - session (Session): Objeto de sesion.
+
+        Returns:
+            - List[SensorPlanta]: Sensores asociados a una planta.
+        """
+        sensores_planta = None
+        query = session.query(SensorPlanta).filter_by(tipo_sensor=tipo_sensor, zona_sensor=zona_sensor ,numero_sensor=numero_sensor)
+        sensores_planta: List[SensorPlanta] = query.all()
+        return sensores_planta
+
+    @staticmethod
+    def listAllActivePlantsSensor(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> List[SensorPlanta]:
+        """
+        Lista de sensores asociados a una planta en concreto.
+
+        Args:
+            - session (Session): Objeto de sesion.
+
+        Returns:
+            - List[SensorPlanta]: Sensores asociados a una planta.
+        """
+        sensores_planta = None
+        query = session.query(SensorPlanta).filter_by(tipo_sensor=tipo_sensor, zona_sensor=zona_sensor, numero_sensor=numero_sensor, fecha_anulacion=None)
         sensores_planta: List[SensorPlanta] = query.all()
         return sensores_planta
 
@@ -147,6 +211,7 @@ class SensorPlantaSet():
         try:
             query = session.query(SensorPlanta).filter_by(id_=id_)
             sensor_planta: SensorPlanta = query.one()
+            '''
             if sensor_planta.tipo_sensor != tipo_sensor:
                 query.update({'tipo_sensor' : tipo_sensor})
             if sensor_planta.zona_sensor != zona_sensor:
@@ -157,6 +222,7 @@ class SensorPlantaSet():
                 query.update({'nombre_planta' : nombre_planta})
             if sensor_planta.fecha_asociacion != fecha_asociacion:
                 query.update({'fecha_asociacion' : fecha_asociacion})
+            '''    
             if sensor_planta.fecha_anulacion != fecha_anulacion:
                 query.update({'fecha_anulacion' : fecha_anulacion})
             session.commit()

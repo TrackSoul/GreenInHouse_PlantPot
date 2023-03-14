@@ -66,8 +66,10 @@ for reg in RegistroSensorService.listAll(db):
 
 sensor_temperatura_y_humedad_ambiente_1.setPatillaLectura(24,0)
 sensor_temperatura_y_humedad_ambiente_1.setPatillaLectura(25,1)
-sensor_temperatura_y_humedad_ambiente_1.setFechaEliminacion(datetime.now())
+#sensor_temperatura_y_humedad_ambiente_1.setFechaEliminacion(datetime.now())
 sensor_temperatura_y_humedad_ambiente_1 =SensorService.updateFromCommon(db,sensor_temperatura_y_humedad_ambiente_1)
+
+sensor_temperatura_y_humedad_ambiente_1 =SensorService.unsubscribeFromCommon(db,sensor_temperatura_y_humedad_ambiente_1)
 
 tipo_planta_tomatera.setDescripcionPlanta("Planta sencilla de cultivar")
 tipo_planta_tomatera = RegistroTipoPlantaService.updateFromCommon(db,tipo_planta_tomatera)
@@ -75,8 +77,10 @@ tipo_planta_tomatera = RegistroTipoPlantaService.updateFromCommon(db,tipo_planta
 sensor_planta_1.setFechaAnulacion(datetime.now())
 sensor_planta_1 = SensorPlantaService.updateFromCommon(db,sensor_planta_1)
 
-planta_mi_tomatera2.setFechaMarchitacion(datetime.now())
-planta_mi_tomatera2 = RegistroPlantaService.updateFromCommon(db,planta_mi_tomatera2)
+#planta_mi_tomatera2.setFechaMarchitacion(datetime.now())
+#planta_mi_tomatera2 = RegistroPlantaService.updateFromCommon(db,planta_mi_tomatera2)
+
+planta_mi_tomatera2 = RegistroPlantaService.unsubscribeFromCommon(db,planta_mi_tomatera2)
 
 for reg in SensorService.listAll(db):
     print(str(reg))
@@ -90,20 +94,54 @@ print('*******************************************************************')
 for reg in RegistroPlantaService.listAllActive(db):
     print(str(reg))
 print('*******************************************************************')
-'''
-for reg in RegistroPlantaService.listAllFromType(db,tipo_planta_tomatera):
+for reg in RegistroPlantaService.listAllFromTypeFromCommon(db,tipo_planta_tomatera):
     print(str(reg))
 print('*******************************************************************')  
-for reg in RegistroPlantaService.listAllActiveFromType(db,tipo_planta_tomatera):
+for reg in RegistroPlantaService.listAllActiveFromTypeFromCommon(db,tipo_planta_tomatera):
     print(str(reg))
 print('*******************************************************************')   
-
-for reg in RegistroTipoPlantaService.listAll(db):
-    print(str(reg))
 for reg in SensorPlantaService.listAll(db):
     print(str(reg))       
-for reg in RegistroSensorService.listAll(db):
+print('*******************************************************************')   
+for reg in SensorPlantaService.listAllActive(db):
+    print(str(reg))       
+print('*******************************************************************')  
+for reg in SensorPlantaService.listAllSensorsPlantFromCommon(db,planta_mi_tomatera):
     print(str(reg))
+print('*******************************************************************')  
+for reg in SensorPlantaService.listAllActiveSensorsPlantFromCommon(db,planta_mi_tomatera):
+    print(str(reg))
+print('*******************************************************************')
+for reg in SensorPlantaService.listAllPlantsSensorFromCommon(db,sensor_temperatura_y_humedad_ambiente_1):
+    print(str(reg))
+print('*******************************************************************')  
+for reg in SensorPlantaService.listAllActivePlantsSensorFromCommon(db,sensor_temperatura_y_humedad_ambiente_1):
+    print(str(reg))
+
+SensorPlantaService.unsubscribeAllFromSensorFromCommon(db,sensor_planta_2)
+print('-------------------------------------------------------------------')  
+for reg in SensorPlantaService.listAllPlantsSensorFromCommon(db,sensor_planta_2):
+    print(str(reg))
+print('*******************************************************************')  
+for reg in SensorPlantaService.listAllActivePlantsSensorFromCommon(db,sensor_planta_2):
+    print(str(reg))
+
+SensorPlantaService.unsubscribeAllFromPlantFromCommon(db,planta_mi_tomatera)
+print('-------------------------------------------------------------------')  
+for reg in SensorPlantaService.listAllSensorsPlantFromCommon(db,planta_mi_tomatera):
+    print(str(reg))
+print('*******************************************************************')  
+for reg in SensorPlantaService.listAllActiveSensorsPlantFromCommon(db,planta_mi_tomatera):
+    print(str(reg))
+  
+
+'''
+for reg in RegistroTipoPlantaService.listAll(db):
+    print(str(reg))
+for reg in RegistroSensorService.listAll(db):
+    print(str(reg))    
+for reg in SensorPlantaService.listAll(db):
+    print(str(reg))       
 for reg in SensorPlantaService.listAllSensorsPlant(db,planta_mi_tomatera.getNombrePlanta()):
     print(str(reg))
 '''

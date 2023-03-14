@@ -5,6 +5,7 @@ from backend.data.db.esquema import Esquema
 from backend.data.db.results import Sensor
 from backend.data.db.resultsets import SensorSet
 from backend.data.util import Sensor as SensorBackend
+from backend.service import SensorPlantaService
 from common.data.util import Sensor as SensorCommon
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 
@@ -124,4 +125,17 @@ class SensorService():
                                     sensor.getPatillaLectura(1), sensor.getPatillaLectura(2), sensor.getPatillaLectura(3),
                                     sensor.getUnidadMedida(0), sensor.getUnidadMedida(1), sensor.getUnidadMedida(2), 
                                     sensor.getUnidadMedida(3), sensor.getFechaCreacion(), sensor.getFechaEliminacion())
+
+    @staticmethod
+    def unsubscribe(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> SensorCommon:
+        sensor: SensorCommon = SensorService.get(esquema, tipo_sensor, zona_sensor, numero_sensor)
+        if sensor.getFechaEliminacion() is None:
+            sensor.setFechaEliminacion(datetime.now())
+            sensor = SensorService.updateFromCommon(esquema, sensor)
+        SensorPlantaService.unsubscribeAllFromSensorFromCommon(esquema, sensor)
+        return sensor
+
+    @staticmethod
+    def unsubscribeFromCommon(esquema: Esquema, sensor: SensorCommon) -> SensorCommon:
+        return SensorService.unsubscribe(esquema, sensor.getTipoSensor(),sensor.getZonaSensor(),sensor.getNumeroSensor())
 

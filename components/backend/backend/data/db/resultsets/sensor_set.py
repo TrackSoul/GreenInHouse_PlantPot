@@ -195,8 +195,8 @@ class SensorSet():
         try:
             query = session.query(Sensor).filter_by(tipo_sensor=tipo_sensor,zona_sensor=zona_sensor,numero_sensor=numero_sensor)
             sensor: Sensor = query.one()
-            if sensor.modelo_sensor != modelo_sensor:
-                query.update({'modelo_sensor' : modelo_sensor})
+            #if sensor.modelo_sensor != modelo_sensor:
+                #query.update({'modelo_sensor' : modelo_sensor})
             if sensor.direccion_lectura != direccion_lectura:
                 query.update({'direccion_lectura' : direccion_lectura})
             if sensor.patilla_0_lectura != patilla_0_lectura:
