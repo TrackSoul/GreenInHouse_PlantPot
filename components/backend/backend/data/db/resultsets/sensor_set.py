@@ -93,6 +93,22 @@ class SensorSet():
         return sensores
 
     @staticmethod
+    def listAllActive(session: Session) -> List[Sensor]:
+        """
+        Lista con todos los sensores.
+
+        Args:
+            - session (Session): Objeto de sesion.
+
+        Returns:
+            - List[Sensor]: Lista de sensores.
+        """
+        sensores = None
+        query = session.query(Sensor).filter_by(fecha_eliminacion=None)
+        sensores: List[Sensor] = query.all()
+        return sensores
+
+    @staticmethod
     def get(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int,) -> Optional[Sensor]:
         """
         Obtencion de un sensor

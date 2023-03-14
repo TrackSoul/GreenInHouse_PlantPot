@@ -31,6 +31,8 @@ tipo_planta_tomatera = RegistroTipoPlantaCommon("Tomatera","Planta facil de cult
 tipo_planta_tomatera = RegistroTipoPlantaService.createFromCommon(db,tipo_planta_tomatera)
 planta_mi_tomatera = RegistroPlantaCommon("Mi tomatera","Tomatera")
 planta_mi_tomatera = RegistroPlantaService.createFromCommon(db,planta_mi_tomatera)
+planta_mi_tomatera2 = RegistroPlantaCommon("Mi tomatera 2","Tomatera")
+planta_mi_tomatera2 = RegistroPlantaService.createFromCommon(db,planta_mi_tomatera2)
 
 sensor_humedad_maceta_1 = SensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,"OTRO",patilla_0_lectura=20)
 
@@ -49,7 +51,7 @@ RegistroSensorService.create(db,TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,29.
 # RegistroSensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1.crearRegistroSensor(70.0,UnidadMedida.PORCENTAJE))
 # RegistroSensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1.crearRegistroSensor(22.0,UnidadMedida.GRADOS_CENTIGRADOS))
 
-        
+'''        
 for reg in SensorService.listAll(db):
     print(str(reg))
 for reg in RegistroPlantaService.listAll(db):
@@ -60,9 +62,11 @@ for reg in SensorPlantaService.listAll(db):
     print(str(reg))       
 for reg in RegistroSensorService.listAll(db):
     print(str(reg))
+'''
 
 sensor_temperatura_y_humedad_ambiente_1.setPatillaLectura(24,0)
 sensor_temperatura_y_humedad_ambiente_1.setPatillaLectura(25,1)
+sensor_temperatura_y_humedad_ambiente_1.setFechaEliminacion(datetime.now())
 sensor_temperatura_y_humedad_ambiente_1 =SensorService.updateFromCommon(db,sensor_temperatura_y_humedad_ambiente_1)
 
 tipo_planta_tomatera.setDescripcionPlanta("Planta sencilla de cultivar")
@@ -71,10 +75,29 @@ tipo_planta_tomatera = RegistroTipoPlantaService.updateFromCommon(db,tipo_planta
 sensor_planta_1.setFechaAnulacion(datetime.now())
 sensor_planta_1 = SensorPlantaService.updateFromCommon(db,sensor_planta_1)
 
+planta_mi_tomatera2.setFechaMarchitacion(datetime.now())
+planta_mi_tomatera2 = RegistroPlantaService.updateFromCommon(db,planta_mi_tomatera2)
+
 for reg in SensorService.listAll(db):
     print(str(reg))
+print('*******************************************************************')   
+for reg in SensorService.listAllActive(db):
+    print(str(reg))
+print('*******************************************************************')   
 for reg in RegistroPlantaService.listAll(db):
     print(str(reg))
+print('*******************************************************************')  
+for reg in RegistroPlantaService.listAllActive(db):
+    print(str(reg))
+print('*******************************************************************')
+'''
+for reg in RegistroPlantaService.listAllFromType(db,tipo_planta_tomatera):
+    print(str(reg))
+print('*******************************************************************')  
+for reg in RegistroPlantaService.listAllActiveFromType(db,tipo_planta_tomatera):
+    print(str(reg))
+print('*******************************************************************')   
+
 for reg in RegistroTipoPlantaService.listAll(db):
     print(str(reg))
 for reg in SensorPlantaService.listAll(db):
@@ -83,6 +106,7 @@ for reg in RegistroSensorService.listAll(db):
     print(str(reg))
 for reg in SensorPlantaService.listAllSensorsPlant(db,planta_mi_tomatera.getNombrePlanta()):
     print(str(reg))
+'''
 
 print(str(ModeloSensor.DHT11.getTipoSensor()))
 print(str(ModeloSensor.DHT11.getZonaSensor()))

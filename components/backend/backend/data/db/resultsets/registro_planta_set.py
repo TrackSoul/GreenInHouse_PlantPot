@@ -62,9 +62,27 @@ class RegistroPlantaSet():
         Returns:
             - List[RegistroPlanta]: Listado de registros de plantas.
         """
+        plantas = None
         query = session.query(RegistroPlanta)
-        return query.all()
-    
+        plantas: List[RegistroPlanta] = query.all()
+        return plantas
+
+    @staticmethod
+    def listAllActive(session: Session) -> List[RegistroPlanta]:
+        """
+        Listado de plantas.
+
+        Args:
+            - session (Session): Objeto de sesion.
+
+        Returns:
+            - List[RegistroPlanta]: Listado de registros de plantas.
+        """
+        plantas = None
+        query = session.query(RegistroPlanta).filter_by(fecha_marchitacion=None)
+        plantas: List[RegistroPlanta] = query.all()
+        return plantas
+
     @staticmethod
     def listAllFromType(session: Session, tipo_planta: str) -> List[RegistroPlanta]:
         """
@@ -78,6 +96,22 @@ class RegistroPlantaSet():
         """
         plantas_de_tipo = None
         query = session.query(RegistroPlanta).filter_by(tipo_planta=tipo_planta)
+        plantas_de_tipo: List[RegistroPlanta] = query.all()
+        return plantas_de_tipo
+
+    @staticmethod
+    def listAllActiveFromType(session: Session, tipo_planta: str) -> List[RegistroPlanta]:
+        """
+        Listado de plantas.
+
+        Args:
+            - session (Session): Objeto de sesion.
+
+        Returns:
+            - List[RegistroPlanta]: Listado de registros de plantas.
+        """
+        plantas_de_tipo = None
+        query = session.query(RegistroPlanta).filter_by(fecha_marchitacion=None,tipo_planta=tipo_planta)
         plantas_de_tipo: List[RegistroPlanta] = query.all()
         return plantas_de_tipo
 
@@ -136,6 +170,8 @@ class RegistroPlantaSet():
 
             if registro_planta.tipo_planta != tipo_planta:
                 query.update({'tipo_planta' : tipo_planta})
+            if registro_planta.fecha_marchitacion != fecha_marchitacion:
+                query.update({'fecha_marchitacion' : fecha_marchitacion})
             session.commit()
             registro_planta_modificado: RegistroPlanta = query.one() 
 

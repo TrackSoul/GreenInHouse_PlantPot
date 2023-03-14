@@ -45,6 +45,17 @@ class RegistroPlantaService():
                                             registro_planta.fecha_plantacion,registro_planta.fecha_marchitacion))
         esquema.remove_session()
         return out
+
+    @staticmethod
+    def listAllActive(esquema: Esquema) -> List[CommonRegistroPlanta]:
+        out: List[CommonRegistroPlanta] = []
+        session: Session = esquema.new_session()
+        registros_planta: List[RegistroPlanta] = RegistroPlantaSet.listAllActive(session)
+        for registro_planta in registros_planta:
+            out.append(CommonRegistroPlanta(registro_planta.nombre_planta,registro_planta.tipo_planta,
+                                            registro_planta.fecha_plantacion,registro_planta.fecha_marchitacion))
+        esquema.remove_session()
+        return out
     
     @staticmethod
     def listAllFromType(esquema: Esquema, tipo_planta: str) -> List[CommonRegistroPlanta]:
@@ -84,4 +95,5 @@ class RegistroPlantaService():
     
     @staticmethod
     def updateFromCommon(esquema: Esquema, registro_planta: CommonRegistroPlanta) -> CommonRegistroPlanta:
-        return RegistroPlantaService.update(esquema, registro_planta.getNombrePlanta(), registro_planta.getTipoPlanta())
+        return RegistroPlantaService.update(esquema, registro_planta.getNombrePlanta(),registro_planta.getTipoPlanta(),
+                                            registro_planta.getFechaPlantacion(), registro_planta.getFechaMarchitacion())
