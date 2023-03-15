@@ -4,7 +4,6 @@ from sqlalchemy.orm.session import Session # type: ignore
 from backend.data.db.esquema import Esquema
 from backend.data.db.results import Sensor
 from backend.data.db.resultsets import SensorSet
-from backend.data.util import Sensor as SensorBackend
 from backend.service import SensorPlantaService
 from common.data.util import Sensor as SensorCommon
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
