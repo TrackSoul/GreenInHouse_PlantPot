@@ -42,7 +42,7 @@ class UnidadMedida(Enum):
     GRADOS_CENTIGRADOS = 2, "ºC", [TipoMedida.TEMPERATURA]
     GRADOS_FARENHEIT = 3, "ºF", [TipoMedida.TEMPERATURA]   
     LUMENES = 4, "Lux", [TipoMedida.LUMINOSIDAD]
-    OTRO = 99, "Otra", [TipoMedida.OTRO]        
+    OTRO = 99, "Otro", [TipoMedida.OTRO]        
 
     def __new__(cls, value, nombre, 
                 tipos_medida: List[TipoMedida]):
