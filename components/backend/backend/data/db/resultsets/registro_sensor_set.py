@@ -35,15 +35,15 @@ class RegistroSensorSet():
         Returns:
             - Sensor: Registro creado del sensor.
         """
-        if not tipo_sensor:
+        if tipo_sensor is None:
             raise ValueError('Necesario especificar el tipo de sensor.')
-        if not zona_sensor:
+        if zona_sensor is None:
             raise ValueError('Necesario especificar la zona del sensor.')
-        if not numero_sensor:
+        if numero_sensor is None:
             raise ValueError('Necesario especificar el numero de sensor.')
-        if not valor:
+        if valor is None:
             raise ValueError('Necesario especificar el valor del sensor.')
-        if not unidad_medida:
+        if unidad_medida is None:
             raise ValueError('Necesario especificar la unidad_medida del sensor.')
         nuevo_registro_sensor: RegistroSensor = None
         try:

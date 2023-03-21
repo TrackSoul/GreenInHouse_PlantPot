@@ -36,13 +36,13 @@ class SensorPlantaSet():
         Returns:
             - SensorPlanta: Asociacion entre un sensor y una planta.
         """
-        if not tipo_sensor:
+        if tipo_sensor is None:
             raise ValueError('Necesario especificar el tipo de sensor asociado.')
-        if not zona_sensor:
+        if zona_sensor is None:
             raise ValueError('Necesario especificar la zona del sensor asociado.')
-        if not numero_sensor:
+        if numero_sensor is None:
             raise ValueError('Necesario especificar el numero de sensor asociado.')
-        if not nombre_planta:
+        if nombre_planta is None:
             raise ValueError('Necesario especificar el nombre de la planta asociada.')
         nuevo_sensor_planta = None
         try:

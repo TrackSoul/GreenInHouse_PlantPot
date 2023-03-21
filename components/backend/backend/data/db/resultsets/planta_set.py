@@ -32,9 +32,9 @@ class PlantaSet():
         Returns:
             - Sensor: Registro creado del sensor.
         """
-        if not nombre_planta:
+        if nombre_planta is None:
             raise ValueError('Necesario especificar el nombre de la planta.')
-        if not tipo_planta:
+        if tipo_planta is None:
             raise ValueError('Necesario especificar el tipo de la planta.')
         try:
             nuevo_planta = Planta(nombre_planta, tipo_planta, fecha_plantacion, fecha_marchitacion)

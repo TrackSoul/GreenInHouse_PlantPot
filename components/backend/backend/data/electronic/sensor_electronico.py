@@ -12,6 +12,10 @@ class SensorElectronico ():
         self.patilla_1_lectura:int = sensor_common.getPatillaLectura(1)
         self.patilla_2_lectura:int = sensor_common.getPatillaLectura(2)
         self.patilla_3_lectura:int = sensor_common.getPatillaLectura(3)
+        self.unidad_medida_0:UnidadMedida = sensor_common.getUnidadMedida(0)
+        self.unidad_medida_1:UnidadMedida = sensor_common.getUnidadMedida(1)
+        self.unidad_medida_2:UnidadMedida = sensor_common.getUnidadMedida(2)
+        self.unidad_medida_3:UnidadMedida = sensor_common.getUnidadMedida(3)
 
     def leer_sensor(self) -> List[Tuple[float, UnidadMedida]]:
         lista_valor_unidad_medida: List[Tuple[float, UnidadMedida]] = [[0.0,UnidadMedida.OTRO]]

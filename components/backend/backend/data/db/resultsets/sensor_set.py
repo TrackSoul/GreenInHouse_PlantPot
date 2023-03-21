@@ -48,15 +48,15 @@ class SensorSet():
         Returns:
             - Sensor: Sensor creado.
         """
-        if not tipo_sensor:
+        if tipo_sensor is None:
             raise ValueError('Necesario especificar el tipo de sensor.')
-        if not zona_sensor:
+        if zona_sensor is None:
             raise ValueError('Necesario especificar la zona del sensor.')
-        if not numero_sensor:
+        if numero_sensor is None:
             raise ValueError('Necesario especificar el numero de sensor.')
-        if not modelo_sensor:
+        if modelo_sensor is None:
             raise ValueError('Necesario especificar el modelo del sensor.')
-        if not direccion_lectura and not patilla_0_lectura:
+        if direccion_lectura is None and patilla_0_lectura is None:
             raise ValueError('Necesario especificar la direccion o patilla de lectura del sensor.')
         nuevo_sensor = None
         try:
