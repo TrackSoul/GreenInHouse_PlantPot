@@ -7,3 +7,4 @@ from .registro_sensor_service import RegistroSensorService
 from .planta_service import PlantaService
 from .tipo_planta_service import TipoPlantaService
 from .sensor_service import SensorService
+from .general_service import GeneralService

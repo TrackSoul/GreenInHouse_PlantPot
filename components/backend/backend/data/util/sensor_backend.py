@@ -12,18 +12,18 @@ class SensorBackend():
         self.sensor_common: SensorCommon = sensor_common
         self.sensor_electronico: SensorElectronico = FactoriaSensor.getSensorElectronico(sensor_common)
 
-    def crearRegistroSensor(self, valor: float, unidad_medida: UnidadMedida) -> RegistroSensorCommon:
+    def createRecordSensor(self, valor: float, unidad_medida: UnidadMedida) -> RegistroSensorCommon:
         return RegistroSensorCommon(self.sensor_common.getTipoSensor(),self.sensor_common.getZonaSensor(),
                                     self.sensor_common.getNumeroSensor(),valor,unidad_medida)
 
-    def crearRegistrosSensor(self, lista_valor_unidad_medida: List[Tuple[float, UnidadMedida]]) -> List[RegistroSensorCommon]:
+    def createRecordsSensor(self, lista_valor_unidad_medida: List[Tuple[float, UnidadMedida]]) -> List[RegistroSensorCommon]:
         lista_registros_sensor  = []
         for registro_sensor in lista_valor_unidad_medida:
-            lista_registros_sensor.append(self.crearRegistroSensor(registro_sensor[0],registro_sensor[1]))
+            lista_registros_sensor.append(self.createRecordSensor(registro_sensor[0],registro_sensor[1]))
         return lista_registros_sensor
 
-    def leerSesnorYCrearRegistros(self) -> List[RegistroSensorCommon]:
+    def readSensorAndCreateRecords(self) -> List[RegistroSensorCommon]:
         lista_registros_sensor  = []
         registro = self.sensor_electronico.leer_sensor()
-        lista_registros_sensor = self.crearRegistrosSensor(registro)
+        lista_registros_sensor = self.createRecordsSensor(registro)
         return lista_registros_sensor

@@ -6,7 +6,7 @@ from backend.data.db.results import RegistroSensor, Sensor
 from backend.data.config import BackendConfiguration
 from backend.data.db import Esquema
 from backend.data.util import SensorBackend
-from backend.service import SensorService, RegistroSensorService, PlantaService, TipoPlantaService, SensorPlantaService
+from backend.service import SensorService, RegistroSensorService, PlantaService, TipoPlantaService, SensorPlantaService, GeneralService
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 from common.data.util import Planta as PlantaCommon, TipoPlanta as TipoPlantaCommon
 from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon, SensorPlanta as SensorPlantaCommon
@@ -68,11 +68,17 @@ sensor_planta_2 = SensorPlantaService.createRelationFromCommon(db,sensor_humedad
 sensor_planta_3 = SensorPlantaService.createRelationFromCommon(db,sensor_temperatura_ambiente_1,planta_mi_tomatera_2)
 sensor_planta_4 = SensorPlantaService.createRelationFromCommon(db,sensor_temperatura_y_humedad_ambiente_1,planta_mi_tomatera_2)
 
-
+'''
 RegistroSensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.AMBIENTE,1,65.0, UnidadMedida.PORCENTAJE)
 RegistroSensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,65.0,UnidadMedida.PORCENTAJE)
 RegistroSensorService.create(db,TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,29.0,UnidadMedida.GRADOS_CENTIGRADOS)
 RegistroSensorService.create(db,TipoSensor.TEMPERATURA_Y_HUMEDAD,ZonaSensor.AMBIENTE,1,29.0,UnidadMedida.GRADOS_CENTIGRADOS)
+        
+# RegistroSensorService.createFromCommon(db,sensor_humedad_ambiente_1.crearRegistroSensor(75.0,UnidadMedida.PORCENTAJE))
+# RegistroSensorService.createFromCommon(db,sensor_temperatura_ambiente_1.crearRegistroSensor(19.0,UnidadMedida.GRADOS_CENTIGRADOS))
+# RegistroSensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1.crearRegistroSensor(70.0,UnidadMedida.PORCENTAJE))
+# RegistroSensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1.crearRegistroSensor(22.0,UnidadMedida.GRADOS_CENTIGRADOS))
+'''
 
 '''
 sensor_temperatura_y_humedad_ambiente_1_backend = SensorBackend(sensor_temperatura_y_humedad_ambiente_1)
@@ -81,16 +87,8 @@ for registro in sensor_temperatura_y_humedad_ambiente_1_backend.leerSesnorYCrear
     RegistroSensorService.createFromCommon(db,registro)
 '''
 
-for sensor in SensorService.listAllActive(db):
-    for registro in SensorBackend(sensor).leerSesnorYCrearRegistros():
-        RegistroSensorService.createFromCommon(db,registro)
+GeneralService.readActiveSensorsAndSaveRecords(db)
 
-
-        
-# RegistroSensorService.createFromCommon(db,sensor_humedad_ambiente_1.crearRegistroSensor(75.0,UnidadMedida.PORCENTAJE))
-# RegistroSensorService.createFromCommon(db,sensor_temperatura_ambiente_1.crearRegistroSensor(19.0,UnidadMedida.GRADOS_CENTIGRADOS))
-# RegistroSensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1.crearRegistroSensor(70.0,UnidadMedida.PORCENTAJE))
-# RegistroSensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1.crearRegistroSensor(22.0,UnidadMedida.GRADOS_CENTIGRADOS))
 
 SensorService.unsubscribeFromCommon(db,sensor_humedad_ambiente_1)
 for reg in SensorService.listAll(db):
@@ -162,8 +160,3 @@ for reg in RegistroSensorService.listAll(db):
     print(str(reg))
 print('*******************************************************************')  
 print('-------------------------------------------------------------------')
-
-'''
-print(str(ModeloSensor.DHT11.getTipoSensor()))
-print(str(ModeloSensor.DHT11.getZonaSensor()))
-'''
