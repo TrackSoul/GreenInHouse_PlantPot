@@ -1,0 +1,11 @@
+#Configurar tarjeta de red wifi
+
+
+#Configurar SSH
+
+
+
+#Configurar hostname
+#hacer un script incremental que busque el hostname disponible
+
+ping -c 4 GreenInHouse
