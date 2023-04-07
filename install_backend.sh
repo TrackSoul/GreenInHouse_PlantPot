@@ -31,6 +31,7 @@ pip install flask connexion sqlalchemy==2.0.0b3 pyyaml
 pip install connexion[swagger-ui]
 pip install gpiod
 pip install adafruit-circuitpython-dht
+pip install adafruit-circuitpython-mcp3xxx
 
 cd "$original_path"
 ./deploy_backend.sh

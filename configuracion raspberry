@@ -2,10 +2,17 @@
 
 
 #Configurar SSH
-
+#https://blog.jhordyess.com/programacion-remota-en-raspberry-pi-con-ssh-y-visual-studio-code
+sudo adduser green-in-house-remoto ssh
+sudo adduser green-in-house-remoto spi
+sudo adduser green-in-house-remoto i2c
 
 
 #Configurar hostname
 #hacer un script incremental que busque el hostname disponible
 
 ping -c 4 GreenInHouse
+
+
+#hay que activar el spi y ssh
+
