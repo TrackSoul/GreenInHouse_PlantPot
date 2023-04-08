@@ -26,12 +26,12 @@ mkdir -p venv_backend
 cd "$path_install"/venv_backend
 python3 -m venv .venv
 source "$path_install"/venv_backend/.venv/bin/activate
-pip install --upgrade pip setuptools wheel
-pip install flask connexion sqlalchemy==2.0.0b3 pyyaml
-pip install connexion[swagger-ui]
-pip install gpiod
-pip install adafruit-circuitpython-dht
-pip install adafruit-circuitpython-mcp3xxx
+pip3 install --upgrade pip setuptools wheel
+pip3 install flask connexion sqlalchemy==2.0.0b3 pyyaml
+pip3 install connexion[swagger-ui]
+pip3 install gpiod
+pip3 install adafruit-circuitpython-dht
+pip3 install adafruit-circuitpython-mcp3xxx
 
 cd "$original_path"
 ./deploy_backend.sh

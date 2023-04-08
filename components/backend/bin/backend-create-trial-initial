@@ -10,8 +10,6 @@ from backend.service import SensorService, RegistroSensorService, PlantaService,
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 from common.data.util import Planta as PlantaCommon, TipoPlanta as TipoPlantaCommon
 from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon, SensorPlanta as SensorPlantaCommon
-import board
-import adafruit_mcp3xxx.mcp3008 as MCP
 
 cfg: BackendConfiguration = BackendConfiguration()
 #cfg.load_from_file(cfg.default_config_file())
@@ -28,16 +26,16 @@ sensor_temperatura_y_humedad_ambiente_1 =SensorService.create(db,TipoSensor.TEMP
                                                               unidad_medida_0=UnidadMedida.PORCENTAJE, unidad_medida_1=UnidadMedida.GRADOS_CENTIGRADOS)
 #Sensores conectados a MCP3008
 sensor_humedad_maceta_1 = SensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,ModeloSensor.FC28,
-                                               direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P0, 
+                                               direccion_lectura="MCP3008",patilla_0_lectura=0, 
                                                unidad_medida_0=UnidadMedida.PORCENTAJE)
 sensor_luminosidad_ambiente_1 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,1,ModeloSensor.LDR,
-                                                    direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P1, 
+                                                    direccion_lectura="MCP3008",patilla_0_lectura=1,
                                                     unidad_medida_0=UnidadMedida.LUMENES)
 sensor_luminosidad_ambiente_2 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,2,ModeloSensor.LDR,
-                                                    direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P2, 
+                                                    direccion_lectura="MCP3008",patilla_0_lectura=2,
                                                     unidad_medida_0=UnidadMedida.LUMENES)
 sensor_luminosidad_ambiente_3 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,3,ModeloSensor.LDR,
-                                                    direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P3, 
+                                                    direccion_lectura="MCP3008",patilla_0_lectura=3,
                                                     unidad_medida_0=UnidadMedida.LUMENES)
 
 

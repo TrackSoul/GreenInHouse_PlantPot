@@ -1,4 +1,5 @@
 from .sensor_electronico import SensorElectronico
+from .sensor_electronico_MCP3008 import SensorElectronicoMCP3008
 from .sensor_electronico_DHT11 import SensorElectronicoDHT11
 from .sensor_electronico_FC28 import SensorElectronicoFC28
 from .sensor_electronico_LDR import SensorElectronicoLDR
