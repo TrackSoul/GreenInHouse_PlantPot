@@ -3,8 +3,8 @@
 
 import adafruit_dht
 import board
-import json
 import time
+import json
 
 dhtDevice = adafruit_dht.DHT11(board.D20, use_pulseio=False)
 dhtDevice._trig_wait = 1500

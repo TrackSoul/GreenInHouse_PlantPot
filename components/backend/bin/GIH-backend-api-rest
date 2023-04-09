@@ -48,15 +48,12 @@ if __name__ == '__main__':
 
     root_logger = logging.getLogger()
     root_logger.addHandler(default_handler)
-    
-
-
-    '''
+ 
     app.run(
         host=cfg.get_service_host(),
         port=cfg.get_service_port(),
         debug=cfg.get_debug_flag(),
         use_reloader=False
     )
-    '''
+
 

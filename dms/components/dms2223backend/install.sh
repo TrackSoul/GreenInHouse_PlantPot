@@ -11,4 +11,4 @@ popd
 rm -R "${TEMP_DIR}"
 
 # Create initial data
-dms2223backend-create-initial
+dms2223GIH-backend-create-initial

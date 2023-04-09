@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # Create initial data
-backend-create-initial
+GIH-backend-create-initial

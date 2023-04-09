@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+
+import os
+import inspect
+import logging
+import connexion  # type: ignore
+from typing import Dict
+from flask import Flask
+from flask import current_app
+from flask.logging import default_handler
+
+from authlib.jose import JsonWebSignature  # type: ignore
+#from connexion.apps.flask_app import FlaskJSONEncoder
+
+import backend
+from backend.data.config import BackendConfiguration
+from backend.data.db import Esquema
+
+from backend.service import SensorService, RegistroSensorService, PlantaService, TipoPlantaService, SensorPlantaService, ElectronicSensorService
+from common.data.util import TipoSensor, ZonaSensor, Planta as PlantaCommon, TipoPlanta as TipoPlantaCommon
+from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon, SensorPlanta as SensorPlantaCommon
+
+if __name__ == '__main__':
+    cfg: BackendConfiguration = BackendConfiguration()
+    #cfg.load_from_file(cfg.default_config_file())
+    db: Esquema = Esquema(cfg)
+    ElectronicSensorService.readActiveSensorsAndSaveRecords(db)
+
+

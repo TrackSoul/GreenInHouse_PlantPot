@@ -13,7 +13,7 @@ class ReporteRespuesta(ResultBase):
 
     def __init__(self,descripcion:str, creador:str, estado:ReportStatus,id_respuesta : int,fecha:str):
         """ Constructor method.
-        Initializes a answer record.
+        GIH-initializes a answer record.
         Args:
             - id_respuesta (int): A int with the question's id.
         """

@@ -10,7 +10,7 @@ from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroS
 from common.data.util import TipoPlanta as TipoPlantaCommon, SensorPlanta as SensorPlantaCommon
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 
-class GeneralService():
+class ElectronicSensorService():
     
     @staticmethod
     def readSensor(esquema: Esquema, sensor: SensorCommon) -> List[RegistroSensorCommon]:
@@ -20,13 +20,13 @@ class GeneralService():
     def readSensors(esquema: Esquema, sensores: List[SensorCommon]) -> List[RegistroSensorCommon]:
         registros: List[RegistroSensorCommon] = []
         for sensor in sensores:
-            for registro in GeneralService.readSensor(esquema, sensor):
+            for registro in ElectronicSensorService.readSensor(esquema, sensor):
                 registros.append(registro)
         return registros       
 
     @staticmethod
     def readActiveSensors(esquema: Esquema) -> List[RegistroSensorCommon]:
-        return GeneralService.readSensors(esquema, SensorService.listAllActive(esquema))      
+        return ElectronicSensorService.readSensors(esquema, SensorService.listAllActive(esquema))      
 
     @staticmethod
     def SaveRecord(esquema: Esquema, registro: RegistroSensorCommon) -> List[RegistroSensorCommon]:
@@ -35,22 +35,22 @@ class GeneralService():
     @staticmethod
     def SaveRecords(esquema: Esquema, registros: List[RegistroSensorCommon]) -> List[RegistroSensorCommon]:
         for registro in registros:
-            GeneralService.SaveRecord(esquema,registro)
+            ElectronicSensorService.SaveRecord(esquema,registro)
 
     @staticmethod
     def readSensorAndSaveRecords(esquema: Esquema, sensor: SensorCommon) -> List[RegistroSensorCommon]:
-        registros: List[RegistroSensorCommon] = GeneralService.readSensor(esquema, sensor)
-        GeneralService.SaveRecords(esquema, registros)
+        registros: List[RegistroSensorCommon] = ElectronicSensorService.readSensor(esquema, sensor)
+        ElectronicSensorService.SaveRecords(esquema, registros)
         return registros      
 
     @staticmethod
     def readSensorsAndSaveRecords(esquema: Esquema, sensores: List[SensorCommon]) -> List[RegistroSensorCommon]:
-        registros: List[RegistroSensorCommon] = GeneralService.readSensors(esquema, sensores)
-        GeneralService.SaveRecords(esquema, registros)
+        registros: List[RegistroSensorCommon] = ElectronicSensorService.readSensors(esquema, sensores)
+        ElectronicSensorService.SaveRecords(esquema, registros)
         return registros 
 
     @staticmethod
     def readActiveSensorsAndSaveRecords(esquema: Esquema) -> List[RegistroSensorCommon]:
-        registros: List[RegistroSensorCommon] = GeneralService.readActiveSensors(esquema)
-        GeneralService.SaveRecords(esquema, registros)
+        registros: List[RegistroSensorCommon] = ElectronicSensorService.readActiveSensors(esquema)
+        ElectronicSensorService.SaveRecords(esquema, registros)
         return registros 

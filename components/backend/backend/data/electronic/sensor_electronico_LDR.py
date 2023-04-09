@@ -5,11 +5,11 @@ from common.data.util import Sensor as SensorCommon
 
 class SensorElectronicoLDR (SensorElectronicoMCP3008):
 
-    def __init__(self, sensor_common: SensorCommon):
+    def __init__(self, sensor_common: SensorCommon, R_o = 10, R_l = 1, R_c = 10):
         super().__init__(sensor_common)
-        self.R_o = 10;     #Resistencia en oscuridad en KΩ
-        self.R_l = 1;      #Resistencia a la luz (10 Lux) en KΩ
-        self.R_c = 10;     #Resistencia calibracion en KΩ
+        self.R_o = R_o     #Resistencia en oscuridad en KΩ
+        self.R_l = R_l     #Resistencia a la luz (10 Lux) en KΩ
+        self.R_c = R_c     #Resistencia calibracion en KΩ
 
 
     def leer_sensor(self) -> List[Tuple[float, UnidadMedida]]:

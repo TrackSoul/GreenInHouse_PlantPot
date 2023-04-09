@@ -23,7 +23,7 @@ class BackendService():
         ):
         """ Constructor method.
 
-        Initializes the client.
+        GIH-initializes the client.
 
         Args:
             - host (str): The backend service host string.

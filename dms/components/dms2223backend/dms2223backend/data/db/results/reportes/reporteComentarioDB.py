@@ -13,7 +13,7 @@ class ReporteComentario(ResultBase):
 
     def __init__(self,descripcion:str, creador:str, estado:ReportStatus,id_comentario : int,fecha:str):
         """ Constructor method.
-        Initializes a report record.
+        GIH-initializes a report record.
         Args:
             - id_comentario (int): A int with the question's id.
         """

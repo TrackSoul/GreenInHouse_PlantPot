@@ -4,7 +4,7 @@ This service provides authentication functionalities to the appliance.
 
 ## Installation
 
-Run `./install.sh` for an automated installation.
+Run `./GIH-install.sh` for an automated installation.
 
 To manually install the service:
 
@@ -13,7 +13,7 @@ To manually install the service:
 pip3 install .
 #   (run this instead to install locally in "editable mode"):
 # pip3 install --user -e .
-# Initialize the administrator user admin (password: admin)
+# GIH-initialize the administrator user admin (password: admin)
 dms2223auth-create-admin
 ```
 

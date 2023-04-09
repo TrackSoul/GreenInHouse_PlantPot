@@ -15,7 +15,7 @@ class User(ResultBase):
     def __init__(self, username: str, password: str):
         """ Constructor method.
 
-        Initializes a user record.
+        GIH-initializes a user record.
 
         Args:
             - username (str): A string with the user name.

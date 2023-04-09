@@ -37,7 +37,7 @@ class Schema:
     #TODO
     def __init__(self, config: BackendConfiguration):
         """ Constructor method.
-        Initializes the schema, deploying it if necessary.
+        GIH-initializes the schema, deploying it if necessary.
         Args:
             - config (AuthConfiguration): The instance with the schema connection parameters.
         Raises:

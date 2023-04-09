@@ -1,4 +1,4 @@
 #!/bin/bash
 
 #run app
-backend
+GIH-backend-api-rest

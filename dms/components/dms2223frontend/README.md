@@ -4,7 +4,7 @@ This frontend serves as the human interface for the other services of the applia
 
 ## Installation
 
-Run `./install.sh` for an automated installation.
+Run `./GIH-install.sh` for an automated installation.
 
 To manually install the service:
 

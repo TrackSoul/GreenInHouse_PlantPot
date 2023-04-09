@@ -11,7 +11,7 @@ class VotosComentario(ResultBase):
 
     def __init__(self, usuario:str,id_comentario:int):
         """ Constructor method.
-        Initializes a answer record.
+        GIH-initializes a answer record.
         Args:
             - id_pregunta (int): A int with the question's id.
             - content (str): A string with the answer of a question

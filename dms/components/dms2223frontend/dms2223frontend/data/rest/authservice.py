@@ -19,7 +19,7 @@ class AuthService():
                  ):
         """ Constructor method.
 
-        Initializes the client.
+        GIH-initializes the client.
 
         Args:
             - host (str): The authentication service host string.

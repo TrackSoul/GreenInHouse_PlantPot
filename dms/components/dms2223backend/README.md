@@ -4,7 +4,7 @@ This service provides backend logic to the appliance.
 
 ## Installation
 
-Run `./install.sh` for an automated installation.
+Run `./GIH-install.sh` for an automated installation.
 
 To manually install the service:
 

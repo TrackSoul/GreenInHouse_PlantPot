@@ -1,3 +1,5 @@
+#TODO
+
 # DO NOT PUT THE WIFI DONGLE IN THE DEVICE BEFORE MENTIONED EXPLICITLY BELOW
 
 # Brief note, after this the UI will not show the usb dongle, 

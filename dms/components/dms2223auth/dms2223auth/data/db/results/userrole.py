@@ -13,7 +13,7 @@ class UserRole(ResultBase):
     def __init__(self, username: str, role: Role):
         """ Constructor method.
 
-        Initializes a user role record.
+        GIH-initializes a user role record.
 
         Args:
             - username (str): A string with the user name.
