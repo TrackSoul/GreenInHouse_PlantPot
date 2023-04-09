@@ -1,3 +1,6 @@
-[2023-04-09 06:26:28,820] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+[2023-04-09 07:17:52,610] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on http://127.0.0.1:5000
-[2023-04-09 06:26:28,821] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-04-09 07:17:52,612] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-04-09 07:18:40,894] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-04-09 07:18:40,896] INFO in _internal: [33mPress CTRL+C to quit[0m
