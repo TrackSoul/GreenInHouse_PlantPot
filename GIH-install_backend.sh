@@ -12,21 +12,23 @@ original_path=$(pwd)
 path_home=/GreenInHouse
 path_install=/GreenInHouse/src
 path_db=/GreenInHouse/db
+path_venv=/GreenInHouse/venv
 
 mkdir -p "$path_home"
 mkdir -p "$path_install"
 mkdir -p "$path_db"
+mkdir -p "$path_venv"
 
 #cp -a "$original_path"/. "$path_install"
-cd "$path_install"
+cd "$path_venv"
 
 #venv api rest - bd
 mkdir -p venv_backend
-cd "$path_install"/venv_backend
+cd "$path_venv"/venv_backend
 mkdir -p venv_backend_api_rest
-cd "$path_install"/venv_backend/venv_backend_api_rest
+cd "$path_venv"/venv_backend/venv_backend_api_rest
 python3 -m venv .venv
-source "$path_install"/venv_backend/venv_backend_api_rest/.venv/bin/activate
+source "$path_venv"/venv_backend/venv_backend_api_rest/.venv/bin/activate
 pip3 install --upgrade pip setuptools wheel
 pip3 install flask connexion sqlalchemy==2.0.0b3 pyyaml
 pip3 install connexion[swagger-ui]
@@ -40,11 +42,11 @@ cd "$original_path"/components/backend
 ./GIH-install.sh
 
 #venv sensors - db
-cd "$path_install"/venv_backend
+cd "$path_venv"/venv_backend
 mkdir -p venv_backend_sensors
-cd "$path_install"/venv_backend/venv_backend_sensors
+cd "$path_venv"/venv_backend/venv_backend_sensors
 python3 -m venv .venv
-source "$path_install"/venv_backend/venv_backend_sensors/.venv/bin/activate
+source "$path_venv"/venv_backend/venv_backend_sensors/.venv/bin/activate
 pip3 install --upgrade pip setuptools wheel
 pip3 install sqlalchemy==2.0.0b3 pyyaml
 pip3 install gpiod

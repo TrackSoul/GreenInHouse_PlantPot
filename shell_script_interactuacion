@@ -1,0 +1,37 @@
+path_install=/GreenInHouse/src
+path_venv=/GreenInHouse/venv
+
+source "$path_venv"/venv_backend/venv_backend_sensors/.venv/bin/activate
+cd "$path_install"/components
+python3
+
+
+import os
+import inspect
+import logging
+import connexion  # type: ignore
+from datetime import datetime
+from typing import Union, List, Dict
+from flask import Flask
+from flask import current_app
+from flask.logging import default_handler
+from authlib.jose import JsonWebSignature  # type: ignore
+import backend
+import common
+from backend.data.config import BackendConfiguration
+from sqlalchemy.orm.session import Session
+from backend.data.db.esquema import Esquema
+from backend.data.db.results import Sensor, Planta, RegistroSensor, TipoPlanta, SensorPlanta
+from backend.data.db.resultsets import SensorSet,PlantaSet, RegistroSensorSet, TipoPlantaSet, SensorPlantaSet
+from backend.service import SensorService, PlantaService, RegistroSensorService, TipoPlantaService, SensorPlantaService
+from backend.data.util import SensorBackend
+from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon, Planta as PlantaCommon
+from common.data.util import TipoPlanta as TipoPlantaCommon, SensorPlanta as SensorPlantaCommon
+from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
+
+cfg: BackendConfiguration = BackendConfiguration()
+#cfg.load_from_file(cfg.default_config_file())
+db: Esquema = Esquema(cfg)
+
+
+sensores_activos=SensorService.listAllActive(db)

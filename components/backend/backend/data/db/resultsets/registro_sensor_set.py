@@ -3,9 +3,10 @@ from typing import List, Optional
 from sqlalchemy.exc import IntegrityError  # type: ignore
 from sqlalchemy.orm.session import Session  # type: ignore
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore
-from backend.data.db.results import RegistroSensor
+from backend.data.db.results import RegistroSensor, Sensor
 from backend.data.db.exc import ErrorSensorExiste, ErrorSensorNoExiste, ErrorRegistroSensorExiste, ErrorRegistroSensorNoExiste
 from common.data.util import TipoSensor, ZonaSensor, TipoMedida, UnidadMedida
+from common.data.util import Sensor as SensorCommon
 
 class RegistroSensorSet():
     """ 
@@ -13,7 +14,7 @@ class RegistroSensorSet():
     """
     @staticmethod
     def create(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
-               valor:float, unidad_medida: UnidadMedida, fecha: datetime ) -> RegistroSensor:
+               valor:float, unidad_medida: UnidadMedida, fecha: datetime = datetime.now()) -> RegistroSensor:
         """
         Creacion de un nuevo registro de un sensor
 
@@ -72,6 +73,44 @@ class RegistroSensorSet():
         """
         query = session.query(RegistroSensor)
         return query.all()
+
+    @staticmethod
+    def listAllFromSensor(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> List[RegistroSensor]:
+        """
+        Lista con todos los sensores.
+
+        Args:
+            - session (Session): Objeto de sesion.
+            - tipo_sensor (TipoSensor): Tipo de sensor.
+
+        Returns:
+            - List[Sensor]: Lista de sensores.
+        """
+        sensores = None
+        query = session.query(RegistroSensor).filter_by(tipo_sensor=tipo_sensor, zona_sensor=zona_sensor, numero_sensor=numero_sensor)
+        sensores: List[RegistroSensor] = query.all()
+        return sensores
+
+    @staticmethod
+    def listAllFromTypeBetwewnDates(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensor]:
+        """
+        Lista con todos los sensores.
+
+        Args:
+            - session (Session): Objeto de sesion.
+            - tipo_sensor (TipoSensor): Tipo de sensor.
+
+        Returns:
+            - List[Sensor]: Lista de sensores.
+        """
+        sensores = None
+        query = session.query(RegistroSensor).filter(RegistroSensor.tipo_sensor == tipo_sensor, RegistroSensor.zona_sensor == zona_sensor,
+                                                     RegistroSensor.numero_sensor == numero_sensor, RegistroSensor.fecha >= fecha_inicio, RegistroSensor.fecha <= fecha_fin)
+        sensores: List[RegistroSensor] = query.all()
+        return sensores
+
+    #@staticmethod
+    #def listAllFromTypeFromCommonBetwewnDates(session: Session, sensor: SensorCommon, fecha_fin: datetime = datetime.now()) -> List[RegistroSensor]:        
 
     @staticmethod
     def get(session: Session, id_: str) -> Optional[RegistroSensor]:

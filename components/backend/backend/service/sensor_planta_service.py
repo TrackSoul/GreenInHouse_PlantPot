@@ -213,3 +213,6 @@ class SensorPlantaService():
     @staticmethod
     def unsubscribeAllFromPlantFromCommon(esquema: Esquema, planta: PlantaCommon) -> List[SensorPlantaCommon]:
         return SensorPlantaService.unsubscribeAllFromPlant(esquema, planta.getNombrePlanta())
+
+    #TODO
+    #unsibscribeFromSensorAndPlantFromCommon

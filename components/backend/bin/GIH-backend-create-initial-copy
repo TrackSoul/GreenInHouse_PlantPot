@@ -55,15 +55,6 @@ sensor_planta_5 = SensorPlantaService.createRelationFromCommon(db,sensor_luminos
 
 ElectronicSensorService.readActiveSensorsAndSaveRecords(db)
 
-SensorPlantaService.unsubscribeFromCommon(db,sensor_planta_5)
-
-ElectronicSensorService.readActiveSensorsAndSaveRecords(db)
-
-sensor_planta_6 = SensorPlantaService.createRelationFromCommon(db,sensor_luminosidad_ambiente_3,planta_mi_tomatera)
-
-ElectronicSensorService.readActiveSensorsAndSaveRecords(db)
-
-'''
 for reg in SensorService.listAll(db):
     print(str(reg))
 print('*******************************************************************')   
@@ -117,4 +108,3 @@ for reg in RegistroSensorService.listAll(db):
     print(str(reg))
 print('*******************************************************************')  
 print('-------------------------------------------------------------------')
-'''
