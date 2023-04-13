@@ -16,18 +16,16 @@ class BackendConfiguration(ServiceConfiguration):
             - str: A string identifying the component which will categorize the configuration.
         """
 
-        return 'GreenInHouseBackend'
+        return 'GreenInHouse/cfg'
 
     def __init__(self):
         """ Initialization/constructor method.
         """
-
         ServiceConfiguration.__init__(self)
-
         self.set_db_connection_string('sqlite:////GreenInHouse/db/GreenInHouseBackend.sqlite3.db')
-        self.set_service_host('127.0.0.1')#('172.10.1.20')#
+        self.set_service_host('192.168.1.19')
         self.set_service_port(5000)
-        self.set_debug_flag(True)
+        self.set_debug_flag(False)
         #TODO
         self.set_password_salt('This salt should be changed ASAP')
         #TODO
@@ -42,7 +40,6 @@ class BackendConfiguration(ServiceConfiguration):
             - values (Dict): A dictionary of configuration values.
         """
         ServiceConfiguration._set_values(self, values)
-
         if 'db_connection_string' in values:
             self.set_db_connection_string(values['db_connection_string'])
         if 'salt' in values:

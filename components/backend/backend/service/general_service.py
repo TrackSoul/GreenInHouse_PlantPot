@@ -16,4 +16,4 @@ class GeneralService():
         lista_registros: List[RegistroSensorCommon] = []
         for sensor in SensorPlantaService.listAllSensorsPlantFromCommon(esquema, planta):
 
-            print(str(reg))   
+            print(str(sensor))   

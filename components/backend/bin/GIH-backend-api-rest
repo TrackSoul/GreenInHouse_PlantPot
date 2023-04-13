@@ -20,9 +20,23 @@ from backend.service import SensorService, RegistroSensorService, PlantaService,
 from common.data.util import TipoSensor, ZonaSensor, Planta as PlantaCommon, TipoPlanta as TipoPlantaCommon
 from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon, SensorPlanta as SensorPlantaCommon
 
+import socket
+
 if __name__ == '__main__':
     cfg: BackendConfiguration = BackendConfiguration()
-    #cfg.load_from_file(cfg.default_config_file())
+    cfg.load_from_file(cfg.default_config_file())
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # doesn't even have to be reachable
+        s.connect(('192.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except:
+        IP = '127.0.0.1'
+    finally:
+        s.close()
+    cfg.set_service_host(IP)
+
     db: Esquema = Esquema(cfg)
     jws: JsonWebSignature = JsonWebSignature()
 

@@ -22,7 +22,7 @@ from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroS
 
 if __name__ == '__main__':
     cfg: BackendConfiguration = BackendConfiguration()
-    #cfg.load_from_file(cfg.default_config_file())
+    cfg.load_from_file(cfg.default_config_file())
     db: Esquema = Esquema(cfg)
     
     for reg in SensorService.listAll(db):

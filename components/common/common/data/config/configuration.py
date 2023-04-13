@@ -20,7 +20,7 @@ class Configuration(ABC):
             - str: A string identifying the component which will categorize the configuration.
         """
 
-        return ''
+        return '/GreenInHouse/cfg/'
 
     def default_config_file(self) -> str:
         """ Path of the default configuration file.
@@ -29,7 +29,7 @@ class Configuration(ABC):
             - str: A string with the path of the default configuration file.
         """
 
-        return os.path.join(user_config_dir(self._component_name()), 'config.yml')
+        return os.path.join(self._component_name(), 'config.yml')
 
     def __init__(self):
         """ Initialization/constructor method.

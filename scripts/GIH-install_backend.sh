@@ -1,6 +1,8 @@
 #!/bin/bash
 #ejecutar con sudo
 
+./GIH-stop_backend.sh './GIH-install'
+
 apt-get update
 apt-get upgrade
 apt-get install python3-dev python3-pip
@@ -10,16 +12,18 @@ apt-get install nmap
 
 original_path=$(pwd)
 path_home=/GreenInHouse
-path_install=/GreenInHouse/src
-path_db=/GreenInHouse/db
-path_venv=/GreenInHouse/venv
+path_script="$path_home"/script
+path_db="$path_home"/db
+path_venv="$path_home"/venv
 
 mkdir -p "$path_home"
-mkdir -p "$path_install"
+mkdir -p "$path_script"
 mkdir -p "$path_db"
 mkdir -p "$path_venv"
+if [ ! -d "$path_script"/script_log ]; then
+    mkdir "$path_script"/script_log
+fi
 
-#cp -a "$original_path"/. "$path_install"
 cd "$path_venv"
 
 #venv api rest - bd
@@ -36,11 +40,6 @@ pip3 install gpiod
 pip3 install adafruit-circuitpython-dht
 pip3 install adafruit-circuitpython-mcp3xxx
 
-cd "$original_path"/components/common
-./GIH-install.sh
-cd "$original_path"/components/backend
-./GIH-install.sh
-
 #venv sensors - db
 cd "$path_venv"/venv_backend
 mkdir -p venv_backend_sensors
@@ -53,12 +52,6 @@ pip3 install gpiod
 pip3 install adafruit-circuitpython-dht
 pip3 install adafruit-circuitpython-mcp3xxx
 
-cd "$original_path"/components/common
-./GIH-install.sh
-cd "$original_path"/components/backend
-./GIH-install.sh
-
 cd "$original_path"
 ./GIH-deploy_backend.sh
 
-chmod -R 777 "$path_home"

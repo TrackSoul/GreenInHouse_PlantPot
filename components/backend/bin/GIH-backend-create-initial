@@ -14,7 +14,7 @@ import board
 import adafruit_mcp3xxx.mcp3008 as MCP
 
 cfg: BackendConfiguration = BackendConfiguration()
-#cfg.load_from_file(cfg.default_config_file())
+cfg.load_from_file(cfg.default_config_file())
 db: Esquema = Esquema(cfg)
 
 #datos de inicializacion del sistema

@@ -6,7 +6,6 @@ from sqlalchemy.orm.exc import NoResultFound  # type: ignore
 from backend.data.db.results import RegistroSensor, Sensor
 from backend.data.db.exc import ErrorSensorExiste, ErrorSensorNoExiste, ErrorRegistroSensorExiste, ErrorRegistroSensorNoExiste
 from common.data.util import TipoSensor, ZonaSensor, TipoMedida, UnidadMedida
-from common.data.util import Sensor as SensorCommon
 
 class RegistroSensorSet():
     """ 
@@ -69,40 +68,20 @@ class RegistroSensorSet():
             - session (Session): Objeto de sesion.
 
         Returns:
-            - List[User]: Lista de registros del sensor.
+            - List[RegistroSensor]: Lista de registros del sensor.
         """
         query = session.query(RegistroSensor)
         return query.all()
 
     @staticmethod
     def listAllFromSensor(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> List[RegistroSensor]:
-        """
-        Lista con todos los sensores.
-
-        Args:
-            - session (Session): Objeto de sesion.
-            - tipo_sensor (TipoSensor): Tipo de sensor.
-
-        Returns:
-            - List[Sensor]: Lista de sensores.
-        """
         sensores = None
         query = session.query(RegistroSensor).filter_by(tipo_sensor=tipo_sensor, zona_sensor=zona_sensor, numero_sensor=numero_sensor)
         sensores: List[RegistroSensor] = query.all()
         return sensores
 
     @staticmethod
-    def listAllFromTypeBetwewnDates(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensor]:
-        """
-        Lista con todos los sensores.
-
-        Args:
-            - session (Session): Objeto de sesion.
-            - tipo_sensor (TipoSensor): Tipo de sensor.
-
-        Returns:
-            - List[Sensor]: Lista de sensores.
-        """
+    def listAllFromSensorBetwewnDates(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensor]:
         sensores = None
         query = session.query(RegistroSensor).filter(RegistroSensor.tipo_sensor == tipo_sensor, RegistroSensor.zona_sensor == zona_sensor,
                                                      RegistroSensor.numero_sensor == numero_sensor, RegistroSensor.fecha >= fecha_inicio, RegistroSensor.fecha <= fecha_fin)
@@ -118,10 +97,10 @@ class RegistroSensorSet():
 
         Args:
             - session (Session): Objeto de sesion.
-            - id_ (str): The question id_ to find
+            - id_ (str): Id del registro
             
         Returns:
-            - Optional[Pregunta]: The question 
+            - Optional[RegistroSensor]: Registro del sensor
         """
         if not id_:
             raise ValueError('An id_ is requiered.')
