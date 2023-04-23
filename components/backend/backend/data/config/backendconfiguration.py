@@ -23,7 +23,7 @@ class BackendConfiguration(ServiceConfiguration):
         """
         ServiceConfiguration.__init__(self)
         self.set_db_connection_string('sqlite:////GreenInHouse/db/GreenInHouseBackend.sqlite3.db')
-        self.set_service_host('192.168.1.19')
+        self.set_service_host('127.0.0.1')
         self.set_service_port(5000)
         self.set_debug_flag(False)
         #TODO

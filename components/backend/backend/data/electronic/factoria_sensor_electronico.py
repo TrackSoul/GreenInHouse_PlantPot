@@ -4,7 +4,7 @@ from enum import Enum
 from common.data.util import Sensor as SensorCommon
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 from backend.data.electronic import SensorElectronico, SensorElectronicoDHT11, SensorElectronicoFC28, SensorElectronicoLDR, SensorElectronicoLM35
-class FactoriaSensor ():
+class FactoriaSensorElectronico ():
 
     @staticmethod
     def getSensorElectronico(sensor_common: SensorCommon) -> SensorElectronico :

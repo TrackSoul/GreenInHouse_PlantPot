@@ -40,7 +40,7 @@ if __name__ == '__main__':
             IP = '127.0.0.1'
         finally:
             s.close()
-    print(IP)
+    print("Servidor API-REST desplegado en la ip: ", IP)
     cfg.set_service_host(IP)
 
     db: Esquema = Esquema(cfg)
