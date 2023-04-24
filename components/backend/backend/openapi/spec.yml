@@ -1,24 +1,21 @@
 openapi: 3.0.0
 info:
-  title: DMS backend service REST API
+  title: GIH backend service REST API
   version: "1.0"
   description: |
-    REST API for the backend service.
+    REST API del servicio de backend.
 
-    This is part of the mandatory exercise.
+    Autor: Oscar Valverde Escobar.
 
-    For simplicity, [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) is not used
-    although it is highly recommended in actual production scenarios.
-
-    Diseño y Mantenimiento del Software.
+    Green In House.
     Grado en Ingeniería Informática, Universidad de Burgos, 2022-2023.
   contact:
     name: Universidad de Burgos
 tags:
+  - name: servidor
+    description: Operaciones sobre el propio servidor (query de estado del servidor).
   - name: sensors
-    description: Operations relating with sensors.
-  - name: server
-    description: Operations about the server itself (e.g., server status querying)
+    description: Operaciones relaccionadas con los sensores.
 servers:
   - url: /api/v1
 
@@ -27,14 +24,14 @@ paths:
     head:
       summary: Health test for the service
       description: |
-        Use this operation to verify the server is running successfully and the
-        API is reachable.
+        Utilizar esta operacion para verificar que el servidor está corriendo
+        y que la API es alcanzable
       operationId: backend.presentation.rest.server.health_test
       responses:
         "204":
           $ref: "#/components/responses/Empty"
       tags:
-        - server
+        - servidor
 
 #   /questions:
 #     get:
@@ -973,7 +970,7 @@ components:
 #       required: true
   responses:
     Empty:
-      description: An empty content.
+      description: Respuesta con contenido vacio.
       content:
         "text/plain":
           schema:

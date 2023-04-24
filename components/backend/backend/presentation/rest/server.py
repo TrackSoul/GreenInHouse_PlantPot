@@ -1,5 +1,6 @@
 import json
 import time
+import flask
 from typing import Dict, Tuple, Optional
 from http import HTTPStatus
 from flask import current_app

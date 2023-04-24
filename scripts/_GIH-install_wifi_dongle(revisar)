@@ -87,6 +87,7 @@ iface default inet dhcp
 
 ## STEP 5: Connect to wifi
 
+# /etc/wpa_supplicant/wpa_supplicant.conf
 # The file `wpa_supplicant.conf` might already exist and might have some lines, add these below:
 ```
 network={

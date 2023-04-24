@@ -16,7 +16,7 @@ import backend
 from backend.data.config import BackendConfiguration
 from backend.data.db import Esquema
 
-from backend.service import SensorService, RegistroSensorService, PlantaService, TipoPlantaService, SensorPlantaService #, ElectronicSensorService #DELETEC COMMENT#
+from backend.service import SensorService, RegistroSensorService, PlantaService, TipoPlantaService, SensorPlantaService
 from common.data.util import TipoSensor, ZonaSensor, Planta as PlantaCommon, TipoPlanta as TipoPlantaCommon
 from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon, SensorPlanta as SensorPlantaCommon
 
