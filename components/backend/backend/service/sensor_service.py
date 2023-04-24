@@ -5,7 +5,7 @@ from backend.data.db.esquema import Esquema
 from backend.data.db.results import Sensor
 from backend.data.db.resultsets import SensorSet
 from backend.service import SensorPlantaService
-from common.data.util import Sensor as SensorCommon
+from common.data.util import Sensor as SensorCommon, SensorPlanta as SensorPlantaCommon
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 
 class SensorService():
@@ -203,6 +203,11 @@ class SensorService():
                           sensor.fecha_creacion, sensor.fecha_eliminacion)
         esquema.remove_session()
         return out
+    
+    @staticmethod
+    def getSensorFromRelationFromCommon(esquema: Esquema, sensor_planta : SensorPlantaCommon) -> SensorCommon:
+        return SensorService.get(esquema, sensor_planta.getTipoSensor(), sensor_planta.getZonaSensor(), sensor_planta.getNumeroSensor())
+
 
     @staticmethod
     def update(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 

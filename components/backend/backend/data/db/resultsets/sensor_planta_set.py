@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import List, Optional
+from sqlalchemy import or_, and_
 from sqlalchemy.exc import IntegrityError  # type: ignore
 from sqlalchemy.orm.session import Session  # type: ignore
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore
@@ -91,7 +92,7 @@ class SensorPlantaSet():
         return sensores_planta
 
     @staticmethod
-    def listAllSensorsPlant(session: Session, nombre_planta:str) -> List[SensorPlanta]:
+    def listAllSensorsPerPlant(session: Session, nombre_planta:str) -> List[SensorPlanta]:
         """
         Lista de sensores asociados a una planta en concreto.
 
@@ -108,7 +109,7 @@ class SensorPlantaSet():
         return sensores_planta
 
     @staticmethod
-    def listAllActiveSensorsPlant(session: Session, nombre_planta:str) -> List[SensorPlanta]:
+    def listAllActiveSensorsPerPlant(session: Session, nombre_planta:str) -> List[SensorPlanta]:
         """
         Lista de sensores asociados a una planta en concreto.
 
@@ -123,9 +124,27 @@ class SensorPlantaSet():
         query = session.query(SensorPlanta).filter_by(nombre_planta=nombre_planta,fecha_anulacion=None)
         sensores_planta: List[SensorPlanta] = query.all()
         return sensores_planta
+    
+    @staticmethod
+    def listAllSensorsPerPlantBetweenDates(session: Session, nombre_planta:str, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[SensorPlanta]:
+        """
+        Lista de sensores asociados a una planta en concreto.
+
+        Args:
+            - session (Session): Objeto de sesion.
+            - nombre_planta (str): Nombre de la planta asociada al sensor.
+
+        Returns:
+            - List[SensorPlanta]: Sensores asociados a una planta.
+        """
+        sensores_planta = None
+        query = session.query(SensorPlanta).filter(SensorPlanta.nombre_planta == nombre_planta, SensorPlanta.fecha_asociacion >= fecha_inicio, 
+                                                   or_(SensorPlanta.fecha_anulacion.is_(None), SensorPlanta.fecha_anulacion <= fecha_fin))
+        sensores_planta: List[SensorPlanta] = query.all()
+        return sensores_planta
 
     @staticmethod
-    def listAllPlantsSensor(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> List[SensorPlanta]:
+    def listAllPlantsPerSensor(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> List[SensorPlanta]:
         """
         Lista de sensores asociados a una planta en concreto.
 
@@ -144,7 +163,7 @@ class SensorPlantaSet():
         return sensores_planta
 
     @staticmethod
-    def listAllActivePlantsSensor(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> List[SensorPlanta]:
+    def listAllActivePlantsPerSensor(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> List[SensorPlanta]:
         """
         Lista de sensores asociados a una planta en concreto.
 
@@ -159,6 +178,25 @@ class SensorPlantaSet():
         """
         sensores_planta = None
         query = session.query(SensorPlanta).filter_by(tipo_sensor=tipo_sensor, zona_sensor=zona_sensor, numero_sensor=numero_sensor, fecha_anulacion=None)
+        sensores_planta: List[SensorPlanta] = query.all()
+        return sensores_planta
+    
+    @staticmethod
+    def listAllPlantsPerSensorBetweenDates(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[SensorPlanta]:
+        """
+        Lista de sensores asociados a una planta en concreto.
+
+        Args:
+            - session (Session): Objeto de sesion.
+            - nombre_planta (str): Nombre de la planta asociada al sensor.
+
+        Returns:
+            - List[SensorPlanta]: Sensores asociados a una planta.
+        """
+        sensores_planta = None
+        query = session.query(SensorPlanta).filter(SensorPlanta.tipo_sensor == tipo_sensor, SensorPlanta.zona_sensor == zona_sensor, 
+                                                   SensorPlanta.numero_sensor == numero_sensor, SensorPlanta.fecha_asociacion > fecha_inicio, 
+                                                   or_(SensorPlanta.fecha_anulacion == None, SensorPlanta.fecha_anulacion < fecha_fin))
         sensores_planta: List[SensorPlanta] = query.all()
         return sensores_planta
 

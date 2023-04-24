@@ -5,7 +5,7 @@ from backend.data.db.esquema import Esquema
 from backend.data.db.results import Planta,  TipoPlanta
 from backend.data.db.resultsets import PlantaSet
 from backend.service import SensorPlantaService
-from common.data.util import Planta as PlantaCommon
+from common.data.util import Planta as PlantaCommon, SensorPlanta as SensorPlantaCommon
 
 class PlantaService():
 
@@ -91,11 +91,15 @@ class PlantaService():
     @staticmethod
     def get(esquema: Esquema, nombre_planta: str) -> PlantaCommon:
         session: Session = esquema.new_session()
-        planta: PlantaCommon = PlantaSet.get(session, nombre_planta)
+        planta: Planta = PlantaSet.get(session, nombre_planta)
         out= PlantaCommon(planta.nombre_planta,planta.tipo_planta,
                                   planta.fecha_plantacion,planta.fecha_marchitacion)
         esquema.remove_session()
         return out
+    
+    @staticmethod
+    def getPlantFromRelationFromCommon(esquema: Esquema, sensor_planta : SensorPlantaCommon) -> PlantaCommon:
+        return PlantaService.get(esquema, sensor_planta.getNombrePlanta())
 
     @staticmethod
     def update(esquema: Esquema, nombre_planta: str, tipo_planta: str, 

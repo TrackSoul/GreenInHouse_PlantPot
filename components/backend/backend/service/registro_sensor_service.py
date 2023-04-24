@@ -80,13 +80,13 @@ class RegistroSensorService():
     
     @staticmethod
     def listAllFromSensorFromCommon(esquema: Esquema, sensor: SensorCommon) -> List[RegistroSensor]:
-        return RegistroSensorService.listAllFromSensor(esquema, sensor.tipo_sensor, sensor.zona_sensor, sensor.numero_sensor)
+        return RegistroSensorService.listAllFromSensor(esquema, sensor.getTipoSensor(), sensor.getZonaSensor(), sensor.getNumeroSensor())
 
     @staticmethod
-    def listAllFromSensorBetwewnDates(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensor]:
+    def listAllFromSensorBetweenDates(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensor]:
         out: List[RegistroSensorCommon] = []
         session: Session = esquema.new_session()
-        registros_sensor: List[RegistroSensor] = RegistroSensorSet.listAllFromSensorBetwewnDates(session, tipo_sensor, zona_sensor, numero_sensor,fecha_inicio,fecha_fin)
+        registros_sensor: List[RegistroSensor] = RegistroSensorSet.listAllFromSensorBetweenDates(session, tipo_sensor, zona_sensor, numero_sensor,fecha_inicio,fecha_fin)
         for registro_sensor in registros_sensor:
             out.append(RegistroSensorCommon(registro_sensor.tipo_sensor,registro_sensor.zona_sensor,
                                       registro_sensor.numero_sensor,registro_sensor.valor, 
@@ -96,8 +96,8 @@ class RegistroSensorService():
         return out
 
     @staticmethod
-    def listAllFromTypeFromCommonBetwewnDatesFromCommon(esquema: Esquema, sensor: SensorCommon,  fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensor]:
-        return RegistroSensorService.listAllFromSensor(esquema, sensor.tipo_sensor, sensor.zona_sensor, sensor.numero_sensor, fecha_inicio, fecha_fin)
+    def listAllFromSensorFromCommonBetweenDates(esquema: Esquema, sensor: SensorCommon,  fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensor]:
+        return RegistroSensorService.listAllFromSensorBetweenDates(esquema, sensor.getTipoSensor(), sensor.getZonaSensor(), sensor.getNumeroSensor(), fecha_inicio, fecha_fin)
 
     @staticmethod
     def get(esquema: Esquema, id_ : int) -> RegistroSensorCommon:

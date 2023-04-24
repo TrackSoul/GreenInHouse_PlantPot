@@ -88,19 +88,19 @@ print('*******************************************************************')
 for reg in SensorPlantaService.listAllActive(db):
     print(str(reg))       
 print('*******************************************************************')  
-for reg in SensorPlantaService.listAllSensorsPlantFromCommon(db,planta_mi_tomatera):
+for reg in SensorPlantaService.listAllSensorsPerPlantFromCommon(db,planta_mi_tomatera):
     print(str(reg))
 print('*******************************************************************')  
-for reg in SensorPlantaService.listAllActiveSensorsPlantFromCommon(db,planta_mi_tomatera):
+for reg in SensorPlantaService.listAllActiveSensorsPerPlantFromCommon(db,planta_mi_tomatera):
     print(str(reg))
 print('*******************************************************************')
 print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
 
 print('*******************************************************************')  
-for reg in SensorPlantaService.listAllPlantsSensorFromCommon(db,sensor_temperatura_y_humedad_ambiente_1):
+for reg in SensorPlantaService.listAllPlantsPerSensorFromCommon(db,sensor_temperatura_y_humedad_ambiente_1):
     print(str(reg))
 print('*******************************************************************')  
-for reg in SensorPlantaService.listAllActivePlantsSensorFromCommon(db,sensor_temperatura_y_humedad_ambiente_1):
+for reg in SensorPlantaService.listAllActivePlantsPerSensorFromCommon(db,sensor_temperatura_y_humedad_ambiente_1):
     print(str(reg))
 print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
 

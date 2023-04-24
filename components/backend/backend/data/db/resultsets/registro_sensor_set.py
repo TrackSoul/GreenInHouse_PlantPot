@@ -81,15 +81,12 @@ class RegistroSensorSet():
         return sensores
 
     @staticmethod
-    def listAllFromSensorBetwewnDates(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensor]:
+    def listAllFromSensorBetweenDates(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensor]:
         sensores = None
         query = session.query(RegistroSensor).filter(RegistroSensor.tipo_sensor == tipo_sensor, RegistroSensor.zona_sensor == zona_sensor,
                                                      RegistroSensor.numero_sensor == numero_sensor, RegistroSensor.fecha >= fecha_inicio, RegistroSensor.fecha <= fecha_fin)
         sensores: List[RegistroSensor] = query.all()
         return sensores
-
-    #@staticmethod
-    #def listAllFromTypeFromCommonBetwewnDates(session: Session, sensor: SensorCommon, fecha_fin: datetime = datetime.now()) -> List[RegistroSensor]:        
 
     @staticmethod
     def get(session: Session, id_: str) -> Optional[RegistroSensor]:

@@ -19,7 +19,7 @@ class SensorPlanta(ModuloBase):
         self.numero_sensor: int = numero_sensor
         self.nombre_planta: str = nombre_planta
         self.fecha_asociacion: datetime = fecha_asociacion
-        self.fecha_anualacion: datetime = fecha_anulacion
+        self.fecha_anulacion: datetime = fecha_anulacion
 
     @staticmethod
     def _table_definition(metadata: MetaData) -> Table:
