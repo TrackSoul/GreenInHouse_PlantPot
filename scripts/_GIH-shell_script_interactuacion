@@ -27,7 +27,7 @@ from backend.service import SensorService, PlantaService, RegistroSensorService,
 from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon, Planta as PlantaCommon
 from common.data.util import TipoPlanta as TipoPlantaCommon, SensorPlanta as SensorPlantaCommon
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
-#from backend.data.util import SensorBackend #DELETEC COMMENT #
+from backend.data.util import SensorBackend #DELETEC COMMENT #
 
 cfg: BackendConfiguration = BackendConfiguration()
 cfg.load_from_file(cfg.default_config_file())

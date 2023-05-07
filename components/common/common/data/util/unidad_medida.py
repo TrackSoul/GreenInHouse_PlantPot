@@ -68,3 +68,10 @@ class UnidadMedida(Enum):
         #except IndexError as ex:
         else:
             return TipoMedida.SIN_TIPO
+    
+    def toJson(self) -> dict:
+        dic={}
+        dic["value"]=int(self)
+        dic["nombre"]=str(self)
+        dic["tipos_medida"]=self.getTiposMedida()
+        return dict

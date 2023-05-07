@@ -27,6 +27,12 @@ class TipoMedida(Enum):
     def __str__(self):
         return self.__nombre
 
+    def toJson(self) -> dict:
+        dic={}
+        dic["value"]=int(self)
+        dic["nombre"]=str(self)
+        return dict
+
 '''
 
 from typing import List

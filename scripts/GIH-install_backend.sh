@@ -9,6 +9,10 @@ apt-get install python3-dev python3-pip
 apt install python3.8-venv
 apt install sqlite3
 apt-get install nmap
+apt install network-manager
+
+#change permisions of wpa_spplicant.conf to permit update network form app
+sudo chmod 666 /etc/wpa_supplicant/wpa_supplicant.conf
 
 original_path=$(pwd)
 path_home=/GreenInHouse
@@ -25,7 +29,6 @@ if [ ! -d "$path_script"/script_log ]; then
 fi
 
 cd "$path_venv"
-
 #venv api rest - bd
 mkdir -p venv_backend
 cd "$path_venv"/venv_backend
@@ -52,6 +55,21 @@ pip3 install gpiod
 pip3 install adafruit-circuitpython-dht
 pip3 install adafruit-circuitpython-mcp3xxx
 
+cd "$path_venv"
+#venv app rpi
+mkdir -p venv_frontend
+cd "$path_venv"/venv_frontend
+mkdir -p venv_frontend_app_rpi
+cd "$path_venv"/venv_frontend/venv_frontend_app_rpi
+python3 -m venv .venv
+source "$path_venv"/venv_frontend/venv_frontend_app_rpi/.venv/bin/activate
+pip3 install --upgrade pip setuptools wheel
+pip3 install sqlalchemy==2.0.0b3 pyyaml
+pip3 install gpiod
+pip3 install adafruit-circuitpython-dht
+pip3 install adafruit-circuitpython-mcp3xxx
+pip3 install tk
+
 cd "$original_path"
 ./GIH-deploy_backend.sh
-
+./GIH-deploy_frontend.sh

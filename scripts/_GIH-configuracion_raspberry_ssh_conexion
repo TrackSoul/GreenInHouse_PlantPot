@@ -16,3 +16,4 @@ ping -c 4 GreenInHouse
 
 #hay que activar el spi y ssh
 
+sudo chmod 666 /etc/wpa_supplicant/wpa_supplicant.conf

@@ -1,6 +1,8 @@
 {
     "python.analysis.extraPaths": [
         "./components/backend",
-        "./components/common"
+        "./components/common",
+        "./components/frontend",
+        "./pruebas"
     ]
 }
