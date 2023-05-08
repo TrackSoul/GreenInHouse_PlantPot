@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./GIH-stop_backend.sh './GIH-deploy'
+./GIH-stop.sh './GIH-deploy' './GIH-reinstall' './GIH-install'
 
 cd ..
 original_path=$(pwd)
@@ -21,7 +21,7 @@ rm -rfd "$path_cfg"
 cp -af "$original_path"/config "$path_cfg"
 chmod -R 777 "$path_cfg"
 
-source "$path_venv"/venv_backend/venv_frontend/venv_frontend_app_rpi/.venv/bin/activate
+source "$path_venv"/venv_frontend/venv_frontend/venv_frontend_app_rpi/.venv/bin/activate
 cd "$original_path"/components/common
 ./GIH-install.sh
 cd "$original_path"/components/frontend

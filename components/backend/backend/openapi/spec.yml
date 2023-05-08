@@ -651,56 +651,56 @@ components:
       description: Empty content model.
       type: string
       nullable: true
-    TypeSensorModel:
-      description: Type sensor model.
-      type: object
-      properties:
-        tipo_sensor:
+    # TypeSensorModel:
+    #   description: Type sensor model.
+    #   type: object
+    #   properties:
+    #     tipo_sensor:
 
-    SensorModel:
-      type: object
-      properties:
-        tipo_sensor:
-          type: integer
-        zona_sensor:
-          type: string
-        numero_sensor:
-          type: number
-        modelo_sensor:
-          type:
-        direccion_lectura:
-          type:
-        patilla_0_lectura:
-          type:
-        patilla_1_lectura:
-          type:
-          nullable: true
-        patilla_2_lectura:
-          type:
-          nullable: true
-        patilla_3_lectura:
-          type:
-          nullable: true
-        unidad_medida_0:
-          type:
-        unidad_medida_1:
-          type:
-          nullable: true
-        unidad_medida_2:
-          type:
-          nullable: true
-        unidad_medida_3:
-          type:
-          nullable: true
-        fecha_creacion:
-          type:
-        fecha_eliminacion:
-          type:
-          nullable: true
-      required:
-        - qid
-        - title
-        - timestamp
+    # SensorModel:
+    #   type: object
+    #   properties:
+    #     tipo_sensor:
+    #       type: integer
+    #     zona_sensor:
+    #       type: string
+    #     numero_sensor:
+    #       type: number
+    #     modelo_sensor:
+    #       type:
+    #     direccion_lectura:
+    #       type:
+    #     patilla_0_lectura:
+    #       type:
+    #     patilla_1_lectura:
+    #       type:
+    #       nullable: true
+    #     patilla_2_lectura:
+    #       type:
+    #       nullable: true
+    #     patilla_3_lectura:
+    #       type:
+    #       nullable: true
+    #     unidad_medida_0:
+    #       type:
+    #     unidad_medida_1:
+    #       type:
+    #       nullable: true
+    #     unidad_medida_2:
+    #       type:
+    #       nullable: true
+    #     unidad_medida_3:
+    #       type:
+    #       nullable: true
+    #     fecha_creacion:
+    #       type:
+    #     fecha_eliminacion:
+    #       type:
+    #       nullable: true
+    #   required:
+    #     - qid
+    #     - title
+    #     - timestamp
 #     QuestionStubModel:
 #       allOf:
 #         - $ref: "#/components/schemas/QuestionCoreModel"

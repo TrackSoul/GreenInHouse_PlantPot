@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./GIH-stop_backend.sh './GIH-deploy'
+./GIH-stop.sh './GIH-deploy' './GIH-reinstall' './GIH-install'
 
 cd ..
 original_path=$(pwd)

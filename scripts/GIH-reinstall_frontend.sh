@@ -9,6 +9,6 @@ path_venv=/GreenInHouse/venv
 
 #rm -rfd "$path_install"
 rm -rfd "$path_script"
-rm -rfd "$path_venv"/venv_backend
+rm -rfd "$path_venv"/venv_frontend
 
-./GIH-install_backend.sh
+./GIH-install_frontend.sh
