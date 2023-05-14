@@ -44,13 +44,14 @@ class Planta:
         return texto
 
     def toJson(self) -> Dict:
-        dict={}
-        dict["nombre_planta"]=self.getNombrePlanta()
-        dict["tipo_planta"]=self.getTipoPlanta()
-        dict["fecha_plantacion"]=self.getFechaPlantacion()
-        dict["fecha_marchitacion"]=self.setFechaMarchitacion()
-        return dict
+        dic={}
+        dic["nombre_planta"]=self.getNombrePlanta()
+        dic["tipo_planta"]=self.getTipoPlanta()
+        dic["fecha_plantacion"]=self.getFechaPlantacion()
+        dic["fecha_marchitacion"]=self.setFechaMarchitacion()
+        return dic
 
-    def fromJson(dict: dict):
-        planta = Planta(dict["nombre_planta"],dict["tipo_planta"],dict["fecha_plantacion"],dict["fecha_marchitacion"])
+    def fromJson(dic: dict):
+        planta = Planta(dic["nombre_planta"],dic["tipo_planta"],dic["fecha_plantacion"],
+                        dic["fecha_marchitacion"])
         return planta

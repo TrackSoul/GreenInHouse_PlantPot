@@ -44,17 +44,24 @@ class RegistroSensor:
         return texto
 
     def toJson(self) -> Dict:
-        dict={}
-        dict["id_"]=self.getId()
-        dict["tipo_sensor"]=self.getTipoSensor()
-        dict["zona_sensor"]=self.getZonaSensor()
-        dict["numero_sensor"]=self.getNumeroSensor()
-        dict["valor"]=self.getValor()
-        dict["unidad_medida"]=self.getUnidadMedida()
-        dict["fecha"]=self.getFecha()#.isoformat()
-        return dict
+        dic={}
+        dic["id_"]=self.getId()
+        dic["tipo_sensor"]={"str": str(self.getTipoSensor()),
+                            "tipo": self.getTipoSensor().getTipo()}
+        #dic["tipo_sensor"]=self.getTipoSensor().toJson()
+        dic["zona_sensor"]={"str": str(self.getZonaSensor()),
+                            "tipo": self.getZonaSensor().getTipo()}
+        #dic["zona_sensor"]=self.getZonaSensor().toJson()
+        dic["numero_sensor"]=self.getNumeroSensor()
+        dic["valor"]=self.getValor()
+        dic["unidad_medida"]={"str": str(self.getUnidadMedida()),
+                            "tipo": self.getUnidadMedida().getTipo()}
+        #dic["unidad_medida"]=self.getUnidadMedida().toJson()
+        dic["fecha"]=self.getFecha()#.isoformat()
+        return dic
 
-    def fromJson(dict: dict):
-        sensor = RegistroSensor(dict["id_"],dict["tipo_sensor"],dict["zona_sensor"],dict["numero_sensor"],
-                                dict["valor"],dict["unidad_medida"], dict["fecha"])
+    def fromJson(dic: dict):
+        sensor = RegistroSensor(dic["id_"],dic["tipo_sensor"]["tipo"],dic["zona_sensor"]["tipo"],
+                                dic["numero_sensor"],dic["valor"],dic["unidad_medida"]["tipo"],
+                                dic["fecha"])
         return sensor

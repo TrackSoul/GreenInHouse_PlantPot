@@ -7,13 +7,11 @@ else
 fi
 
 path_venv=/GreenInHouse/venv
-
 cd "$path_venv"/venv_backend/venv_backend_sensors/.venv/bin
 source ./activate
 
-
 while :
 do
-    ./GIH-backend-read-sensors
+    ./GIH-backend-read-sensors &
 	sleep $sleep_time
 done

@@ -13,7 +13,8 @@ class SensorSet():
     """
     @staticmethod
     def create(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
-               modelo_sensor: ModeloSensor, direccion_lectura:str, patilla_0_lectura:int, 
+               modelo_sensor: ModeloSensor, nombre_sensor: str,
+               direccion_lectura:str, patilla_0_lectura:int, 
                patilla_1_lectura:int,patilla_2_lectura:int, patilla_3_lectura:int,  
                unidad_medida_0:UnidadMedida,unidad_medida_1:UnidadMedida, unidad_medida_2:UnidadMedida, 
                unidad_medida_3:UnidadMedida, fecha_creacion:datetime ,fecha_eliminacion:datetime) -> Optional[Sensor]:              
@@ -29,6 +30,7 @@ class SensorSet():
             - zona_sensor (ZonaSensor): Zona del sensor.
             - numero_sensor (int): Numero de sensor.
             - modelo_sensor (ModeloSensor): modelo_sensor del sensor.
+            - nombre_sensor (str): Nombre asociado al sensor
             - direccion_lectura (str): Direccion de lectura del sensor.
             - patilla_0_lectura (int): Patilla 1 de lectura del sensor.
             - patilla_1_lectura (int): Patilla 2 de lectura del sensor.
@@ -56,11 +58,13 @@ class SensorSet():
             raise ValueError('Necesario especificar el numero de sensor.')
         if modelo_sensor is None:
             raise ValueError('Necesario especificar el modelo del sensor.')
+        if nombre_sensor is None:
+            raise ValueError('Necesario especificar el nombre del sensor.')
         if direccion_lectura is None and patilla_0_lectura is None:
             raise ValueError('Necesario especificar la direccion o patilla de lectura del sensor.')
         nuevo_sensor = None
         try:
-            nuevo_sensor = Sensor(tipo_sensor, zona_sensor, numero_sensor, modelo_sensor, 
+            nuevo_sensor = Sensor(tipo_sensor, zona_sensor, numero_sensor, modelo_sensor, nombre_sensor,
                                   direccion_lectura, patilla_0_lectura, patilla_1_lectura, 
                                   patilla_2_lectura, patilla_3_lectura, unidad_medida_0, 
                                   unidad_medida_1, unidad_medida_2, unidad_medida_3, 
@@ -287,7 +291,8 @@ class SensorSet():
 
     @staticmethod
     def update(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
-               modelo_sensor:ModeloSensor, direccion_lectura:str, patilla_0_lectura:int, patilla_1_lectura:int, 
+               modelo_sensor:ModeloSensor, nombre_sensor: str,
+               direccion_lectura:str, patilla_0_lectura:int, patilla_1_lectura:int, 
                patilla_2_lectura:int, patilla_3_lectura:int, unidad_medida_0:UnidadMedida, 
                unidad_medida_1:UnidadMedida, unidad_medida_2:UnidadMedida, unidad_medida_3:UnidadMedida, 
                fecha_creacion:datetime ,fecha_eliminacion:datetime) -> Optional[Sensor]:
@@ -302,7 +307,8 @@ class SensorSet():
             - tipo_sensor (TipoSensor): Tipo de sensor.
             - zona_sensor (ZonaSensor): Zona del sensor.
             - numero_sensor (int): Numero de sensor.
-            - modelo_sensor (ModeloSensor): modelo_sensor del sensor.
+            - modelo_sensor (ModeloSensor): Modelo del sensor.
+            - nombre_sensor (str): Nombre del sensor
             - direccion_lectura (str): Direccion de lectura del sensor.
             - patilla_0_lectura (int): Patilla 1 de lectura del sensor.
             - patilla_1_lectura (int): Patilla 2 de lectura del sensor.
@@ -334,8 +340,10 @@ class SensorSet():
         try:
             query = session.query(Sensor).filter_by(tipo_sensor=tipo_sensor,zona_sensor=zona_sensor,numero_sensor=numero_sensor)
             sensor: Sensor = query.one()
-            #if sensor.modelo_sensor != modelo_sensor:
-                #query.update({'modelo_sensor' : modelo_sensor})
+            if sensor.modelo_sensor != modelo_sensor:
+                query.update({'modelo_sensor' : modelo_sensor})
+            if sensor.nombre_sensor != nombre_sensor:
+                query.update({'nombre_sensor' : nombre_sensor})
             if sensor.direccion_lectura != direccion_lectura:
                 query.update({'direccion_lectura' : direccion_lectura})
             if sensor.patilla_0_lectura != patilla_0_lectura:

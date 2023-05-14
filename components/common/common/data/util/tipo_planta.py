@@ -25,11 +25,11 @@ class TipoPlanta:
         return texto
 
     def toJson(self) -> Dict:
-        dict={}
-        dict["tipo_planta"]=self.getTipoPlanta()
-        dict["descripcion_planta"]=self.getDescripcionPlanta()
-        return dict
+        dic={}
+        dic["tipo_planta"]=self.getTipoPlanta()
+        dic["descripcion_planta"]=self.getDescripcionPlanta()
+        return dic
 
-    def fromJson(dict: dict):
-        tipo_planta = TipoPlanta(dict["tipo_planta"],dict["descripcion_planta"])
+    def fromJson(dic: dict):
+        tipo_planta = TipoPlanta(dic["tipo_planta"],dic["descripcion_planta"])
         return tipo_planta

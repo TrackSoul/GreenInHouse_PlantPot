@@ -3,6 +3,8 @@
         "./components/backend",
         "./components/common",
         "./components/frontend",
+        "./config",
+        "./scripts",
         "./pruebas"
     ]
 }

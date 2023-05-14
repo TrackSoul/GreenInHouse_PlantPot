@@ -30,22 +30,22 @@ if __name__ == '__main__':
 
     #datos de pruebas
     #Sensores conectados a Raspberry
-    sensor_temperatura_y_humedad_ambiente_1 = SensorCommon(TipoSensor.TEMPERATURA_Y_HUMEDAD,ZonaSensor.AMBIENTE,1,ModeloSensor.DHT11,
+    sensor_temperatura_y_humedad_ambiente_1 = SensorCommon(TipoSensor.TEMPERATURA_Y_HUMEDAD,ZonaSensor.AMBIENTE,1,ModeloSensor.DHT11, "Humedad y temperatura ambiente 1 maceta 1",
                                                             direccion_lectura="RASPBERRY",patilla_0_lectura=board.D20.id, 
                                                             unidad_medida_0=UnidadMedida.PORCENTAJE, unidad_medida_1=UnidadMedida.GRADOS_CENTIGRADOS)
     sensor_temperatura_y_humedad_ambiente_1 =SensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1)
 
     #Sensores conectados a MCP3008
-    sensor_humedad_maceta_1 = SensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,ModeloSensor.FC28,
+    sensor_humedad_maceta_1 = SensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,ModeloSensor.FC28, "Humedad tierra 1 maceta 1",
                                                 direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P0, 
                                                 unidad_medida_0=UnidadMedida.PORCENTAJE)
-    sensor_luminosidad_ambiente_1 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,1,ModeloSensor.LDR,
+    sensor_luminosidad_ambiente_1 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,1,ModeloSensor.LDR, "Luminosidad 1 maceta 1",
                                                         direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P1, 
                                                         unidad_medida_0=UnidadMedida.LUMENES)
-    sensor_luminosidad_ambiente_2 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,2,ModeloSensor.LDR,
+    sensor_luminosidad_ambiente_2 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,2,ModeloSensor.LDR, "Luminosidad 2 maceta 1",
                                                         direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P2, 
                                                         unidad_medida_0=UnidadMedida.LUMENES)
-    sensor_luminosidad_ambiente_3 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,3,ModeloSensor.LDR,
+    sensor_luminosidad_ambiente_3 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,3,ModeloSensor.LDR, "Luminosidad 3 maceta 1",
                                                         direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P3, 
                                                         unidad_medida_0=UnidadMedida.LUMENES)                                               
 

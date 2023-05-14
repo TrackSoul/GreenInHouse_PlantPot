@@ -6,9 +6,9 @@ key = tk.Tk()
 key.title('On Screen Keyboard')
 
 
-key.geometry('700x440')  # Window size
-key.maxsize(width=700, height=440)
-key.minsize(width=700, height=444)
+key.geometry('800x440')  # Window size
+key.maxsize(width=800, height=440)
+key.minsize(width=800, height=444)
 
 style = ttk.Style()
 key.configure(bg='gray27')

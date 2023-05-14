@@ -12,7 +12,8 @@ class Sensor(ModuloBase):
     """
 
     def __init__(self, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
-                 modelo_sensor:ModeloSensor, direccion_lectura:str, patilla_0_lectura:int, 
+                 modelo_sensor:ModeloSensor, nombre_sensor: str,
+                 direccion_lectura:str, patilla_0_lectura:int, 
                  patilla_1_lectura:int, patilla_2_lectura:int, patilla_3_lectura:int,
                  unidad_medida_0:UnidadMedida, unidad_medida_1:UnidadMedida, 
                  unidad_medida_2:UnidadMedida, unidad_medida_3:UnidadMedida, 
@@ -21,6 +22,7 @@ class Sensor(ModuloBase):
         self.zona_sensor: ZonaSensor = zona_sensor
         self.numero_sensor: int = numero_sensor
         self.modelo_sensor: ModeloSensor = modelo_sensor
+        self.nombre_sensor: str = nombre_sensor
         self.direccion_lectura: str = direccion_lectura
         self.patilla_0_lectura: int = patilla_0_lectura
         self.patilla_1_lectura: int = patilla_1_lectura
@@ -51,6 +53,7 @@ class Sensor(ModuloBase):
             Column('zona_sensor', Enum(ZonaSensor), primary_key=True),
             Column('numero_sensor', Integer, primary_key=True),
             Column('modelo_sensor', Enum(ModeloSensor), nullable=False),
+            Column('nombre_sensor', String(100), nullable=False),
             Column('direccion_lectura', String(100), nullable=True),
             Column('patilla_0_lectura', Integer, nullable=True),
             Column('patilla_1_lectura', Integer, nullable=True),

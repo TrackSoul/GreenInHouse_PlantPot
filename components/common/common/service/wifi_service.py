@@ -51,7 +51,6 @@ class WifiService:
                 if psk != wifi[1]:
                     with open("/etc/wpa_supplicant/wpa_supplicant.conf", "rt") as file:
                         x = file.read()
-
                     with open("/etc/wpa_supplicant/wpa_supplicant.conf", "wt") as file:
                         x = x.replace(wifi[1],psk)
                         file.write(x)

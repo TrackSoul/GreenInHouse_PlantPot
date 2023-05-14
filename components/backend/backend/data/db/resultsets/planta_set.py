@@ -11,7 +11,7 @@ class PlantaSet():
     Clase responsable a nivel de tabla de las operaciones con los registros.
     """
     @staticmethod
-    def create(session: Session, nombre_planta:str, tipo_planta:str, fecha_plantacion: datetime, fecha_marchitacion: datetime) -> Planta:
+    def create(session: Session, plant_name:str, tipo_planta:str, fecha_plantacion: datetime, fecha_marchitacion: datetime) -> Planta:
         """
         Creacion de un nuevo registro de un sensor
 
@@ -32,19 +32,19 @@ class PlantaSet():
         Returns:
             - Sensor: Registro creado del sensor.
         """
-        if nombre_planta is None:
+        if plant_name is None:
             raise ValueError('Necesario especificar el nombre de la planta.')
         if tipo_planta is None:
             raise ValueError('Necesario especificar el tipo de la planta.')
         try:
-            nuevo_planta = Planta(nombre_planta, tipo_planta, fecha_plantacion, fecha_marchitacion)
-            session.add(nuevo_planta)
+            new_plant = Planta(plant_name, tipo_planta, fecha_plantacion, fecha_marchitacion)
+            session.add(new_plant)
             session.commit()
-            return nuevo_planta
+            return new_plant
         except IntegrityError as ex:
             session.rollback()
             raise ErrorPlantaExiste(
-                'El nombre de planta ' + str(nombre_planta) + ' ya está registrado.'
+                'El nombre de planta ' + str(plant_name) + ' ya está registrado.'
                 ) from ex
         except NoResultFound as ex:
             raise ErrorTipoPlantaNoExiste(
@@ -116,7 +116,7 @@ class PlantaSet():
         return plantas_de_tipo
 
     @staticmethod
-    def get(session: Session, nombre_planta: str) -> Optional[Planta]:
+    def get(session: Session, plant_name: str) -> Optional[Planta]:
         """ Determines whether a user exists or not.
 
         Args:
@@ -126,15 +126,15 @@ class PlantaSet():
         Returns:
             - Optional[Pregunta]: The question 
         """
-        if not nombre_planta:
+        if not plant_name:
             raise ValueError('Necesario especificar el nombre de la planta.')
         planta: Planta = None
         try:
-            query = session.query(Planta).filter_by(nombre_planta=nombre_planta)
+            query = session.query(Planta).filter_by(nombre_planta=plant_name)
             planta: Planta = query.one()
         except NoResultFound as ex:
             raise ErrorPlantaNoExiste(
-                'La planta con el nombre' + nombre_planta + 'no existe'
+                'La planta con el nombre' + plant_name + 'no existe'
                 ) from ex
         finally:
             return planta

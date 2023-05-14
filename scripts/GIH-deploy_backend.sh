@@ -1,6 +1,7 @@
 #!/bin/bash
+#ejecutar con sudo
 
-./GIH-stop.sh './GIH-deploy' './GIH-reinstall' './GIH-install'
+./GIH-stop_except.sh './GIH-deploy' './GIH-reinstall' './GIH-install'
 
 cd ..
 original_path=$(pwd)
