@@ -48,10 +48,13 @@ class Planta:
         dic["nombre_planta"]=self.getNombrePlanta()
         dic["tipo_planta"]=self.getTipoPlanta()
         dic["fecha_plantacion"]=self.getFechaPlantacion()
-        dic["fecha_marchitacion"]=self.setFechaMarchitacion()
+        dic["fecha_marchitacion"]=self.getFechaMarchitacion() if self.getFechaMarchitacion() is not None else None
         return dic
 
+    @staticmethod
     def fromJson(dic: dict):
-        planta = Planta(dic["nombre_planta"],dic["tipo_planta"],dic["fecha_plantacion"],
-                        dic["fecha_marchitacion"])
+        planta = Planta(nombre_planta=dic.get("nombre_planta"),
+                        tipo_planta=dic.get("tipo_planta"),
+                        fecha_plantacion=datetime.fromisoformat(dic.get("fecha_plantacion")),
+                        fecha_marchitacion=datetime.fromisoformat(dic.get("fecha_marchitacion")) if dic.get("fecha_marchitacion") is not None else None)
         return planta

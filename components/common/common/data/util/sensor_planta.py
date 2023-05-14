@@ -7,16 +7,13 @@ class SensorPlanta:
 
     def __init__(self, tipo_sensor:TipoSensor, zona_sensor:ZonaSensor ,numero_sensor:str, nombre_planta:str,
                  fecha_asociacion: datetime = None, fecha_anulacion: datetime = None, id_: int = 0):
-        self.__id:int = id_
         self.__tipo_sensor:TipoSensor = tipo_sensor
         self.__zona_sensor:ZonaSensor = zona_sensor
         self.__numero_sensor:int = numero_sensor
         self.__nombre_planta:str = nombre_planta
         self.__fecha_asociacion:datetime = fecha_asociacion
         self.__fecha_anulacion:datetime = fecha_anulacion
-        
-    def getId(self) -> Optional[int]:
-        return self.__id
+        self.__id:int = id_
 
     def getTipoSensor(self) -> TipoSensor:
         return self.__tipo_sensor
@@ -53,6 +50,9 @@ class SensorPlanta:
     
     def setFechaAnulacion(self, fecha_anulacion:datetime):
         self.__fecha_anulacion = fecha_anulacion
+    
+    def getId(self) -> Optional[int]:
+        return self.__id
 
     def __str__(self) -> str:
         texto: str = str("La planta " + str(self.getNombrePlanta()) + " esta asociada con el sensor " +  
@@ -67,7 +67,6 @@ class SensorPlanta:
 
     def toJson(self) -> dict:
         dic={}
-        dic["id_"]=self.getId()
         dic["tipo_sensor"]={"str": str(self.getTipoSensor()),
                             "tipo": self.getTipoSensor().getTipo()}
         #dic["tipo_sensor"]=self.getTipoSensor().toJson()
@@ -77,11 +76,17 @@ class SensorPlanta:
         dic["numero_sensor"]=self.getNumeroSensor()
         dic["nombre_planta"]=self.getNombrePlanta()
         dic["fecha_asociacion"]=self.getFechaAsociacion()
-        dic["fecha_anulacion"]=self.getFechaAnulacion()
+        dic["fecha_anulacion"]=self.getFechaAnulacion() if self.getFechaAnulacion() is not None else None
+        dic["id_"]=self.getId()
         return dic
 
+    @staticmethod
     def fromJson(dic: dict):
-        sensor = SensorPlanta(dic["id_"],dic["tipo_sensor"]["tipo"],dic["zona_sensor"]["tipo"],
-                              dic["numero_sensor"], dic["nombre_planta"],dic["fecha_asociacion"],
-                              dic["fecha_anulacion"])
+        sensor = SensorPlanta(tipo_sensor=dic.get("tipo_sensor").get("tipo"),
+                              zona_sensor=dic.get("zona_sensor").get("tipo"),
+                              numero_sensor=dic.get("numero_sensor"), 
+                              nombre_planta=dic.get("nombre_planta"),
+                              fecha_asociacion=datetime.fromisoformat(dic.get("fecha_asociacion")),
+                              fecha_anulacion=datetime.fromisoformat(dic.get("fecha_anulacion")) if dic.get("fecha_anulacion") is not None else None,
+                              id_=dic.get("id_"))
         return sensor

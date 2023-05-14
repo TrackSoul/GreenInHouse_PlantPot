@@ -30,6 +30,8 @@ class TipoPlanta:
         dic["descripcion_planta"]=self.getDescripcionPlanta()
         return dic
 
+    @staticmethod
     def fromJson(dic: dict):
-        tipo_planta = TipoPlanta(dic["tipo_planta"],dic["descripcion_planta"])
+        tipo_planta = TipoPlanta(tipo_planta=dic.get("tipo_planta"),
+                                 descripcion_planta=dic.get("descripcion_planta"))
         return tipo_planta

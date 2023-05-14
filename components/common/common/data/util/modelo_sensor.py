@@ -44,6 +44,6 @@ class ModeloSensor(Enum):
         dic["value"]=int(self)
         dic["nombre"]=str(self)
         dic["tipo"]=self.getTipo()
-        dic["tipo sensor"]=self.getTipoSensor().toJson()
-        dic["tipo medida"]=self.getZonaSensor().toJson()
+        dic["tipo_sensor"]=self.getTipoSensor().toJson()
+        dic["zona_sensor"]=self.getZonaSensor().toJson()
         return dict

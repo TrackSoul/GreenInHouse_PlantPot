@@ -38,13 +38,14 @@ class SensorService():
     
     @staticmethod
     def createFromCommon(esquema: Esquema, sensor: SensorCommon) -> SensorCommon:
-        return SensorService.create(esquema, sensor.getTipoSensor(), sensor.getZonaSensor(),sensor.getNumeroSensor(), 
-                                    sensor.getModeloSensor(), sensor.getModeloSensor(), sensor.getNombreSensor(), 
-                                    sensor.getDireccionLectura(), sensor.getPatillaLectura(0), 
-                                    sensor.getPatillaLectura(1), sensor.getPatillaLectura(2), sensor.getPatillaLectura(3), 
-                                    sensor.getUnidadMedida(0), sensor.getUnidadMedida(1), 
-                                    sensor.getUnidadMedida(2), sensor.getUnidadMedida(3),
-                                    #sensor.getFechaCreacion(), sensor.getFechaEliminacion()
+        return SensorService.create(esquema=esquema, tipo_sensor=sensor.getTipoSensor(), zona_sensor=sensor.getZonaSensor(), numero_sensor=sensor.getNumeroSensor(), 
+                                    modelo_sensor=sensor.getModeloSensor(), nombre_sensor=sensor.getNombreSensor(), 
+                                    direccion_lectura=sensor.getDireccionLectura(), patilla_0_lectura=sensor.getPatillaLectura(0), 
+                                    patilla_1_lectura=sensor.getPatillaLectura(1), patilla_2_lectura=sensor.getPatillaLectura(2), 
+                                    patilla_3_lectura=sensor.getPatillaLectura(3), unidad_medida_0=sensor.getUnidadMedida(0),
+                                    unidad_medida_1=sensor.getUnidadMedida(1), unidad_medida_2=sensor.getUnidadMedida(2), 
+                                    unidad_medida_3=sensor.getUnidadMedida(3)
+                                    #,sensor.getFechaCreacion(), sensor.getFechaEliminacion()
                                     )
 
     @staticmethod
@@ -54,6 +55,13 @@ class SensorService():
         esquema.remove_session()
         return sensor_existe
 
+    @staticmethod
+    def listToJson(sensores: List[SensorCommon]) -> List[Dict]:
+        out: List[Dict] = []
+        for sensor in sensores:
+            out.append(sensor.toJson())
+        return out
+    
     @staticmethod
     def listAll(esquema: Esquema) -> List[SensorCommon]:
         out: List[SensorCommon] = []

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Union, List, Dict
+from typing import List, Dict
 from sqlalchemy.orm.session import Session # type: ignore
 from backend.data.db.esquema import Esquema
 from backend.data.db.results import RegistroSensor
@@ -41,6 +41,13 @@ class RegistroSensorService():
         return registro_sensor_exists
 
     @staticmethod
+    def listToJson(esquema: Esquema, registros_sensor: List[RegistroSensorCommon]) -> List[Dict]:
+        out: List[Dict] = []
+        for registro_sensor in registros_sensor:
+            out.append(registro_sensor.toJson())
+        return out
+    
+    @staticmethod
     def listAll(esquema: Esquema) -> List[RegistroSensorCommon]:
         out: List[RegistroSensorCommon] = []
         session: Session = esquema.new_session()
@@ -54,18 +61,7 @@ class RegistroSensorService():
         return out
 
     @staticmethod
-    def listAllToJson(esquema: Esquema) -> List[Dict]:
-        out: List[Dict] = []
-        session: Session = esquema.new_session()
-        registros_sensor: List[RegistroSensor] = RegistroSensorSet.listAll(session)
-        
-        for registro_sensor in registros_sensor:
-            out.append(registros_sensor.toJson())
-        esquema.remove_session()
-        return out
-
-    @staticmethod
-    def listAllFromSensor(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> List[RegistroSensor]:
+    def listAllFromSensor(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> List[RegistroSensorCommon]:
         out: List[RegistroSensorCommon] = []
         session: Session = esquema.new_session()
         registros_sensor: List[RegistroSensor] = RegistroSensorSet.listAllFromSensor(session, tipo_sensor, zona_sensor, numero_sensor)
@@ -79,11 +75,11 @@ class RegistroSensorService():
     
     
     @staticmethod
-    def listAllFromSensorFromCommon(esquema: Esquema, sensor: SensorCommon) -> List[RegistroSensor]:
+    def listAllFromSensorFromCommon(esquema: Esquema, sensor: SensorCommon) -> List[RegistroSensorCommon]:
         return RegistroSensorService.listAllFromSensor(esquema, sensor.getTipoSensor(), sensor.getZonaSensor(), sensor.getNumeroSensor())
 
     @staticmethod
-    def listAllFromSensorBetweenDates(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensor]:
+    def listAllFromSensorBetweenDates(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensorCommon]:
         out: List[RegistroSensorCommon] = []
         session: Session = esquema.new_session()
         registros_sensor: List[RegistroSensor] = RegistroSensorSet.listAllFromSensorBetweenDates(session, tipo_sensor, zona_sensor, numero_sensor,fecha_inicio,fecha_fin)
@@ -96,7 +92,7 @@ class RegistroSensorService():
         return out
 
     @staticmethod
-    def listAllFromSensorFromCommonBetweenDates(esquema: Esquema, sensor: SensorCommon,  fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensor]:
+    def listAllFromSensorFromCommonBetweenDates(esquema: Esquema, sensor: SensorCommon,  fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensorCommon]:
         return RegistroSensorService.listAllFromSensorBetweenDates(esquema, sensor.getTipoSensor(), sensor.getZonaSensor(), sensor.getNumeroSensor(), fecha_inicio, fecha_fin)
 
     @staticmethod

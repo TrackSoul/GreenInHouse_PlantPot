@@ -63,7 +63,7 @@ class Sensor:
         if val < len(self.__patillas_lectura):
             return self.__patillas_lectura[val]
         else:
-            return -1
+            return None
     
     def setPatillaLectura(self, patilla_lectura: int, val: int = 0):
         if val < len(self.__patillas_lectura):
@@ -73,7 +73,7 @@ class Sensor:
         if val < len(self.__unidades_medida):
             return self.__unidades_medida[val]
         else:
-            return TipoMedida.SIN_TIPO
+            return None
     
     def setUnidadMedida(self, unidad_medida: UnidadMedida, val: int = 0):
         if val < len(self.__unidades_medida):
@@ -143,34 +143,43 @@ class Sensor:
         dic["nombre_sensor"]=self.getNombreSensor()
         dic["direccion_lectura"]=self.getDireccionLectura()
         dic["patilla_0_lectura"]=self.getPatillaLectura(0)
-        dic["patilla_1_lectura"]=self.getPatillaLectura(1)
-        dic["patilla_2_lectura"]=self.getPatillaLectura(2)
-        dic["patilla_3_lectura"]=self.getPatillaLectura(3)
+        dic["patilla_1_lectura"]=self.getPatillaLectura(1) if self.getPatillaLectura(1) is not None else None
+        dic["patilla_2_lectura"]=self.getPatillaLectura(2) if self.getPatillaLectura(2) is not None else None
+        dic["patilla_3_lectura"]=self.getPatillaLectura(3) if self.getPatillaLectura(3) is not None else None
         dic["unidad_medida_0"]={"str": str(self.getUnidadMedida(0)),
                             "tipo": self.getUnidadMedida(0).getTipo()}
         #dic["unidad_medida_0"]=self.getUnidadMedida(0).toJson()
         dic["unidad_medida_1"]={"str": str(self.getUnidadMedida(1)),
-                            "tipo": self.getUnidadMedida(1).getTipo()}
+                            "tipo": self.getUnidadMedida(1).getTipo()} if self.getUnidadMedida(1) is not None else None
         #dic["unidad_medida_1"]=self.getUnidadMedida(1).toJson()
         dic["unidad_medida_2"]={"str": str(self.getUnidadMedida(2)),
-                            "tipo": self.getUnidadMedida(2).getTipo()}
+                            "tipo": self.getUnidadMedida(2).getTipo()} if self.getUnidadMedida(2) is not None else None
         #dic["unidad_medida_2"]=self.getUnidadMedida(2).toJson()
         dic["unidad_medida_3"]={"str": str(self.getUnidadMedida(3)),
-                            "tipo": self.getUnidadMedida(3).getTipo()}
+                            "tipo": self.getUnidadMedida(3).getTipo()} if self.getUnidadMedida(3) is not None else None
         #dic["unidad_medida_3"]=self.getUnidadMedida(3).toJson()
-        dic["fecha_creacion"]=self.getFechaCreacion()
-        dic["fecha_eliminacion"]=self.getFechaEliminacion()
+        dic["fecha_creacion"]=str(self.getFechaCreacion())  if self.getFechaCreacion() is not None else None
+        dic["fecha_eliminacion"]=str(self.getFechaEliminacion()) if self.getFechaEliminacion() is not None else None
         return dic
     
+    @staticmethod
     def fromJson(dic: dict):
         #hacer conversion de tipos
-        sensor = Sensor(tipo_sensor=dic["tipo_sensor"],zona_sensor=dic["zona_sensor"],numero_sensor=dic["numero_sensor"],
-                        modelo_sensor=dic["modelo_sensor"], nombre_sensor=dic["nombre_sensor"], 
-                        direccion_lectura=dic["direccion_lectura"], 
-                        patilla_0_lectura=dic["patilla_0_lectura"], patilla_1_lectura=dic["patilla_1_lectura"], 
-                        patilla_2_lectura=dic["patilla_2_lectura"], patilla_3_lectura=dic["patilla_3_lectura"],
-                        unidad_medida_0=dic["unidad_medida_0"], unidad_medida_1=dic["unidad_medida_1"],
-                        unidad_medida_2=dic["unidad_medida_2"], unidad_medida_3=dic["unidad_medida_3"],
-                        fecha_creacion=dic["fecha_creacion"], fecha_eliminacion=dic["fecha_eliminacion"])
+        sensor = Sensor(tipo_sensor=dic.get("tipo_sensor"),
+                        zona_sensor=dic.get("zona_sensor"),
+                        numero_sensor=dic.get("numero_sensor"),
+                        modelo_sensor=dic.get("modelo_sensor"), 
+                        nombre_sensor=dic.get("nombre_sensor"), 
+                        direccion_lectura=dic.get("direccion_lectura"), 
+                        patilla_0_lectura=dic.get("patilla_0_lectura"), 
+                        patilla_1_lectura=dic.get("patilla_1_lectura") if dic.get("patilla_1_lectura") is not None else None, 
+                        patilla_2_lectura=dic.get("patilla_2_lectura") if dic.get("patilla_2_lectura") is not None else None, 
+                        patilla_3_lectura=dic.get("patilla_3_lectura") if dic.get("patilla_3_lectura") is not None else None,
+                        unidad_medida_0=dic.get("unidad_medida_0"), 
+                        unidad_medida_1=dic.get("unidad_medida_1") if dic.get("unidad_medida_1") is not None else None,
+                        unidad_medida_2=dic.get("unidad_medida_2") if dic.get("unidad_medida_2") is not None else None, 
+                        unidad_medida_3=dic.get("unidad_medida_3") if dic.get("unidad_medida_3") is not None else None,
+                        fecha_creacion=datetime.fromisoformat(dic.get("fecha_creacion")),
+                        fecha_eliminacion=datetime.fromisoformat(dic.get("fecha_eliminacion")) if dic.get("fecha_eliminacion") is not None else None)
         return sensor
     

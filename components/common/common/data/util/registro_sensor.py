@@ -7,16 +7,13 @@ class RegistroSensor:
 
     def __init__(self, tipo_sensor:TipoSensor, zona_sensor:ZonaSensor ,numero_sensor:int, valor:float, 
                  unidad_medida: UnidadMedida,  fecha:datetime = datetime.now(), id_: int=0):
-        self.__id:int = id_
         self.__tipo_sensor:TipoSensor = tipo_sensor
         self.__zona_sensor:ZonaSensor = zona_sensor
         self.__numero_sensor:int = numero_sensor
         self.__valor:float = valor
         self.__unidad_medida:UnidadMedida = unidad_medida
         self.__fecha:datetime = fecha
-        
-    def getId(self) -> Optional[int]:
-        return self.__id
+        self.__id:int = id_
 
     def getTipoSensor(self) -> TipoSensor:
         return self.__tipo_sensor
@@ -35,7 +32,10 @@ class RegistroSensor:
 
     def getFecha(self) -> datetime:
         return self.__fecha
-
+    
+    def getId(self) -> Optional[int]:
+        return self.__id
+    
     def __str__(self) -> str:
         texto: str = str("El registro " + str(self.getId()) + " del sensor " +  str(self.getNumeroSensor()) + 
                           " de " + str(self.getTipoSensor()) + " de la zona " + str(self.getZonaSensor()) + 
@@ -45,7 +45,6 @@ class RegistroSensor:
 
     def toJson(self) -> Dict:
         dic={}
-        dic["id_"]=self.getId()
         dic["tipo_sensor"]={"str": str(self.getTipoSensor()),
                             "tipo": self.getTipoSensor().getTipo()}
         #dic["tipo_sensor"]=self.getTipoSensor().toJson()
@@ -57,11 +56,17 @@ class RegistroSensor:
         dic["unidad_medida"]={"str": str(self.getUnidadMedida()),
                             "tipo": self.getUnidadMedida().getTipo()}
         #dic["unidad_medida"]=self.getUnidadMedida().toJson()
-        dic["fecha"]=self.getFecha()#.isoformat()
+        dic["fecha"]=str(self.getFecha())
+        dic["id_"]=self.getId()
         return dic
 
+    @staticmethod
     def fromJson(dic: dict):
-        sensor = RegistroSensor(dic["id_"],dic["tipo_sensor"]["tipo"],dic["zona_sensor"]["tipo"],
-                                dic["numero_sensor"],dic["valor"],dic["unidad_medida"]["tipo"],
-                                dic["fecha"])
+        sensor = RegistroSensor(tipo_sensor=dic["tipo_sensor"]["tipo"],
+                                zona_sensor=dic["zona_sensor"]["tipo"],
+                                numero_sensor=dic["numero_sensor"],
+                                valor=dic["valor"],
+                                unidad_medida=dic["unidad_medida"]["tipo"],
+                                fecha=datetime.fromisoformat(dic.get("fecha")),
+                                id_=dic["id_"])
         return sensor

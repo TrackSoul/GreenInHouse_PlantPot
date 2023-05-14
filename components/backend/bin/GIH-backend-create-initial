@@ -34,6 +34,9 @@ if __name__ == '__main__':
                                                             direccion_lectura="RASPBERRY",patilla_0_lectura=board.D20.id, 
                                                             unidad_medida_0=UnidadMedida.PORCENTAJE, unidad_medida_1=UnidadMedida.GRADOS_CENTIGRADOS)
     sensor_temperatura_y_humedad_ambiente_1 =SensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1)
+    # sensor_temperatura_y_humedad_ambiente_1 =SensorService.create(db,TipoSensor.TEMPERATURA_Y_HUMEDAD,ZonaSensor.AMBIENTE,1,ModeloSensor.DHT11, "Humedad y temperatura ambiente 1 maceta 1",
+    #                                                         direccion_lectura="RASPBERRY",patilla_0_lectura=board.D20.id, 
+    #                                                         unidad_medida_0=UnidadMedida.PORCENTAJE, unidad_medida_1=UnidadMedida.GRADOS_CENTIGRADOS)
 
     #Sensores conectados a MCP3008
     sensor_humedad_maceta_1 = SensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,ModeloSensor.FC28, "Humedad tierra 1 maceta 1",

@@ -33,35 +33,102 @@ paths:
       tags:
         - servidor
 
-#   /questions:
-#     get:
-#       summary: Gets the existing questions
-#       description: |
-#         Queries the storage to fetch the questions.
+  /RegistrosSensores:
+    get:
+      summary: Gets the existing questions
+      description: |
+        Queries the storage to fetch the questions.
+        Only question stubs are returned. Full information for each question
+        should be fetched separately.
+      operationId: backend.presentation.rest.registro_sensor.getAllRegistrosSensores
+      responses:
+        "200":
+          description: A list of questions.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/RegistroSensorListModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  valor: 25.043
+                  unidad_medida: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  fecha: 2023-05-15 10:01:03.791271
+                  id_: 1
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  valor: 54.567
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha: 2023-05-15 10:01:04.391271
+                  id_: 2
+                - tipo_sensor: 
+                    nombre: "Humedad"
+                    tipo: "HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Maceta"
+                    tipo: "MACETA"
+                  numero_sensor: 1
+                  valor: 40.5463
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha: 2023-05-15 10:01:04.791271
+                  id_: 3
+      tags:
+        - RegistrosSensores
+        - questions
+      # security:
+      #   - user_token: []
+      #     api_key: []
+  # /questions/{qid}:
+  #   get:
+  #     summary: Gets a single question
+  #     operationId: dms2223backend.presentation.rest.preguntas.get_pregunta
+  #     parameters:
+  #       - $ref: "#/components/parameters/QuestionIdPathParam"
+  #     responses:
+  #       "200":
+  #         description: The full data of a question.
+  #         content:
+  #           "application/json":
+  #             schema:
+  #               $ref: "#/components/schemas/QuestionFullModel"
+  #             example:
+  #               qid: 1
+  #               title: "Recommended size for the work groups?"
+  #               body: "Which is the recommended size for the work groups in your opinion?"
+  #               owner:
+  #                 username: "user1"
+  #               timestamp: 1665574089.0
+  #       "404":
+  #         description: The question does not exist.
+  #         content:
+  #           "text/plain":
+  #             schema:
+  #               type: string
+  #             example: "The question with qid 5 does not exist."
+  #     tags:
+  #       - discussion
+  #       - questions
+  #     security:
+  #       - user_token: []
+  #         api_key: []
 
-#         Only question stubs are returned. Full information for each question
-#         should be fetched separately.
-#       operationId: dms2223backend.presentation.rest.preguntas.get_preguntas
-#       responses:
-#         "200":
-#           description: A list of questions.
-#           content:
-#             "application/json":
-#               schema:
-#                 $ref: "#/components/schemas/QuestionsListModel"
-#               example:
-#                 - qid: 1
-#                   title: "Recommended size for the work groups?"
-#                   timestamp: 1665574089.0
-#                 - qid: 2
-#                   title: "Separate report or READMEs?"
-#                   timestamp: 1665693009.12
-#       tags:
-#         - discussion
-#         - questions
-#       security:
-#         - user_token: []
-#           api_key: []
+
 #     post:
 #       summary: Creates a new question
 #       description: |
@@ -651,332 +718,255 @@ components:
       description: Empty content model.
       type: string
       nullable: true
-    # TypeSensorModel:
-    #   description: Type sensor model.
-    #   type: object
-    #   properties:
-    #     tipo_sensor:
-
-    # SensorModel:
-    #   type: object
-    #   properties:
-    #     tipo_sensor:
-    #       type: integer
-    #     zona_sensor:
-    #       type: string
-    #     numero_sensor:
-    #       type: number
-    #     modelo_sensor:
-    #       type:
-    #     direccion_lectura:
-    #       type:
-    #     patilla_0_lectura:
-    #       type:
-    #     patilla_1_lectura:
-    #       type:
-    #       nullable: true
-    #     patilla_2_lectura:
-    #       type:
-    #       nullable: true
-    #     patilla_3_lectura:
-    #       type:
-    #       nullable: true
-    #     unidad_medida_0:
-    #       type:
-    #     unidad_medida_1:
-    #       type:
-    #       nullable: true
-    #     unidad_medida_2:
-    #       type:
-    #       nullable: true
-    #     unidad_medida_3:
-    #       type:
-    #       nullable: true
-    #     fecha_creacion:
-    #       type:
-    #     fecha_eliminacion:
-    #       type:
-    #       nullable: true
-    #   required:
-    #     - qid
-    #     - title
-    #     - timestamp
-#     QuestionStubModel:
-#       allOf:
-#         - $ref: "#/components/schemas/QuestionCoreModel"
-#     QuestionFullModel:
-#       allOf:
-#         - $ref: "#/components/schemas/QuestionCoreModel"
-#         - type: object
-#           properties:
-#             body:
-#               type: string
-#             owner:
-#               $ref: "#/components/schemas/UserCoreModel"
-#           required:
-#             - body
-#     QuestionCreationModel:
-#       type: object
-#       properties:
-#         titulo:
-#           type: string
-#         descripcion:
-#           type: string
-#         creador:
-#           type: string
-#         fecha_creacion:
-#           type: string
-#       required:
-#         - titulo
-#         - descripcion
-#         - creador
-#         - fecha_creacion
-#     QuestionsListModel:
-#       type: array
-#       items:
-#         $ref: "#/components/schemas/QuestionStubModel"
-#     UserCoreModel:
-#       type: object
-#       properties:
-#         username:
-#           type: string
-#       required:
-#         - username
-#     AnswerFullModel:
-#       type: object
-#       properties:
-#         id:
-#           type: integer
-#         qid:
-#           type: integer
-#         timestamp:
-#           type: number
-#         body:
-#           type: string
-#         owner:
-#           $ref: "#/components/schemas/UserCoreModel"
-#         votes:
-#           type: integer
-#           minimum: 0
-#           default: 0
-#           nullable: false
-#         user_votes:
-#           type: object
-#           additionalProperties:
-#             type: boolean
-#         comments:
-#           $ref: "#/components/schemas/CommentsListModel"
-#       required:
-#         - id
-#         - qid
-#         - timestamp
-#         - body
-#         - owner
-#     AnswerCreationModel:
-#       type: object
-#       properties:
-#         descripcion:
-#           type: string
-#         creador:
-#           type: string
-#         fecha_creacion:
-#           type: string
-#       required:
-#         - descripcion
-#         - creador
-#         - fecha_creacion
-#     AnswersListModel:
-#       type: array
-#       items:
-#         $ref: "#/components/schemas/AnswerFullModel"
-#     CommentFullModel:
-#       type: object
-#       properties:
-#         id:
-#           type: integer
-#         aid:
-#           type: integer
-#         timestamp:
-#           type: number
-#         body:
-#           type: string
-#         sentiment:
-#           type: string
-#           enum:
-#             - POSITIVE
-#             - NEUTRAL
-#             - NEGATIVE
-#         owner:
-#           $ref: "#/components/schemas/UserCoreModel"
-#         votes:
-#           type: integer
-#           minimum: 0
-#           default: 0
-#           nullable: false
-#         user_votes:
-#           type: object
-#           additionalProperties:
-#             type: boolean
-#       required:
-#         - id
-#         - aid
-#         - timestamp
-#         - body
-#         - sentiment
-#         - owner
-#     CommentCreationModel:
-#       type: object
-#       properties:
-#         descripcion:
-#           type: string
-#         sentimiento:
-#           type: string
-#           enum:
-#             - POSITIVE
-#             - NEUTRAL
-#             - NEGATIVE
-#           default: NEUTRAL
-#         fecha_creacion:
-#           type: string
-#         creador:
-#           type: string
-#       required:
-#         - descripcion
-#         - sentimiento
-#         - fecha_creacion
-#     CommentsListModel:
-#       type: array
-#       items:
-#         $ref: "#/components/schemas/CommentFullModel"
-#     QuestionReportFullModel:
-#       type: object
-#       properties:
-#         id:
-#           type: integer
-#         qid:
-#           type: integer
-#         reason:
-#           type: string
-#         status:
-#           type: string
-#           enum:
-#             - PENDING
-#             - ACCEPTED
-#             - REJECTED
-#         owner:
-#           $ref: "#/components/schemas/UserCoreModel"
-#         timestamp:
-#           type: number
-#       required:
-#         - id
-#         - qid
-#         - reason
-#         - status
-#         - owner
-#         - timestamp
-#     ReportCreationModel:
-#       type: object
-#       properties:
-#         descripcion:
-#           type: string
-#         autor:
-#           type: string
-#         elemento:
-#           type: integer
-#         fechaReporte:
-#           type: string
-#         estado:
-#           type: string
-#         tipo:
-#           type: string
-#       required:
-#         - descripcion
-#         - autor
-#         - elemento
-#         - fechaReporte
-#         - estado
-#         - tipo
-#     QuestionReportsListModel:
-#       type: array
-#       items:
-#         $ref: "#/components/schemas/QuestionReportFullModel"
-#     AnswerReportFullModel:
-#       type: object
-#       properties:
-#         id:
-#           type: integer
-#         aid:
-#           type: integer
-#         reason:
-#           type: string
-#         status:
-#           type: string
-#           enum:
-#             - PENDING
-#             - ACCEPTED
-#             - REJECTED
-#         owner:
-#           $ref: "#/components/schemas/UserCoreModel"
-#         timestamp:
-#           type: number
-#       required:
-#         - id
-#         - aid
-#         - reason
-#         - status
-#         - owner
-#         - timestamp
-#     AnswerReportsListModel:
-#       type: array
-#       items:
-#         $ref: "#/components/schemas/AnswerReportFullModel"
-#     CommentReportFullModel:
-#       type: object
-#       properties:
-#         id:
-#           type: integer
-#         cid:
-#           type: integer
-#         reason:
-#           type: string
-#         status:
-#           type: string
-#           enum:
-#             - PENDING
-#             - ACCEPTED
-#             - REJECTED
-#         owner:
-#           $ref: "#/components/schemas/UserCoreModel"
-#         timestamp:
-#           type: number
-#       required:
-#         - id
-#         - cid
-#         - reason
-#         - status
-#         - owner
-#         - timestamp
-#     CommentReportsListModel:
-#       type: array
-#       items:
-#         $ref: "#/components/schemas/CommentReportFullModel"
-#     ReportStatusChangeModel:
-#       type: object
-#       properties:
-#         status:
-#           type: string
-#           enum:
-#             - PENDING
-#             - ACCEPTED
-#             - REJECTED
-#         id: 
-#           type: integer
-#         tipo: 
-#           type: string
-#       required:
-#         - status
-#         - id
-#         - tipo
+    TipoSensorModel:
+      description: Tipo sensor.
+      type: object
+      properties:
+        nombre:
+          type: string
+        tipo:
+          type: string
+          enum:
+            - SIN_TIPO
+            - HUMEDAD
+            - TEMPERATURA
+            - TEMPERATURA_Y_HUMEDAD
+            - LUMINOSIDAD
+            - OTRO
+      required:
+        - nombre
+        - tipo   
+    ZonaSensorModel:
+      description: Zona sensor.
+      type: object
+      properties:
+        nombre:
+          type: string
+        tipo:
+          type: string
+          enum:
+            - SIN_ZONA
+            - AMBIENTE
+            - MACETA
+            - SUELO
+            - OTRA
+      required:
+        - nombre
+        - tipo
+    ModeloSensorModel:
+      description: Modelo sensor.
+      type: object
+      properties:
+        nombre:
+          type: string
+        tipo:
+          type: string
+          enum:
+            - SIN_MODELO
+            - DHT11
+            - LDR
+            - LM35
+            - FC28
+            - OTRO
+      required:
+        - nombre
+        - tipo
+    TipoMedidaModel:
+      description: Tipo de medida.
+      type: object
+      properties:
+        nombre:
+          type: string
+        tipo:
+          type: string
+          enum:
+            - SIN_TIPO
+            - HUMEDAD
+            - TEMPERATURA
+            - LUMINOSIDAD
+            - OTRO
+      required:
+        - nombre
+        - tipo   
+    UnidadMedidaModel:
+      description: Unidad de medida.
+      type: object
+      properties:
+        nombre:
+          type: string
+        tipo:
+          type: string
+          enum:
+            - SIN_UNIDAD
+            - PORCENTAJE
+            - GRADOS_CENTIGRADOS
+            - GRADOS_FARENHEIT
+            - LUMENES
+            - OTRO
+      required:
+        - nombre
+        - tipo
+    SensorModel:
+      description: Datos de sensor.
+      type: object
+      properties:
+        tipo_sensor:
+          $ref: "#/components/schemas/TipoSensorModel"
+        zona_sensor:
+          $ref: "#/components/schemas/ZonaSensorModel"
+        numero_sensor:
+          type: integer
+        modelo_sensor:
+          $ref: "#/components/schemas/ModeloSensorModel"
+        nombre_sensor:
+          type: string
+        direccion_lectura:
+          type: string
+        patilla_0_lectura:
+          type: integer
+        patilla_1_lectura:
+          type: integer
+          nullable: true
+        patilla_2_lectura:
+          type: integer
+          nullable: true
+        patilla_3_lectura:
+          type: integer
+          nullable: true
+        unidad_medida_0:
+          $ref: "#/components/schemas/UnidadMedidaModel"
+        unidad_medida_1:
+          $ref: "#/components/schemas/UnidadMedidaModel"
+          nullable: true
+        unidad_medida_2:
+          $ref: "#/components/schemas/UnidadMedidaModel"
+          nullable: true
+        unidad_medida_3:
+          $ref: "#/components/schemas/UnidadMedidaModel"
+          nullable: true
+        fecha_creacion:
+          type: string
+        fecha_eliminacion:
+          type: string
+          nullable: true
+      required:
+        - tipo_sensor
+        - zona_sensor
+        - numero_sensor
+        - modelo_sensor
+        - nombre_sensor
+        - direccion_lectura
+        - patilla_0_lectura
+        - unidad_medida_0
+        - fecha_creacion
+    SensorListModel:
+      type: array
+      items:
+        $ref: "#/components/schemas/SensorModel"
+    RegistroSensorModel:
+      description: Datos de registro de sensor.
+      type: object
+      properties:
+        tipo_sensor:
+          $ref: "#/components/schemas/TipoSensorModel"
+        zona_sensor:
+          $ref: "#/components/schemas/ZonaSensorModel"
+        numero_sensor:
+          type: integer
+        valor:
+          type: number
+        unidad_medida:
+          $ref: "#/components/schemas/UnidadMedidaModel"
+        fecha:
+          type: string
+        id_:
+          type: integer
+      required:
+        - tipo_sensor
+        - zona_sensor
+        - numero_sensor
+        - valor
+        - unidad_medida
+        - fecha
+        - id_
+    RegistroSensorListModel:
+      type: array
+      items:
+        $ref: "#/components/schemas/RegistroSensorModel"
+    SensorPlantaModel:
+      description: Datos de union entre un sensor y una planta.
+      type: object
+      properties:
+        tipo_sensor:
+          $ref: "#/components/schemas/TipoSensorModel"
+        zona_sensor:
+          $ref: "#/components/schemas/ZonaSensorModel"
+        numero_sensor:
+          type: integer
+        nombre_planta:
+          type: string
+        fecha_asociacion:
+          type: string
+        fecha_anulacion:
+          type: string
+          nullable: true
+        id_:
+          type: integer
+      required:
+        - tipo_sensor
+        - zona_sensor
+        - numero_sensor
+        - nombre_planta
+        - fecha_asociacion
+        - id_
+    SensorPlantaListModel:
+      type: array
+      items:
+        $ref: "#/components/schemas/SensorPlantaModel"
+    PlantaModel:
+      description: Datos de una planta.
+      type: object
+      properties:
+        nombre_planta:
+          type: string
+        tipo_planta:
+          type: string
+        fecha_plantacion:
+          type: string
+        fecha_marchitacion:
+          type: string
+          nullable: true
+      required:
+        - nombre_planta
+        - tipo_planta
+        - fecha_plantacion
+        - fecha_marchitacion
+    PlantaListModel:
+      type: array
+      items:
+        $ref: "#/components/schemas/PlantaModel"
+    TipoPlantaModel:
+      description: Datos de un tipo de planta.
+      type: object
+      properties:
+        nombre_planta:
+          type: string
+        tipo_planta:
+          type: string
+        fecha_plantacion:
+          type: string
+        fecha_marchitacion:
+          type: string
+          nullable: true
+      required:
+        - nombre_planta
+        - tipo_planta
+        - fecha_plantacion
+        - fecha_marchitacion
+    TipoPlantaListModel:
+      type: array
+      items:
+        $ref: "#/components/schemas/TipoPlantaModel"
 #   parameters:
 #     QuestionIdPathParam:
 #       name: qid
