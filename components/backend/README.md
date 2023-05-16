@@ -17,7 +17,7 @@ pip3 install .
 
 ## Configuration
 
-Configuration will be loaded from the default user configuration directory, subpath `dms2223backend/config.yml`. This path is thus usually `${HOME}/.config/dms2223backend/config.yml` in most Linux distros.
+Configuration will be loaded from the root directory, subpath `greeninhouse/cfg/config.yml`.
 
 The configuration file is a YAML dictionary with the following configurable parameters:
 
@@ -33,11 +33,11 @@ The configuration file is a YAML dictionary with the following configurable para
 
 ## Running the service
 
-Just run `dms2223backend` as any other program.
+Just run `backend` as any other program.
 
 ## REST API specification
 
-This service exposes a REST API in OpenAPI format that can be browsed at `dms2223backend/openapi/spec.yml` or in the HTTP path `/api/v1/ui/` of the service.
+This service exposes a REST API in OpenAPI format that can be browsed at `greeninhouse/openapi/spec.yml` or in the HTTP path `/api/v1/ui/` of the service.
 
 ## Services integration
 

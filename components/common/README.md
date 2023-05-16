@@ -1,4 +1,4 @@
-# DMS 2022-2023 Common functionalities library
+# GreenInHouse Common functionalities library
 
 This component provides common core functionalities for the other services.
 

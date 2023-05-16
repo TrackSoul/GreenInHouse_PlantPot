@@ -33,17 +33,57 @@ paths:
       tags:
         - servidor
 
-  /RegistrosSensores:
+  /RegistrosSensores/{rsid}:
     get:
-      summary: Gets the existing questions
+      summary: Obtener un registro de sensor por su id.
       description: |
-        Queries the storage to fetch the questions.
-        Only question stubs are returned. Full information for each question
-        should be fetched separately.
-      operationId: backend.presentation.rest.registro_sensor.getAllRegistrosSensores
+        Obtener un registro de sensor por su id.
+      operationId: backend.presentation.rest.registro_sensor.get
+      parameters:
+        - $ref: "#/components/parameters/RegistroSensorIdParam"
       responses:
         "200":
-          description: A list of questions.
+          description: Registro de sensor.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/RegistroSensorModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  valor: 25.043
+                  unidad_medida: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  fecha: 2023-05-15 10:01:03.791271
+                  id_: 1
+        "404":
+          description: El registro del sensor no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "El registro de sensor 5 no existe."
+      tags:
+        - RegistrosSensores
+      # security:
+      #   - user_token: []
+      #     api_key: [] 
+
+  /RegistrosSensores/All:
+    get:
+      summary: Obtener todos los registros de sensores existentes.
+      description: |
+        Obtener todos los registros de sensores existentes en la base de datos.
+      operationId: backend.presentation.rest.registro_sensor.getAll
+      responses:
+        "200":
+          description: Lista de registros de sensores.
           content:
             "application/json":
               schema:
@@ -90,10 +130,297 @@ paths:
                   id_: 3
       tags:
         - RegistrosSensores
-        - questions
       # security:
       #   - user_token: []
       #     api_key: []
+
+  /RegistrosSensores/All/FromSensor/{st}/{sz}/{sid}:
+    get:
+      summary: Obtener todos los registros del sensor especificado.
+      description: |
+        Obtener todos los registros del sensor especificado almacenados en la base de datos.
+      operationId: backend.presentation.rest.registro_sensor.getAllFromSensor
+      parameters:
+        - $ref: "#/components/parameters/SensorTipoParam"
+        - $ref: "#/components/parameters/SensorZonaParam"
+        - $ref: "#/components/parameters/SensorIdParam"
+      responses:
+        "200":
+          description: Lista de registros del sensor especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/RegistroSensorListModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  valor: 25.043
+                  unidad_medida: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  fecha: 2023-05-15 10:01:03.791271
+                  id_: 1
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  valor: 54.567
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha: 2023-05-15 10:01:04.391271
+                  id_: 2
+                - tipo_sensor: 
+                    nombre: "Humedad"
+                    tipo: "HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Maceta"
+                    tipo: "MACETA"
+                  numero_sensor: 1
+                  valor: 40.5463
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha: 2023-05-15 10:01:04.791271
+                  id_: 3
+        "404":
+          description: El sensor especificado no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "El sensor 1 de tipo HUMEDAD de la zona AMBIENTE no existe."
+      tags:
+        - RegistrosSensores
+        - Sensores
+      # security:
+      #   - user_token: []
+      #     api_key: []
+
+  /RegistrosSensores/All/FromSensor/{st}/{sz}/{sid}/BetweenDates/{fi}/{ff}:
+    get:
+      summary: Obtener todos los registros del sensor especificado creados entre las fechas especificadas.
+      description: |
+        Obtener todos los registros del sensor especificado creados entre las fechas especificadas almacenados en la base de datos.
+      operationId: backend.presentation.rest.registro_sensor.getAllFromSensorBetweenDates
+      parameters:
+        - $ref: "#/components/parameters/SensorTipoParam"
+        - $ref: "#/components/parameters/SensorZonaParam"
+        - $ref: "#/components/parameters/SensorIdParam"
+        - $ref: "#/components/parameters/FechaInicioParam"
+        - $ref: "#/components/parameters/FechaFinParam"
+      responses:
+        "200":
+          description: Lista de registros del sensor especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/RegistroSensorListModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  valor: 25.043
+                  unidad_medida: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  fecha: 2023-05-15 10:01:03.791271
+                  id_: 1
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  valor: 54.567
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha: 2023-05-15 10:01:04.391271
+                  id_: 2
+                - tipo_sensor: 
+                    nombre: "Humedad"
+                    tipo: "HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Maceta"
+                    tipo: "MACETA"
+                  numero_sensor: 1
+                  valor: 40.5463
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha: 2023-05-15 10:01:04.791271
+                  id_: 3
+        "404":
+          description: El sensor especificado no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "El sensor 1 de tipo HUMEDAD de la zona AMBIENTE no existe."
+      tags:
+        - RegistrosSensores
+        - Sensores
+      # security:
+      #   - user_token: []
+      #     api_key: []
+
+  /RegistrosSensores/All/FromPlant/{np}:
+    get:
+      summary: Obtener todos los registros de los sensores de la planta especificada.
+      description: |
+        Obtener todos los registros de los sensores de la planta especificada almacenados en la base de datos.
+      operationId: backend.presentation.rest.registro_sensor.getAllFromPlant
+      parameters:
+        - $ref: "#/components/parameters/NombrePlantaParam"
+      responses:
+        "200":
+          description: Lista de registros de los sensores asociados a la planta especificada.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/RegistroSensorListModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  valor: 25.043
+                  unidad_medida: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  fecha: 2023-05-15 10:01:03.791271
+                  id_: 1
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  valor: 54.567
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha: 2023-05-15 10:01:04.391271
+                  id_: 2
+                - tipo_sensor: 
+                    nombre: "Humedad"
+                    tipo: "HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Maceta"
+                    tipo: "MACETA"
+                  numero_sensor: 1
+                  valor: 40.5463
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha: 2023-05-15 10:01:04.791271
+                  id_: 3
+        "404":
+          description: La planta especificada no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "La planta Mi Tomatera no existe."
+      tags:
+        - RegistrosSensores
+        - Plantas
+      # security:
+      #   - user_token: []
+      #     api_key: []
+
+  /RegistrosSensores/All/FromPlant/{np}/BetweenDates/{fi}/{ff}:
+    get:
+      summary: |
+        Obtener todos los registros de los sensores asociados a la palnta especificada 
+        creados entre las fechas especificadas.
+      description: |
+        Obtener todos los registros de los sensores asociados a la palnta especificada 
+        creados entre las fechas especificadas almacenados en la base de datos.
+      operationId: backend.presentation.rest.registro_sensor.getAllFromPlantBetweenDates
+      parameters:
+        - $ref: "#/components/parameters/NombrePlantaParam"
+        - $ref: "#/components/parameters/FechaInicioParam"
+        - $ref: "#/components/parameters/FechaFinParam"
+      responses:
+        "200":
+          description: Lista de registros de los sensores asociadas a la planta especificada.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/RegistroSensorListModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  valor: 25.043
+                  unidad_medida: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  fecha: 2023-05-15 10:01:03.791271
+                  id_: 1
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  valor: 54.567
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha: 2023-05-15 10:01:04.391271
+                  id_: 2
+                - tipo_sensor: 
+                    nombre: "Humedad"
+                    tipo: "HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Maceta"
+                    tipo: "MACETA"
+                  numero_sensor: 1
+                  valor: 40.5463
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha: 2023-05-15 10:01:04.791271
+                  id_: 3
+        "404":
+          description: La planta especificada no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "La planta Mi Tomatera no existe."
+      tags:
+        - RegistrosSensores
+        - Plantas
+      # security:
+      #   - user_token: []
+      #     api_key: []
+
   # /questions/{qid}:
   #   get:
   #     summary: Gets a single question
@@ -966,36 +1293,64 @@ components:
     TipoPlantaListModel:
       type: array
       items:
-        $ref: "#/components/schemas/TipoPlantaModel"
-#   parameters:
-#     QuestionIdPathParam:
-#       name: qid
-#       description: Question identifier.
-#       in: path
-#       schema:
-#         type: integer
-#       required: true
-#     AnswerIdPathParam:
-#       name: aid
-#       description: Answer identifier.
-#       in: path
-#       schema:
-#         type: integer
-#       required: true
-#     CommentIdPathParam:
-#       name: cid
-#       description: Comment identifier.
-#       in: path
-#       schema:
-#         type: integer
-#       required: true
-#     ReportIdPathParam:
-#       name: rid
-#       description: report identifier.
-#       in: path
-#       schema:
-#         type: integer
-#       required: true
+        $ref: "#/components/schemas/TipoPlantaModel"        
+  parameters:
+    RegistroSensorIdParam:
+      name: rsid
+      description: Id del registro de sensor.
+      in: path
+      schema:
+        type: integer
+      required: true
+    SensorTipoParam:
+      name: st
+      description: Tipo del sensor.
+      in: path
+      schema:
+        type: string
+      required: true
+    SensorZonaParam:
+      name: sz
+      description: Zona del sensor.
+      in: path
+      schema:
+        type: string
+      required: true
+    SensorIdParam:
+      name: sid
+      description: Id del sensor.
+      in: path
+      schema:
+        type: integer
+      required: true
+    NombrePlantaParam:
+      name: np
+      description: Nombre de la planta.
+      in: path
+      schema:
+        type: string
+      required: true    
+    NombreTipoPlantaParam:
+      name: ntp
+      description: Nombre del tipo de la planta.
+      in: path
+      schema:
+        type: string
+      required: true
+    FechaInicioParam:
+      name: fi
+      description: Fecha de inicio de busqueda.
+      in: path
+      schema:
+        type: string
+      required: true
+    FechaFinParam:
+      name: ff
+      description: Fecha de fin de busqueda.
+      in: path
+      schema:
+        type: string
+      required: true
   responses:
     Empty:
       description: Respuesta con contenido vacio.
@@ -1004,27 +1359,6 @@ components:
           schema:
             $ref: "#/components/schemas/EmptyContentModel"
           example: ""
-#     ReportStatusChanged:
-#       description: Report status successfully changed.
-#       content:
-#         "text/plain":
-#           schema:
-#             $ref: "#/components/schemas/EmptyContentModel"
-#           example: ""
-#     VoteCast:
-#       description: Vote successfully cast.
-#       content:
-#         "text/plain":
-#           schema:
-#             $ref: "#/components/schemas/EmptyContentModel"
-#           example: ""
-#     VoteAlreadyCast:
-#       description: Vote already cast.
-#       content:
-#         "text/plain":
-#           schema:
-#             $ref: "#/components/schemas/EmptyContentModel"
-#           example: ""
 
 #   securitySchemes:
 #     user_token:
