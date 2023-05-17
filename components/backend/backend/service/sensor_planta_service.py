@@ -73,10 +73,10 @@ class SensorPlantaService():
         return out
 
     @staticmethod
-    def listAllSensorsPerPlant(esquema: Esquema, nombre_planta: str) -> List[SensorPlantaCommon]:
+    def listAllSensorsFromPlant(esquema: Esquema, nombre_planta: str) -> List[SensorPlantaCommon]:
         out: List[SensorPlantaCommon] = []
         session: Session = esquema.new_session()
-        sensores: List[SensorPlanta] = SensorPlantaSet.listAllSensorsPerPlant(session, nombre_planta)
+        sensores: List[SensorPlanta] = SensorPlantaSet.listAllSensorsFromPlant(session, nombre_planta)
         for sensor_planta in sensores:
             out.append(SensorPlantaCommon(sensor_planta.tipo_sensor, sensor_planta.zona_sensor,
                                       sensor_planta.numero_sensor, sensor_planta.nombre_planta, 
@@ -86,14 +86,14 @@ class SensorPlantaService():
         return out
 
     @staticmethod
-    def listAllSensorsPerPlantFromCommon(esquema: Esquema, planta: PlantaCommon) -> List[SensorPlantaCommon]:
-        return SensorPlantaService.listAllSensorsPerPlant(esquema, planta.getNombrePlanta())
+    def listAllSensorsFromPlantFromCommon(esquema: Esquema, planta: PlantaCommon) -> List[SensorPlantaCommon]:
+        return SensorPlantaService.listAllSensorsFromPlant(esquema, planta.getNombrePlanta())
 
     @staticmethod
-    def listAllActiveSensorsPerPlant(esquema: Esquema, nombre_planta: str) -> List[SensorPlantaCommon]:
+    def listAllActiveSensorsFromPlant(esquema: Esquema, nombre_planta: str) -> List[SensorPlantaCommon]:
         out: List[SensorPlantaCommon] = []
         session: Session = esquema.new_session()
-        sensores: List[SensorPlanta] = SensorPlantaSet.listAllActiveSensorsPerPlant(session, nombre_planta)
+        sensores: List[SensorPlanta] = SensorPlantaSet.listAllActiveSensorsFromPlant(session, nombre_planta)
         for sensor_planta in sensores:
             out.append(SensorPlantaCommon(sensor_planta.tipo_sensor, sensor_planta.zona_sensor,
                                       sensor_planta.numero_sensor, sensor_planta.nombre_planta, 
@@ -103,14 +103,14 @@ class SensorPlantaService():
         return out
 
     @staticmethod
-    def listAllActiveSensorsPerPlantFromCommon(esquema: Esquema, planta: PlantaCommon) -> List[SensorPlantaCommon]:
-        return SensorPlantaService.listAllActiveSensorsPerPlant(esquema, planta.getNombrePlanta())
+    def listAllActiveSensorsFromPlantFromCommon(esquema: Esquema, planta: PlantaCommon) -> List[SensorPlantaCommon]:
+        return SensorPlantaService.listAllActiveSensorsFromPlant(esquema, planta.getNombrePlanta())
 
     @staticmethod
-    def listAllSensorsPerPlantBetweenDates(esquema: Esquema, nombre_planta: str, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[SensorPlantaCommon]:
+    def listAllSensorsFromPlantBetweenDates(esquema: Esquema, nombre_planta: str, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[SensorPlantaCommon]:
         out: List[SensorPlantaCommon] = []
         session: Session = esquema.new_session()
-        relacciones_sensor_planta: List[SensorPlanta] = SensorPlantaSet.listAllSensorsPerPlantBetweenDates(session, nombre_planta, fecha_inicio, fecha_fin)
+        relacciones_sensor_planta: List[SensorPlanta] = SensorPlantaSet.listAllSensorsFromPlantBetweenDates(session, nombre_planta, fecha_inicio, fecha_fin)
         for sensor_planta in relacciones_sensor_planta:
             out.append(SensorPlantaCommon(sensor_planta.tipo_sensor, sensor_planta.zona_sensor,
                                       sensor_planta.numero_sensor, sensor_planta.nombre_planta, 
@@ -120,8 +120,8 @@ class SensorPlantaService():
         return out
 
     @staticmethod
-    def listAllSensorsPerPlantFromCommonBetweenDates(esquema: Esquema, planta: PlantaCommon, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[SensorPlantaCommon]:
-        return SensorPlantaService.listAllSensorsPerPlantBetweenDates(esquema, planta.getNombrePlanta(), fecha_inicio, fecha_fin)
+    def listAllSensorsFromPlantFromCommonBetweenDates(esquema: Esquema, planta: PlantaCommon, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[SensorPlantaCommon]:
+        return SensorPlantaService.listAllSensorsFromPlantBetweenDates(esquema, planta.getNombrePlanta(), fecha_inicio, fecha_fin)
 
 
     @staticmethod
@@ -240,7 +240,7 @@ class SensorPlantaService():
 
     @staticmethod
     def unsubscribeAllFromPlant(esquema: Esquema, nombre_planta:str) -> List[SensorPlantaCommon]:
-        lista_sensores_planta: List[SensorPlantaCommon] = SensorPlantaService.listAllActiveSensorsPerPlant(esquema, nombre_planta)
+        lista_sensores_planta: List[SensorPlantaCommon] = SensorPlantaService.listAllActiveSensorsFromPlant(esquema, nombre_planta)
         for sensor_planta in lista_sensores_planta:
             sensor_planta.setFechaAnulacion(datetime.now())
             sensor_planta = SensorPlantaService.updateFromCommon(esquema, sensor_planta)

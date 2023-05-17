@@ -22,10 +22,13 @@ def getAll() :
 def getAllFromSensor(st:str, sz: str ,sid:int):
     try:
         tipo_sensor:TipoSensor = TipoSensor[st]
-        zona_sensor: ZonaSensor = ZonaSensor[sz]
-        numero_sensor:int = sid
     except(KeyError):
-        return ("Los datos del sensor no son correctos", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("El tipo de sensor especificado no es correcto.", HTTPStatus.NOT_ACCEPTABLE.value)   
+    try:
+        zona_sensor: ZonaSensor = ZonaSensor[sz]
+    except(KeyError):
+        return ("La zona de sensor especificada no es correcta.", HTTPStatus.NOT_ACCEPTABLE.value)   
+    numero_sensor:int = sid
     with current_app.app_context() :
         if SensorService.exists(current_app.db,tipo_sensor,zona_sensor,numero_sensor):
             return [item.toJson() for item in RegistroSensorService.listAllFromSensor(current_app.db,tipo_sensor,zona_sensor,numero_sensor)], HTTPStatus.OK.value
@@ -42,15 +45,18 @@ def getAllFromSensor(st:str, sz: str ,sid:int):
 def getAllFromSensorBetweenDates(st:str, sz: str ,sid:int, fi: str, ff: str = str(datetime.now())):
     try:
         tipo_sensor:TipoSensor = TipoSensor[st]
-        zona_sensor: ZonaSensor = ZonaSensor[sz]
-        numero_sensor:int = sid
     except(KeyError):
-        return ("Los datos del sensor no son correctos.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("El tipo de sensor especificado no es correcto.", HTTPStatus.NOT_ACCEPTABLE.value)   
+    try:
+        zona_sensor: ZonaSensor = ZonaSensor[sz]
+    except(KeyError):
+        return ("La zona de sensor especificada no es correcta.", HTTPStatus.NOT_ACCEPTABLE.value)   
+    numero_sensor:int = sid
     try:
         fecha_inicio=datetime.fromisoformat(fi)
         fecha_fin=datetime.fromisoformat(ff)
     except(ValueError):
-        return ("Error en las fechas especificadas.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("Error en el formato de las fechas especificadas.", HTTPStatus.NOT_ACCEPTABLE.value)
     if fecha_inicio > fecha_fin:
         return ("La fecha de inicio no puede ser mayor que la fecha de fin.", HTTPStatus.NOT_ACCEPTABLE.value)
     with current_app.app_context() :
@@ -82,7 +88,7 @@ def getAllFromPlantBetweenDates(np:str, fi: str, ff: str = str(datetime.now())):
         fecha_inicio=datetime.fromisoformat(fi)
         fecha_fin=datetime.fromisoformat(ff)
     except(ValueError):
-        return ("Error en las fechas especificadas.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("Error en el formato de las fechas especificadas.", HTTPStatus.NOT_ACCEPTABLE.value)
     if fecha_inicio > fecha_fin:
         return ("La fecha de inicio no puede ser mayor que la fecha de fin.", HTTPStatus.NOT_ACCEPTABLE.value)
     with current_app.app_context() :

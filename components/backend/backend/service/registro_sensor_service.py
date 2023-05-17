@@ -101,7 +101,7 @@ class RegistroSensorService():
     def listAllFromPlant(esquema: Esquema, nombre_planta: str) -> List[RegistroSensorCommon]:
         planta: PlantaCommon = PlantaService.get(esquema,nombre_planta)
         lista_registros_sensores_planta: List[RegistroSensorCommon] = []
-        sensores_planta_asociados: List[SensorPlantaCommon] =  SensorPlantaService.listAllSensorsPerPlantFromCommon(esquema,planta)
+        sensores_planta_asociados: List[SensorPlantaCommon] =  SensorPlantaService.listAllSensorsFromPlantFromCommon(esquema,planta)
         for sensor_planta_asociado in sensores_planta_asociados:
             sensor: SensorCommon = SensorService.getSensorFromRelationFromCommon(esquema, sensor_planta_asociado)
             fecha_i = sensor_planta_asociado.getFechaAsociacion()
@@ -122,7 +122,7 @@ class RegistroSensorService():
     def listAllFromPlantBetweenDates(esquema: Esquema, nombre_planta: str, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensorCommon]:
         planta: PlantaCommon = PlantaService.get(esquema,nombre_planta)
         lista_registros_sensores_planta: List[RegistroSensorCommon] = []
-        sensores_planta_asociados: List[SensorPlantaCommon] =  SensorPlantaService.listAllSensorsPerPlantFromCommon(esquema,planta)
+        sensores_planta_asociados: List[SensorPlantaCommon] =  SensorPlantaService.listAllSensorsFromPlantFromCommon(esquema,planta)
         for sensor_planta_asociado in sensores_planta_asociados:
             sensor: SensorCommon = SensorService.getSensorFromRelationFromCommon(esquema, sensor_planta_asociado)
             if (fecha_fin is None):

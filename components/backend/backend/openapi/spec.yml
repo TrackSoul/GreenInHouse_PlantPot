@@ -12,10 +12,18 @@ info:
   contact:
     name: Universidad de Burgos
 tags:
-  - name: servidor
+  - name: Servidor
     description: Operaciones sobre el propio servidor (query de estado del servidor).
-  - name: sensors
+  - name: Registros Sensores
     description: Operaciones relaccionadas con los sensores.
+  - name: Sensores
+    description: Operaciones relaccionadas con los sensores.
+  - name: Plantas
+    description: Operaciones relaccionadas con los sensores.
+  - name: Tipos Plantas
+    description: Operaciones relaccionadas con los tipos de plantas.
+  - name: Sensores Plantas
+    description: Operaciones relaccionadas con las relacciones entre sensores y plantas.
 servers:
   - url: /api/v1
 
@@ -26,19 +34,19 @@ paths:
       description: |
         Utilizar esta operacion para verificar que el servidor está corriendo
         y que la API es alcanzable
-      operationId: backend.presentation.rest.server.health_test
+      operationId: backend.presentation.rest.server_rest.health_test
       responses:
         "204":
           $ref: "#/components/responses/Empty"
       tags:
-        - servidor
-
-  /RegistrosSensores/{rsid}:
+        - Servidor
+  # /RegistrosSensores/{rsid}:
+  /RegistrosSensores:
     get:
       summary: Obtener un registro de sensor por su id.
       description: |
         Obtener un registro de sensor por su id.
-      operationId: backend.presentation.rest.registro_sensor.get
+      operationId: backend.presentation.rest.registro_sensor_rest.get
       parameters:
         - $ref: "#/components/parameters/RegistroSensorIdParam"
       responses:
@@ -70,17 +78,16 @@ paths:
                 type: string
               example: "El registro de sensor 5 no existe."
       tags:
-        - RegistrosSensores
+        - Registros Sensores
       # security:
-      #   - user_token: []
-      #     api_key: [] 
-
+      #   - api_key: []
+      #     user_token: []
   /RegistrosSensores/All:
     get:
       summary: Obtener todos los registros de sensores existentes.
       description: |
         Obtener todos los registros de sensores existentes en la base de datos.
-      operationId: backend.presentation.rest.registro_sensor.getAll
+      operationId: backend.presentation.rest.registro_sensor_rest.getAll
       responses:
         "200":
           description: Lista de registros de sensores.
@@ -129,17 +136,17 @@ paths:
                   fecha: 2023-05-15 10:01:04.791271
                   id_: 3
       tags:
-        - RegistrosSensores
+        - Registros Sensores
       # security:
-      #   - user_token: []
-      #     api_key: []
-
-  /RegistrosSensores/All/FromSensor/{st}/{sz}/{sid}:
+      #   - api_key: []
+      #     user_token: []
+  # /RegistrosSensores/All/FromSensor/{st}/{sz}/{sid}:
+  /RegistrosSensores/All/FromSensor:
     get:
       summary: Obtener todos los registros del sensor especificado.
       description: |
         Obtener todos los registros del sensor especificado almacenados en la base de datos.
-      operationId: backend.presentation.rest.registro_sensor.getAllFromSensor
+      operationId: backend.presentation.rest.registro_sensor_rest.getAllFromSensor
       parameters:
         - $ref: "#/components/parameters/SensorTipoParam"
         - $ref: "#/components/parameters/SensorZonaParam"
@@ -198,19 +205,33 @@ paths:
               schema:
                 type: string
               example: "El sensor 1 de tipo HUMEDAD de la zona AMBIENTE no existe."
+        "406":
+          description: Los datos del tipo de sensor especificados no son correctos.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "El tipo de sensor especificado no es correcto."
+        "406":
+          description: Los datos de la zona de sensor especificados no son correctos.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "La zona de sensor especificada no es correcta."
       tags:
-        - RegistrosSensores
+        - Registros Sensores
         - Sensores
       # security:
-      #   - user_token: []
-      #     api_key: []
-
-  /RegistrosSensores/All/FromSensor/{st}/{sz}/{sid}/BetweenDates/{fi}/{ff}:
+      #   - api_key: []
+      #     user_token: []
+  # /RegistrosSensores/All/FromSensor/{st}/{sz}/{sid}/BetweenDates/{fi}/{ff}:
+  /RegistrosSensores/All/FromSensor/BetweenDates:
     get:
       summary: Obtener todos los registros del sensor especificado creados entre las fechas especificadas.
       description: |
         Obtener todos los registros del sensor especificado creados entre las fechas especificadas almacenados en la base de datos.
-      operationId: backend.presentation.rest.registro_sensor.getAllFromSensorBetweenDates
+      operationId: backend.presentation.rest.registro_sensor_rest.getAllFromSensorBetweenDates
       parameters:
         - $ref: "#/components/parameters/SensorTipoParam"
         - $ref: "#/components/parameters/SensorZonaParam"
@@ -271,19 +292,47 @@ paths:
               schema:
                 type: string
               example: "El sensor 1 de tipo HUMEDAD de la zona AMBIENTE no existe."
+        "406":
+          description: Los datos del tipo de sensor especificados no son correctos.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "El tipo de sensor especificado no es correcto."
+        "406":
+          description: Los datos de la zona de sensor especificados no son correctos.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "La zona de sensor especificada no es correcta."
+        "406":
+          description: Los datos de fecha no tienen el formato correcto.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "Error en el formato de las fechas especificadas."
+        "406":
+          description: Incongruencia en fechas.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: La fecha de inicio no puede ser mayor que la fecha de fin.
       tags:
-        - RegistrosSensores
+        - Registros Sensores
         - Sensores
       # security:
-      #   - user_token: []
-      #     api_key: []
-
-  /RegistrosSensores/All/FromPlant/{np}:
+      #   - api_key: []
+      #     user_token: []
+  # /RegistrosSensores/All/FromPlant/{np}:
+  /RegistrosSensores/All/FromPlant:
     get:
       summary: Obtener todos los registros de los sensores de la planta especificada.
       description: |
         Obtener todos los registros de los sensores de la planta especificada almacenados en la base de datos.
-      operationId: backend.presentation.rest.registro_sensor.getAllFromPlant
+      operationId: backend.presentation.rest.registro_sensor_rest.getAllFromPlant
       parameters:
         - $ref: "#/components/parameters/NombrePlantaParam"
       responses:
@@ -341,13 +390,13 @@ paths:
                 type: string
               example: "La planta Mi Tomatera no existe."
       tags:
-        - RegistrosSensores
+        - Registros Sensores
         - Plantas
       # security:
-      #   - user_token: []
-      #     api_key: []
-
-  /RegistrosSensores/All/FromPlant/{np}/BetweenDates/{fi}/{ff}:
+      #   - api_key: []
+      #     user_token: []
+  # /RegistrosSensores/All/FromPlant/{np}/BetweenDates/{fi}/{ff}:
+  /RegistrosSensores/All/FromPlant/BetweenDates:
     get:
       summary: |
         Obtener todos los registros de los sensores asociados a la palnta especificada 
@@ -355,7 +404,7 @@ paths:
       description: |
         Obtener todos los registros de los sensores asociados a la palnta especificada 
         creados entre las fechas especificadas almacenados en la base de datos.
-      operationId: backend.presentation.rest.registro_sensor.getAllFromPlantBetweenDates
+      operationId: backend.presentation.rest.registro_sensor_rest.getAllFromPlantBetweenDates
       parameters:
         - $ref: "#/components/parameters/NombrePlantaParam"
         - $ref: "#/components/parameters/FechaInicioParam"
@@ -414,631 +463,994 @@ paths:
               schema:
                 type: string
               example: "La planta Mi Tomatera no existe."
+        "406":
+          description: Los datos de fecha no tienen el formato correcto.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "Error en el formato de las fechas especificadas."
+        "406":
+          description: Incongruencia en fechas.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: La fecha de inicio no puede ser mayor que la fecha de fin.
       tags:
-        - RegistrosSensores
+        - Registros Sensores
         - Plantas
       # security:
-      #   - user_token: []
-      #     api_key: []
+      #   - api_key: []
+      #     user_token: []
+  # /Sensores/{st}/{sz}/{sid}:
+  /Sensores:
+    get:
+      summary: Obtener el sensor especificado.
+      description: |
+        Obtener el sensor especificado almacenado en la base de datos.
+      operationId: backend.presentation.rest.sensor_rest.get
+      parameters:
+        - $ref: "#/components/parameters/SensorTipoParam"
+        - $ref: "#/components/parameters/SensorZonaParam"
+        - $ref: "#/components/parameters/SensorIdParam"
+      responses:
+        "200":
+          description: Sensor especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SensorModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 20
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:03.791271
+        "404":
+          description: El sensor especificado no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "El sensor 1 de tipo HUMEDAD de la zona AMBIENTE no existe."
+        "406":
+          description: Los datos del tipo de sensor especificados no son correctos.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "El tipo de sensor especificado no es correcto."
+        "406":
+          description: Los datos de la zona de sensor especificados no son correctos.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "La zona de sensor especificada no es correcta."
+      tags:
+        - Sensores
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  /Sensores/All:
+    get:
+      summary: Obtener todos los sensores.
+      description: |
+        Obtener todos los sensores almacenados en la base de datos.
+      operationId: backend.presentation.rest.sensor_rest.getAll
+      responses:
+        "200":
+          description: Listado de todos los sensores.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SensorListModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 20
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:03.791271
+                - tipo_sensor: 
+                    nombre: "Humedad"
+                    tipo: "HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Maceta"
+                    tipo: "MACETA"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "FC28"
+                    tipo: "FC28"
+                  nombre_sensor: "Humedad tierra 1 maceta 1"
+                  direccion_lectura: "MCP3008_0"
+                  patilla_0_lectura: 8
+                  patilla_1_lectura: 0
+                  unidad_medida_0: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:04.791271
+                - tipo_sensor: 
+                    nombre: "Luminosidad"
+                    tipo: "LUMINOSIDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "LDR"
+                    tipo: "LDR"
+                  nombre_sensor: "Luminosidad 1 maceta 1"
+                  direccion_lectura: "MCP3008_0"
+                  patilla_0_lectura: 8
+                  patilla_1_lectura: 1
+                  unidad_medida_0: 
+                    nombre: "Lux"
+                    tipo: "LUMENES"
+                  fecha_creacion: 2023-05-15 10:01:05.791271
+      tags:
+        - Sensores
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  /Sensores/All/Active:
+    get:
+      summary: Obtener todos los sensores activos.
+      description: |
+        Obtener todos los sensores activos almacenados en la base de datos.
+      operationId: backend.presentation.rest.sensor_rest.getAllActive
+      responses:
+        "200":
+          description: Listado de todos los sensores activos.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SensorListModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 20
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:03.791271
+                - tipo_sensor: 
+                    nombre: "Humedad"
+                    tipo: "HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Maceta"
+                    tipo: "MACETA"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "FC28"
+                    tipo: "FC28"
+                  nombre_sensor: "Humedad tierra 1 maceta 1"
+                  direccion_lectura: "MCP3008_0"
+                  patilla_0_lectura: 8
+                  patilla_1_lectura: 0
+                  unidad_medida_0: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:04.791271
+                - tipo_sensor: 
+                    nombre: "Luminosidad"
+                    tipo: "LUMINOSIDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "LDR"
+                    tipo: "LDR"
+                  nombre_sensor: "Luminosidad 1 maceta 1"
+                  direccion_lectura: "MCP3008_0"
+                  patilla_0_lectura: 8
+                  patilla_1_lectura: 1
+                  unidad_medida_0: 
+                    nombre: "Lux"
+                    tipo: "LUMENES"
+                  fecha_creacion: 2023-05-15 10:01:05.791271
+      tags:
+        - Sensores
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  # /Sensores/All/FromType/{st}:
+  /Sensores/All/FromType:
+    get:
+      summary: Obtener todos los sensores de un tipo especifico.
+      description: |
+        Obtener todos los sensores de un tipo especifico almacenados en la base de datos.
+      operationId: backend.presentation.rest.sensor_rest.getAllFromType
+      parameters:
+        - $ref: "#/components/parameters/SensorTipoParam"
+      responses:
+        "200":
+          description: Listado de todos los sensores del tipo especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SensorListModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 20
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:03.791271
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 2
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 2 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 21
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:04.791271
+        "406":
+          description: El tipo de sensor especificado no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "Los datos del tipo de sensor HUMEDA no son correctos."
+      tags:
+        - Sensores
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  # /Sensores/All/Active/FromType/{st}:
+  /Sensores/All/Active/FromType:
+    get:
+      summary: Obtener todos los sensores activos de un tipo especifico.
+      description: |
+        Obtener todos los sensores activos de un tipo especifico almacenados en la base de datos.
+      operationId: backend.presentation.rest.sensor_rest.getAllActiveFromType
+      parameters:
+        - $ref: "#/components/parameters/SensorTipoParam"
+      responses:
+        "200":
+          description: Listado de todos los sensores activos del tipo especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SensorListModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 20
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:03.791271
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 2
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 2 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 21
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:04.791271
+        "406":
+          description: El tipo de sensor especificado no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "Los datos del tipo de sensor HUMEDA no son correctos."
+      tags:
+        - Sensores
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  # /Sensores/All/FromZone/{sz}:
+  /Sensores/All/FromZone:
+    get:
+      summary: Obtener todos los sensores de una zona especifica.
+      description: |
+        Obtener todos los sensores de una zona especifica almacenados en la base de datos.
+      operationId: backend.presentation.rest.sensor_rest.getAllFromZone
+      parameters:
+        - $ref: "#/components/parameters/SensorZonaParam"
+      responses:
+        "200":
+          description: Listado de todos los sensores de la zona especificada.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SensorListModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 20
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:03.791271
+                - tipo_sensor: 
+                    nombre: "Luminosidad"
+                    tipo: "LUMINOSIDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "LDR"
+                    tipo: "LDR"
+                  nombre_sensor: "Luminosidad 1 maceta 1"
+                  direccion_lectura: "MCP3008_0"
+                  patilla_0_lectura: 8
+                  patilla_1_lectura: 1
+                  unidad_medida_0: 
+                    nombre: "Lux"
+                    tipo: "LUMENES"
+                  fecha_creacion: 2023-05-15 10:01:04.791271
+        "406":
+          description: La zona de sensor especificada no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "Los datos de la zona de sensor AMBIENT no son correctos."
+      tags:
+        - Sensores
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  # /Sensores/All/Active/FromZone/{sz}:
+  /Sensores/All/Active/FromZone:
+    get:
+      summary: Obtener todos los sensores activos de una zona especifica.
+      description: |
+        Obtener todos los sensores activos de una zona especifica almacenados en la base de datos.
+      operationId: backend.presentation.rest.sensor_rest.getAllActiveFromZone
+      parameters:
+        - $ref: "#/components/parameters/SensorZonaParam"
+      responses:
+        "200":
+          description: Listado de todos los sensores activos de la zona especificada.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SensorListModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 20
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:03.791271
+                - tipo_sensor: 
+                    nombre: "Luminosidad"
+                    tipo: "LUMINOSIDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "LDR"
+                    tipo: "LDR"
+                  nombre_sensor: "Luminosidad 1 maceta 1"
+                  direccion_lectura: "MCP3008_0"
+                  patilla_0_lectura: 8
+                  patilla_1_lectura: 1
+                  unidad_medida_0: 
+                    nombre: "Lux"
+                    tipo: "LUMENES"
+                  fecha_creacion: 2023-05-15 10:01:04.791271
+        "406":
+          description: La zona de sensor especificada no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "Los datos de la zona de sensor AMBIENT no son correctos."
+      tags:
+        - Sensores
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  # /Sensores/All/FromTypeAndZone/{st}/{sz}:
+  /Sensores/All/FromTypeAndZone:
+    get:
+      summary: Obtener todos los sensores de un tipo y zona especificos.
+      description: |
+        Obtener todos los sensores de un tipo y zona especificos almacenados en la base de datos.
+      operationId: backend.presentation.rest.sensor_rest.getAllFromTypeAndZone
+      parameters:
+        - $ref: "#/components/parameters/SensorTipoParam"
+        - $ref: "#/components/parameters/SensorZonaParam"
+      responses:
+        "200":
+          description: Listado de todos los sensores del tipo y zona especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SensorListModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 20
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:03.791271
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 2
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 2 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 21
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:04.791271
+        "406":
+          description: El tipo de sensor especificado no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "Los datos del tipo de sensor TEMPERATURA_Y_HUMEDA no son correctos."
+        "406":
+          description: La zona de sensor especificada no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "Los datos de la zona de sensor AMBIENT no son correctos."
+      tags:
+        - Sensores
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  # /Sensores/All/Active/FromTypeAndZone/{st}/{sz}:
+  /Sensores/All/Active/FromTypeAndZone:
+    get:
+      summary: Obtener todos los sensores activos de un tipo y zona especificos.
+      description: |
+        Obtener todos los sensores activos de un tipo y zona especificos almacenados en la base de datos.
+      operationId: backend.presentation.rest.sensor_rest.getAllActiveFromTypeAndZone
+      parameters:
+        - $ref: "#/components/parameters/SensorTipoParam"
+        - $ref: "#/components/parameters/SensorZonaParam"
+      responses:
+        "200":
+          description: Listado de todos los sensores activos del tipo y zona especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SensorListModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 20
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:03.791271
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 2
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 2 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 21
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:04.791271
+        "406":
+          description: El tipo de sensor especificado no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "Los datos del tipo de sensor TEMPERATURA_Y_HUMEDA no son correctos."
+        "406":
+          description: La zona de sensor especificada no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "Los datos de la zona de sensor AMBIENT no son correctos."
+      tags:
+        - Sensores
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  # /Sensores/All/FromModel/{sm}:
+  /Sensores/All/FromModel:
+    get:
+      summary: Obtener todos los sensores de un modelo especifico.
+      description: |
+        Obtener todos los sensores de un modelo especifico almacenados en la base de datos.
+      operationId: backend.presentation.rest.sensor_rest.getAllFromModel
+      parameters:
+        - $ref: "#/components/parameters/SensorModeloParam"
+      responses:
+        "200":
+          description: Listado de todos los sensores de un modelo especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SensorListModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 20
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:03.791271
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 2
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 2 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 21
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:03.791271
+        "406":
+          description: El modelo de sensor especificado no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "Los datos del modelo de sensor DHT1 no son correctos."
+      tags:
+        - Sensores
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  # /Sensores/All/Active/FromModel/{sm}:
+  /Sensores/All/Active/FromModel:
+    get:
+      summary: Obtener todos los sensores activos de un modelo especifico.
+      description: |
+        Obtener todos los sensores activos de un modelo especifico almacenados en la base de datos.
+      operationId: backend.presentation.rest.sensor_rest.getAllActiveFromModel
+      parameters:
+        - $ref: "#/components/parameters/SensorModeloParam"
+      responses:
+        "200":
+          description: Listado de todos los sensores activos de un modelo especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SensorListModel"
+              example:
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 1
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 20
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:03.791271
+                - tipo_sensor: 
+                    nombre: "Temperatura y Humedad"
+                    tipo: "TEMPERATURA_Y_HUMEDAD"
+                  zona_sensor: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  numero_sensor: 2
+                  modelo_sensor: 
+                    nombre: "DHT11"
+                    tipo: "DHT11"
+                  nombre_sensor: "Humedad y temperatura ambiente 2 maceta 1"
+                  direccion_lectura: "RASPBERRY"
+                  patilla_0_lectura: 21
+                  unidad_medida_0: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  unidad_medida_1: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  fecha_creacion: 2023-05-15 10:01:03.791271
+        "406":
+          description: El modelo de sensor especificado no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "Los datos del modelo de sensor DHT1 no son correctos."
+      tags:
+        - Sensores
+      # security:
+      #   - api_key: []
+      #     user_token: []
 
-  # /questions/{qid}:
+
+
+
+  # /Plantas/{np}:
+  /Plantas:
+    get:
+      summary: Obtener la planta especificada.
+      description: |
+        Obtener la planta especificada almacenada en la base de datos.
+      operationId: backend.presentation.rest.planta_rest.get
+      parameters:
+        - $ref: "#/components/parameters/NombrePlantaParam"
+      responses:
+        "200":
+          description: Planta especificada.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/PlantarModel"
+              example:
+                - nombre_planta: "Mi tomatera"
+                  tipo_planta: "Tomatera"
+                  fecha_plantacion: 2023-05-15 10:01:03.791271
+        "404":
+          description: La planta especificada no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "La planta Tomatera1 no existe."
+      tags:
+        - Plantas
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  # /Sensores/All:
   #   get:
-  #     summary: Gets a single question
-  #     operationId: dms2223backend.presentation.rest.preguntas.get_pregunta
-  #     parameters:
-  #       - $ref: "#/components/parameters/QuestionIdPathParam"
+  #     summary: Obtener todos los sensores.
+  #     description: |
+  #       Obtener todos los sensores almacenados en la base de datos.
+  #     operationId: backend.presentation.rest.sensor_rest.getAll
   #     responses:
   #       "200":
-  #         description: The full data of a question.
+  #         description: Listado de todos los sensores.
   #         content:
   #           "application/json":
   #             schema:
-  #               $ref: "#/components/schemas/QuestionFullModel"
+  #               $ref: "#/components/schemas/SensorListModel"
   #             example:
-  #               qid: 1
-  #               title: "Recommended size for the work groups?"
-  #               body: "Which is the recommended size for the work groups in your opinion?"
-  #               owner:
-  #                 username: "user1"
-  #               timestamp: 1665574089.0
-  #       "404":
-  #         description: The question does not exist.
-  #         content:
-  #           "text/plain":
-  #             schema:
-  #               type: string
-  #             example: "The question with qid 5 does not exist."
+  #               - tipo_sensor: 
+  #                   nombre: "Temperatura y Humedad"
+  #                   tipo: "TEMPERATURA_Y_HUMEDAD"
+  #                 zona_sensor: 
+  #                   nombre: "Ambiente"
+  #                   tipo: "AMBIENTE"
+  #                 numero_sensor: 1
+  #                 modelo_sensor: 
+  #                   nombre: "DHT11"
+  #                   tipo: "DHT11"
+  #                 nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+  #                 direccion_lectura: "RASPBERRY"
+  #                 patilla_0_lectura: 20
+  #                 unidad_medida_0: 
+  #                   nombre: "ºC"
+  #                   tipo: "GRADOS_CENTIGRADOS"
+  #                 unidad_medida_1: 
+  #                   nombre: "%"
+  #                   tipo: "PORCENTAJE"
+  #                 fecha_creacion: 2023-05-15 10:01:03.791271
+  #               - tipo_sensor: 
+  #                   nombre: "Humedad"
+  #                   tipo: "HUMEDAD"
+  #                 zona_sensor: 
+  #                   nombre: "Maceta"
+  #                   tipo: "MACETA"
+  #                 numero_sensor: 1
+  #                 modelo_sensor: 
+  #                   nombre: "FC28"
+  #                   tipo: "FC28"
+  #                 nombre_sensor: "Humedad tierra 1 maceta 1"
+  #                 direccion_lectura: "MCP3008_0"
+  #                 patilla_0_lectura: 8
+  #                 patilla_1_lectura: 0
+  #                 unidad_medida_0: 
+  #                   nombre: "%"
+  #                   tipo: "PORCENTAJE"
+  #                 fecha_creacion: 2023-05-15 10:01:04.791271
+  #               - tipo_sensor: 
+  #                   nombre: "Luminosidad"
+  #                   tipo: "LUMINOSIDAD"
+  #                 zona_sensor: 
+  #                   nombre: "Ambiente"
+  #                   tipo: "AMBIENTE"
+  #                 numero_sensor: 1
+  #                 modelo_sensor: 
+  #                   nombre: "LDR"
+  #                   tipo: "LDR"
+  #                 nombre_sensor: "Luminosidad 1 maceta 1"
+  #                 direccion_lectura: "MCP3008_0"
+  #                 patilla_0_lectura: 8
+  #                 patilla_1_lectura: 1
+  #                 unidad_medida_0: 
+  #                   nombre: "Lux"
+  #                   tipo: "LUMENES"
+  #                 fecha_creacion: 2023-05-15 10:01:05.791271
   #     tags:
-  #       - discussion
-  #       - questions
-  #     security:
-  #       - user_token: []
-  #         api_key: []
+  #       - Sensores
+  #     # security:
+  #     #   - api_key: []
+  #     #     user_token: []
+  # /Sensores/All/Active:
+  #   get:
+  #     summary: Obtener todos los sensores activos.
+  #     description: |
+  #       Obtener todos los sensores activos almacenados en la base de datos.
+  #     operationId: backend.presentation.rest.sensor_rest.getAllActive
+  #     responses:
+  #       "200":
+  #         description: Listado de todos los sensores activos.
+  #         content:
+  #           "application/json":
+  #             schema:
+  #               $ref: "#/components/schemas/SensorListModel"
+  #             example:
+  #               - tipo_sensor: 
+  #                   nombre: "Temperatura y Humedad"
+  #                   tipo: "TEMPERATURA_Y_HUMEDAD"
+  #                 zona_sensor: 
+  #                   nombre: "Ambiente"
+  #                   tipo: "AMBIENTE"
+  #                 numero_sensor: 1
+  #                 modelo_sensor: 
+  #                   nombre: "DHT11"
+  #                   tipo: "DHT11"
+  #                 nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+  #                 direccion_lectura: "RASPBERRY"
+  #                 patilla_0_lectura: 20
+  #                 unidad_medida_0: 
+  #                   nombre: "ºC"
+  #                   tipo: "GRADOS_CENTIGRADOS"
+  #                 unidad_medida_1: 
+  #                   nombre: "%"
+  #                   tipo: "PORCENTAJE"
+  #                 fecha_creacion: 2023-05-15 10:01:03.791271
+  #               - tipo_sensor: 
+  #                   nombre: "Humedad"
+  #                   tipo: "HUMEDAD"
+  #                 zona_sensor: 
+  #                   nombre: "Maceta"
+  #                   tipo: "MACETA"
+  #                 numero_sensor: 1
+  #                 modelo_sensor: 
+  #                   nombre: "FC28"
+  #                   tipo: "FC28"
+  #                 nombre_sensor: "Humedad tierra 1 maceta 1"
+  #                 direccion_lectura: "MCP3008_0"
+  #                 patilla_0_lectura: 8
+  #                 patilla_1_lectura: 0
+  #                 unidad_medida_0: 
+  #                   nombre: "%"
+  #                   tipo: "PORCENTAJE"
+  #                 fecha_creacion: 2023-05-15 10:01:04.791271
+  #               - tipo_sensor: 
+  #                   nombre: "Luminosidad"
+  #                   tipo: "LUMINOSIDAD"
+  #                 zona_sensor: 
+  #                   nombre: "Ambiente"
+  #                   tipo: "AMBIENTE"
+  #                 numero_sensor: 1
+  #                 modelo_sensor: 
+  #                   nombre: "LDR"
+  #                   tipo: "LDR"
+  #                 nombre_sensor: "Luminosidad 1 maceta 1"
+  #                 direccion_lectura: "MCP3008_0"
+  #                 patilla_0_lectura: 8
+  #                 patilla_1_lectura: 1
+  #                 unidad_medida_0: 
+  #                   nombre: "Lux"
+  #                   tipo: "LUMENES"
+  #                 fecha_creacion: 2023-05-15 10:01:05.791271
+  #     tags:
+  #       - Sensores
+  #     # security:
+  #     #   - api_key: []
+  #     #     user_token: []
 
 
-#     post:
-#       summary: Creates a new question
-#       description: |
-#         This operation creates a new question.
 
-#         The owner of the question will be automatically retrieved from the
-#         user token against the authorization server.
-#       operationId: dms2223backend.presentation.rest.preguntas.post_pregunta
-#       requestBody:
-#         content:
-#           "application/json":
-#             schema:
-#               $ref: "#/components/schemas/QuestionCreationModel"
-#             example:
-#               titulo: "Recommended size for the work groups?"
-#               descripcion: "Which is the recommended size for the work groups in your opinion?"
-#               autor: "juan"
-#               fecha_creacion: "algo"
-#       responses:
-#         "201":
-#           description: Question created.
-#           content:
-#             "application/json":
-#               schema:
-#                 $ref: "#/components/schemas/QuestionFullModel"
-#               example:
-#                 qid: 1
-#                 title: "Recommended size for the work groups?"
-#                 body: "Which is the recommended size for the work groups in your opinion?"
-#                 owner:
-#                   username: "user1"
-#                 timestamp: 1665574089.0
-#       tags:
-#         - discussion
-#         - questions
-#       security:
-#         - user_token: []
-#           api_key: []
-#   /questions/{qid}:
-#     get:
-#       summary: Gets a single question
-#       operationId: dms2223backend.presentation.rest.preguntas.get_pregunta
-#       parameters:
-#         - $ref: "#/components/parameters/QuestionIdPathParam"
-#       responses:
-#         "200":
-#           description: The full data of a question.
-#           content:
-#             "application/json":
-#               schema:
-#                 $ref: "#/components/schemas/QuestionFullModel"
-#               example:
-#                 qid: 1
-#                 title: "Recommended size for the work groups?"
-#                 body: "Which is the recommended size for the work groups in your opinion?"
-#                 owner:
-#                   username: "user1"
-#                 timestamp: 1665574089.0
-#         "404":
-#           description: The question does not exist.
-#           content:
-#             "text/plain":
-#               schema:
-#                 type: string
-#               example: "The question with qid 5 does not exist."
-#       tags:
-#         - discussion
-#         - questions
-#       security:
-#         - user_token: []
-#           api_key: []
-#   /questions/{qid}/answers:
-#     get:
-#       summary: Gets the answers for a question
-#       description: |
-#         Fetches the full answers for a given question.
-#       operationId: dms2223backend.presentation.rest.respuestas.get_respuestas
-#       parameters:
-#         - $ref: "#/components/parameters/QuestionIdPathParam"
-#       responses:
-#         "200":
-#           description: The answers for a question.
-#           content:
-#             "application/json":
-#               schema:
-#                 $ref: "#/components/schemas/AnswersListModel"
-#               example:
-#                 - id: 1
-#                   qid: 1
-#                   timestamp: 1665575089
-#                   body: I would suggest four members.
-#                   owner:
-#                     username: user3
-#                   votes: 4
-#                   user_votes:
-#                     user3: true
-#                     user4: true
-#                     user5: true
-#                     user6: true
-#                   comments:
-#                     - id: 2
-#                       aid: 1
-#                       timestamp: 1665575389
-#                       body: Evaluation criteria may be relaxed due to the tight number of members
-#                       sentiment: POSITIVE
-#                       owner:
-#                         username: user4
-#                       votes: 2
-#                       user_votes:
-#                         user6: true
-#                         user5: true
-#                     - id: 1
-#                       aid: 1
-#                       timestamp: 1665575289
-#                       body: Enough to distribute the workload equitatively
-#                       sentiment: POSITIVE
-#                       owner:
-#                         username: user4
-#                       votes: 1
-#                       user_votes:
-#                         user6: true
-#                     - id: 3
-#                       aid: 1
-#                       timestamp: 1665577389
-#                       body: The deadline may be too close for the workload and a group this "small"
-#                       sentiment: NEGATIVE
-#                       owner:
-#                         username: user4
-#                       votes: 0
-#                       user_votes: []
-#                 - id: 2
-#                   qid: 1
-#                   timestamp: 1665675089
-#                   body: Five members.
-#                   owner:
-#                     username: user2
-#                   votes: 2
-#                   user_votes:
-#                     user1: true
-#                     user2: true
-#                   comments:
-#                     - id: 4
-#                       aid: 2
-#                       timestamp: 1665777389
-#                       body: The teacher may be stricter if groups are too large
-#                       sentiment: NEGATIVE
-#                       owner:
-#                         username: user4
-#                       votes: 0
-#                       user_votes: []
-#         "404":
-#           description: The question does not exist.
-#           content:
-#             "text/plain":
-#               schema:
-#                 type: string
-#               example: "The question with qid 5 does not exist."
-#       tags:
-#         - discussion
-#         - questions
-#         - answers
-#       security:
-#         - user_token: []
-#           api_key: []
-#     post:
-#       summary: Answers a question
-#       description: |
-#         This operation creates an answer for an existing question.
-
-#         The owner of the answer will be automatically retrieved from the
-#         user token against the authorization server.
-#       operationId: dms2223backend.presentation.rest.respuestas.post_respuesta
-#       parameters:
-#         - $ref: "#/components/parameters/QuestionIdPathParam"
-#       requestBody:
-#         content:
-#           "application/json":
-#             schema:
-#               $ref: "#/components/schemas/AnswerCreationModel"
-#             example:
-#               qid: 1
-#               body: I would suggest four members.
-#       responses:
-#         "201":
-#           description: The created answer.
-#           content:
-#             "application/json":
-#               schema:
-#                 $ref: "#/components/schemas/AnswerFullModel"
-#               example:
-#                 timestamp: 1665575089
-#                 descripcion: I would suggest four members.
-#                 creador: user3
-#         "404":
-#           description: The question does not exist.
-#           content:
-#             "text/plain":
-#               schema:
-#                 type: string
-#               example: "The question with qid 5 does not exist."
-#       tags:
-#         - discussion
-#         - questions
-#         - answers
-#       security:
-#         - user_token: []
-#           api_key: []
-#   /questions/{qid}/reports:
-#     post:
-#       summary: Reports a question
-#       description: |
-#         This operation will report a question to be reviewed by a moderator.
-
-#         The owner of the report will be automatically retrieved from the
-#         user token against the authorization server.
-#       operationId: dms2223backend.presentation.rest.reportes.post_reporte_pregunta
-#       parameters:
-#         - $ref: "#/components/parameters/QuestionIdPathParam"
-#       requestBody:
-#         content:
-#           "application/json":
-#             schema:
-#               $ref: "#/components/schemas/ReportCreationModel"
-#             example:
-#               reason: Promotes hate speech
-#       responses:
-#         "201":
-#           description: The created report.
-#           content:
-#             "application/json":
-#               schema:
-#                 $ref: "#/components/schemas/QuestionReportFullModel"
-#               example:
-#                 id: 1
-#                 qid: 2
-#                 reason: Promotes hate speech
-#                 status: PENDING
-#                 owner:
-#                   username: user4
-#                 timestamp: 1665922785
-#         "404":
-#           description: The question does not exist.
-#           content:
-#             "text/plain":
-#               schema:
-#                 type: string
-#               example: "The question with qid 5 does not exist."
-#       tags:
-#         - discussion
-#         - moderation
-#         - questions
-#         - reports
-#       security:
-#         - user_token: []
-#           api_key: []
-#   /answers/{aid}:
-#     get:
-#       summary: Get a single answer
-#       operationId: dms2223backend.presentation.rest.respuestas.get_respuesta
-#       parameters:
-#         - $ref: "#/components/parameters/AnswerIdPathParam"
-#       responses:
-#         "200":
-#           description: The answer
-#           content:
-#             "application/json":
-#               schema:
-#                 $ref: "#/components/schemas/AnswerFullModel"
-#               example:
-#                 timestamp: 1665575089
-#                 descripcion: I would suggest four members.
-#                 creador: user3
-#         "404":
-#           description: The answer does not exists
-#           content:
-#             "test/plain":
-#               schema:
-#                 type: string
-#       tags:
-#         - moderation
-#         - answers
-#         - reports
-#       security:
-#         - user_token: []
-#           api_key: []
-#   /answers/{aid}/votes:
-#     post:
-#       summary: Upvote an answer
-#       description: |
-#         This operation will cast a vote on an answer.
-
-#         The user voting will be automatically retrieved from the user token
-#         against the authorization server.
-#       operationId: dms2223backend.presentation.rest.respuestas.post_voto
-#       requestBody:
-#         content:
-#             "text/plain":
-#               schema:
-#                 type: string
-#       parameters:
-#         - $ref: "#/components/parameters/AnswerIdPathParam"
-#       responses:
-#         "201":
-#           $ref: "#/components/responses/VoteCast"
-#         "404":
-#           description: The answer does not exist.
-#           content:
-#             "text/plain":
-#               schema:
-#                 type: string
-#               example: "The answer with aid 50 does not exist."
-#         "409":
-#           $ref: "#/components/responses/VoteAlreadyCast"
-#       tags:
-#         - discussion
-#         - answers
-#         - votes
-#       security:
-#         - user_token: []
-#           api_key: []
-#   /answers/{aid}/comments:
-#     post:
-#       summary: Comments an answer
-#       description: |
-#         This operation creates a comment for an existing answer.
-
-#         The owner of the comment will be automatically retrieved from the user
-#         token against the authorization server.
-#       operationId: dms2223backend.presentation.rest.comentarios.post_comentario_respuesta
-#       parameters:
-#         - $ref: "#/components/parameters/AnswerIdPathParam"
-#       requestBody:
-#         content:
-#           "application/json":
-#             schema:
-#               $ref: "#/components/schemas/CommentCreationModel"
-#             example:
-#               descripcion: Evaluation criteria may be relaxed due to the tight number of members
-#               creador: alguien
-#               sentimiento: POSITIVE
-#               fecha_creacion: "2022-12-28T17:10:40"
-#       responses:
-#         "201":
-#           description: The created comment.
-#           content:
-#             "application/json":
-#               schema:
-#                 $ref: "#/components/schemas/CommentFullModel"
-#               example:
-#                 timestamp: 1665575389
-#                 descripcion: Evaluation criteria may be relaxed due to the tight number of members
-#                 sentimiento: POSITIVE
-#                 creador: user4
-#         "404":
-#           description: The answer does not exist.
-#           content:
-#             "text/plain":
-#               schema:
-#                 type: string
-#               example: "The answer with aid 50 does not exist."
-#       tags:
-#         - discussion
-#         - answers
-#         - comments
-#       security:
-#         - user_token: []
-#           api_key: []
-#   /answers/{aid}/reports:
-#     post:
-#       summary: Reports an answer
-#       description: |
-#         This operation will report an answer to be reviewed by a moderator.
-
-#         The owner of the report will be automatically retrieved from the
-#         user token against the authorization server.
-#       operationId: dms2223backend.presentation.rest.reportes.post_reporte_respuesta
-#       parameters:
-#         - $ref: "#/components/parameters/AnswerIdPathParam"
-#       requestBody:
-#         content:
-#           "application/json":
-#             schema:
-#               $ref: "#/components/schemas/ReportCreationModel"
-#             example:
-#               reason: Unrelated to the question
-#       responses:
-#         "201":
-#           description: The created report.
-#           content:
-#             "application/json":
-#               schema:
-#                 $ref: "#/components/schemas/AnswerReportFullModel"
-#               example:
-#                 id: 1
-#                 aid: 7
-#                 reason: Unrelated to the question
-#                 status: PENDING
-#                 owner:
-#                   username: user4
-#                 timestamp: 1665922785
-#         "404":
-#           description: The answer does not exist.
-#           content:
-#             "text/plain":
-#               schema:
-#                 type: string
-#               example: "The answer with aid 50 does not exist."
-#       tags:
-#         - discussion
-#         - moderation
-#         - answers
-#         - reports
-#       security:
-#         - user_token: []
-#           api_key: []
-#   /comments/{cid}:
-#     get:
-#       summary: Get a single comment
-#       operationId: dms2223backend.presentation.rest.comentarios.get_comentario
-#       parameters:
-#         - $ref: "#/components/parameters/CommentIdPathParam"
-#       responses:
-#         "200":
-#           description: The answer
-#           content:
-#             "application/json":
-#               schema:
-#                 $ref: "#/components/schemas/CommentFullModel"
-#         "404":
-#           description: The comment does not exists
-#           content:
-#             "test/plain":
-#               schema:
-#                 type: string
-#       tags:
-#         - moderation
-#         - answers
-#         - reports
-#       security:
-#         - user_token: []
-#           api_key: []
-#   /comments/{cid}/votes:
-#     post:
-#       summary: Upvote a comment
-#       description: |
-#         This operation will cast a vote on a comment.
-
-#         The user voting will be automatically retrieved from the user token
-#         against the authorization server.
-#       operationId: dms2223backend.presentation.rest.comentarios.post_voto
-#       requestBody:
-#         content:
-#             "text/plain":
-#               schema:
-#                 type: string
-#       parameters:
-#         - $ref: "#/components/parameters/CommentIdPathParam"
-#       responses:
-#         "201":
-#           $ref: "#/components/responses/VoteCast"
-#         "404":
-#           description: The comment does not exist.
-#           content:
-#             "text/plain":
-#               schema:
-#                 type: string
-#               example: "The comment with cid 75 does not exist."
-#         "409":
-#           $ref: "#/components/responses/VoteAlreadyCast"
-#       tags:
-#         - discussion
-#         - comments
-#         - votes
-#       security:
-#         - user_token: []
-#           api_key: []
-#   /comments/{cid}/reports:
-#     post:
-#       summary: Reports a comment
-#       description: |
-#         This operation will report a comment to be reviewed by a moderator.
-
-#         The owner of the report will be automatically retrieved from the
-#         user token against the authorization server.
-#       operationId: dms2223backend.presentation.rest.reportes.post_reporte_comentario
-#       parameters:
-#         - $ref: "#/components/parameters/CommentIdPathParam"
-#       requestBody:
-#         content:
-#           "application/json":
-#             schema:
-#               $ref: "#/components/schemas/ReportCreationModel"
-#             example:
-#               reason: Ambiguous sentiment
-#       responses:
-#         "201":
-#           description: The created report.
-#           content:
-#             "application/json":
-#               schema:
-#                 $ref: "#/components/schemas/CommentReportFullModel"
-#               example:
-#                 id: 1
-#                 cid: 7
-#                 reason: Ambiguous sentiment
-#                 status: PENDING
-#                 owner:
-#                   username: user4
-#                 timestamp: 1665922785
-#         "404":
-#           description: The comment does not exist.
-#           content:
-#             "text/plain":
-#               schema:
-#                 type: string
-#               example: "The comment with cid 75 does not exist."
-#       tags:
-#         - discussion
-#         - moderation
-#         - comments
-#         - reports
-#       security:
-#         - user_token: []
-#           api_key: []
-#   /reports:
-#     get:
-#       summary: Get a list of comment reports.
-#       description: |
-#         This operation gets a listing of reports.
-#       operationId: dms2223backend.presentation.rest.reportes.get_reportes
-#       responses:
-#         "200":
-#           description: Listing of reports
-#           content:
-#             "application/json":
-#               schema:
-#                 $ref: "#/components/schemas/CommentReportsListModel"
-#               example:
-#                 - id: 1
-#                   cid: 7
-#                   reason: Ambiguous sentiment
-#                   status: ACCEPTED
-#                   owner:
-#                     username: user4
-#                   timestamp: 1665922785
-#       tags:
-#         - moderation
-#         - comments
-#         - reports
-#       security:
-#         - user_token: []
-#           api_key: []
-#     post:
-#       summary: Change the status of a report
-#       description: |
-#         Use this operation to change the status of a report.
-#       operationId: dms2223backend.presentation.rest.reportes.set_status
-#       requestBody:
-#         content:
-#           "application/json":
-#             schema:
-#               $ref: "#/components/schemas/ReportStatusChangeModel"
-#             example:
-#               status: ACCEPTED
-#               id: 1
-#               tipo: "pregunta"
-#       responses:
-#         "204":
-#           $ref: "#/components/responses/ReportStatusChanged"
-#         "404":
-#           description: The question report does not exist.
-#           content:
-#             "text/plain":
-#               schema:
-#                 type: string
-#               example: "The question report with rid 25 does not exist."
-#       tags:
-#         - moderation
-#         - questions
-#         - reports
-#       security:
-#         - user_token: []
-#           api_key: []
 components:
   schemas:
     EmptyContentModel:
@@ -1298,56 +1710,72 @@ components:
     RegistroSensorIdParam:
       name: rsid
       description: Id del registro de sensor.
-      in: path
+      in: query
+      # in: path
       schema:
         type: integer
       required: true
     SensorTipoParam:
       name: st
       description: Tipo del sensor.
-      in: path
+      in: query
+      # in: path
       schema:
         type: string
       required: true
     SensorZonaParam:
       name: sz
       description: Zona del sensor.
-      in: path
+      in: query
+      # in: path
       schema:
         type: string
       required: true
     SensorIdParam:
       name: sid
       description: Id del sensor.
-      in: path
+      in: query
+      # in: path
       schema:
         type: integer
+      required: true
+    SensorModeloParam:
+      name: sm
+      description: Modelo del sensor.
+      in: query
+      # in: path
+      schema:
+        type: string
       required: true
     NombrePlantaParam:
       name: np
       description: Nombre de la planta.
-      in: path
+      in: query
+      # in: path
       schema:
         type: string
       required: true    
     NombreTipoPlantaParam:
       name: ntp
       description: Nombre del tipo de la planta.
-      in: path
+      in: query
+      # in: path
       schema:
         type: string
       required: true
     FechaInicioParam:
       name: fi
       description: Fecha de inicio de busqueda.
-      in: path
+      in: query
+      # in: path
       schema:
         type: string
       required: true
     FechaFinParam:
       name: ff
       description: Fecha de fin de busqueda.
-      in: path
+      in: query
+      # in: path
       schema:
         type: string
       required: true
@@ -1361,22 +1789,20 @@ components:
           example: ""
 
 #   securitySchemes:
-#     user_token:
-#       description: |
-#         JWS token sent in the `Authorization` header as bearer.
-
-#         Contains, among other things, the user doing the requests.
-
-#         It is intended to be handed to the authorization service to obtain
-#         useful information, rather than trying to decode it in the backend.
-#       type: http
-#       scheme: bearer
-#       bearerFormat: JWT
-#       x-bearerInfoFunc: dms2223backend.presentation.rest.security.verify_token
 #     api_key:
 #       description: |
 #         Secret shared between both the requestor and the service.
 #       type: apiKey
 #       name: X-ApiKey-Backend
 #       in: header
-#       x-apikeyInfoFunc: dms2223backend.presentation.rest.security.verify_api_key
+#       x-apikeyInfoFunc: backend.presentation.rest.security_rest.verify_api_key
+#     user_token:
+#       description: |
+#         JWS token sent in the `Authorization` header as bearer.
+#         Contains, among other things, the user doing the requests.
+#         It is intended to be handed to the authorization service to obtain
+#         useful information, rather than trying to decode it in the backend.
+#       type: http
+#       scheme: bearer
+#       bearerFormat: JWT
+#       x-bearerInfoFunc: backend.presentation.rest.security_rest.verify_token

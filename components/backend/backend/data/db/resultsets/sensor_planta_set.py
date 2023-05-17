@@ -92,7 +92,7 @@ class SensorPlantaSet():
         return sensores_planta
 
     @staticmethod
-    def listAllSensorsPerPlant(session: Session, nombre_planta:str) -> List[SensorPlanta]:
+    def listAllSensorsFromPlant(session: Session, nombre_planta:str) -> List[SensorPlanta]:
         """
         Lista de sensores asociados a una planta en concreto.
 
@@ -109,7 +109,7 @@ class SensorPlantaSet():
         return sensores_planta
 
     @staticmethod
-    def listAllActiveSensorsPerPlant(session: Session, nombre_planta:str) -> List[SensorPlanta]:
+    def listAllActiveSensorsFromPlant(session: Session, nombre_planta:str) -> List[SensorPlanta]:
         """
         Lista de sensores asociados a una planta en concreto.
 
@@ -126,7 +126,7 @@ class SensorPlantaSet():
         return sensores_planta
     
     @staticmethod
-    def listAllSensorsPerPlantBetweenDates(session: Session, nombre_planta:str, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[SensorPlanta]:
+    def listAllSensorsFromPlantBetweenDates(session: Session, nombre_planta:str, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[SensorPlanta]:
         """
         Lista de sensores asociados a una planta en concreto.
 
@@ -144,7 +144,7 @@ class SensorPlantaSet():
         return sensores_planta
 
     @staticmethod
-    def listAllPlantsPerSensor(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> List[SensorPlanta]:
+    def listAllPlantsFromSensor(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> List[SensorPlanta]:
         """
         Lista de sensores asociados a una planta en concreto.
 
@@ -163,7 +163,7 @@ class SensorPlantaSet():
         return sensores_planta
 
     @staticmethod
-    def listAllActivePlantsPerSensor(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> List[SensorPlanta]:
+    def listAllActivePlantsFromSensor(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> List[SensorPlanta]:
         """
         Lista de sensores asociados a una planta en concreto.
 
@@ -182,7 +182,7 @@ class SensorPlantaSet():
         return sensores_planta
     
     @staticmethod
-    def listAllPlantsPerSensorBetweenDates(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[SensorPlanta]:
+    def listAllPlantsFromSensorBetweenDates(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[SensorPlanta]:
         """
         Lista de sensores asociados a una planta en concreto.
 
