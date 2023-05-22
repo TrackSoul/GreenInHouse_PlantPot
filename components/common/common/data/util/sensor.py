@@ -130,14 +130,14 @@ class Sensor:
 
     def toJson(self) -> dict:
         dic={}
-        dic["tipo_sensor"]={"str": str(self.getTipoSensor()),
+        dic["tipo_sensor"]={"nombre": str(self.getTipoSensor()),
                             "tipo": self.getTipoSensor().getTipo()}
         #dic["tipo_sensor"]=self.getTipoSensor().toJson()
-        dic["zona_sensor"]={"str": str(self.getZonaSensor()),
+        dic["zona_sensor"]={"nombre": str(self.getZonaSensor()),
                             "tipo": self.getZonaSensor().getTipo()}
         #dic["zona_sensor"]=self.getZonaSensor().toJson()
         dic["numero_sensor"]=self.getNumeroSensor()
-        dic["modelo_sensor"]={"str": str(self.getModeloSensor()),
+        dic["modelo_sensor"]={"nombre": str(self.getModeloSensor()),
                             "tipo": self.getModeloSensor().getTipo()}
         #dic["modelo_sensor"]=self.getModeloSensor().toJson()
         dic["nombre_sensor"]=self.getNombreSensor()
@@ -146,16 +146,16 @@ class Sensor:
         dic["patilla_1_lectura"]=self.getPatillaLectura(1) if self.getPatillaLectura(1) is not None else None
         dic["patilla_2_lectura"]=self.getPatillaLectura(2) if self.getPatillaLectura(2) is not None else None
         dic["patilla_3_lectura"]=self.getPatillaLectura(3) if self.getPatillaLectura(3) is not None else None
-        dic["unidad_medida_0"]={"str": str(self.getUnidadMedida(0)),
+        dic["unidad_medida_0"]={"nombre": str(self.getUnidadMedida(0)),
                             "tipo": self.getUnidadMedida(0).getTipo()}
         #dic["unidad_medida_0"]=self.getUnidadMedida(0).toJson()
-        dic["unidad_medida_1"]={"str": str(self.getUnidadMedida(1)),
+        dic["unidad_medida_1"]={"nombre": str(self.getUnidadMedida(1)),
                             "tipo": self.getUnidadMedida(1).getTipo()} if self.getUnidadMedida(1) is not None else None
         #dic["unidad_medida_1"]=self.getUnidadMedida(1).toJson()
-        dic["unidad_medida_2"]={"str": str(self.getUnidadMedida(2)),
+        dic["unidad_medida_2"]={"nombre": str(self.getUnidadMedida(2)),
                             "tipo": self.getUnidadMedida(2).getTipo()} if self.getUnidadMedida(2) is not None else None
         #dic["unidad_medida_2"]=self.getUnidadMedida(2).toJson()
-        dic["unidad_medida_3"]={"str": str(self.getUnidadMedida(3)),
+        dic["unidad_medida_3"]={"nombre": str(self.getUnidadMedida(3)),
                             "tipo": self.getUnidadMedida(3).getTipo()} if self.getUnidadMedida(3) is not None else None
         #dic["unidad_medida_3"]=self.getUnidadMedida(3).toJson()
         dic["fecha_creacion"]=str(self.getFechaCreacion())  if self.getFechaCreacion() is not None else None

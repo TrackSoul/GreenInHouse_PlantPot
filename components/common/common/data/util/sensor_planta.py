@@ -67,17 +67,17 @@ class SensorPlanta:
 
     def toJson(self) -> dict:
         dic={}
-        dic["tipo_sensor"]={"str": str(self.getTipoSensor()),
+        dic["tipo_sensor"]={"nombre": str(self.getTipoSensor()),
                             "tipo": self.getTipoSensor().getTipo()}
         #dic["tipo_sensor"]=self.getTipoSensor().toJson()
-        dic["zona_sensor"]={"str": str(self.getZonaSensor()),
+        dic["zona_sensor"]={"nombre": str(self.getZonaSensor()),
                             "tipo": self.getZonaSensor().getTipo()}
         #dic["zona_sensor"]=self.getZonaSensor().toJson()
         dic["numero_sensor"]=self.getNumeroSensor()
         dic["nombre_planta"]=self.getNombrePlanta()
         dic["fecha_asociacion"]=self.getFechaAsociacion()
         dic["fecha_anulacion"]=self.getFechaAnulacion() if self.getFechaAnulacion() is not None else None
-        dic["id_"]=self.getId()
+        dic["id"]=self.getId()
         return dic
 
     @staticmethod
@@ -88,5 +88,5 @@ class SensorPlanta:
                               nombre_planta=dic.get("nombre_planta"),
                               fecha_asociacion=datetime.fromisoformat(dic.get("fecha_asociacion")),
                               fecha_anulacion=datetime.fromisoformat(dic.get("fecha_anulacion")) if dic.get("fecha_anulacion") is not None else None,
-                              id_=dic.get("id_"))
+                              id_=dic.get("id"))
         return sensor

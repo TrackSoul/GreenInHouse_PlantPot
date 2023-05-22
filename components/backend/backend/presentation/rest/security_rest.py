@@ -9,7 +9,6 @@ import requests
 from connexion.exceptions import Unauthorized  # type: ignore
 from backend.data.config import backendconfiguration
 
-
 def verify_api_key(token: str) -> Dict:
     """Callback testing the received API key.
     Args:

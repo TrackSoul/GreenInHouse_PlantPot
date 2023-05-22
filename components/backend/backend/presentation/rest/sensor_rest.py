@@ -7,7 +7,6 @@ from backend.service import SensorService, PlantaService, SensorPlantaService
 from common.data.util import Sensor as SensorCommon, Planta as PlantaCommon, SensorPlanta as SensorPlantaCommon
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 
-
 def get(st:str, sz: str ,sid:int) :
     try:
         tipo_sensor:TipoSensor = TipoSensor[st]

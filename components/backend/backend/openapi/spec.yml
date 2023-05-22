@@ -41,7 +41,7 @@ paths:
       tags:
         - Servidor
   # /RegistrosSensores/{rsid}:
-  /RegistrosSensores:
+  /RegistrosSensores/One:
     get:
       summary: Obtener un registro de sensor por su id.
       description: |
@@ -484,7 +484,7 @@ paths:
       #   - api_key: []
       #     user_token: []
   # /Sensores/{st}/{sz}/{sid}:
-  /Sensores:
+  /Sensores/One:
     get:
       summary: Obtener el sensor especificado.
       description: |
@@ -1267,7 +1267,7 @@ paths:
 
 
   # /Plantas/{np}:
-  /Plantas:
+  /Plantas/One:
     get:
       summary: Obtener la planta especificada.
       description: |
@@ -1281,7 +1281,7 @@ paths:
           content:
             "application/json":
               schema:
-                $ref: "#/components/schemas/PlantarModel"
+                $ref: "#/components/schemas/PlantaModel"
               example:
                 - nombre_planta: "Mi tomatera"
                   tipo_planta: "Tomatera"
@@ -1298,157 +1298,109 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
-  # /Sensores/All:
-  #   get:
-  #     summary: Obtener todos los sensores.
-  #     description: |
-  #       Obtener todos los sensores almacenados en la base de datos.
-  #     operationId: backend.presentation.rest.sensor_rest.getAll
-  #     responses:
-  #       "200":
-  #         description: Listado de todos los sensores.
-  #         content:
-  #           "application/json":
-  #             schema:
-  #               $ref: "#/components/schemas/SensorListModel"
-  #             example:
-  #               - tipo_sensor: 
-  #                   nombre: "Temperatura y Humedad"
-  #                   tipo: "TEMPERATURA_Y_HUMEDAD"
-  #                 zona_sensor: 
-  #                   nombre: "Ambiente"
-  #                   tipo: "AMBIENTE"
-  #                 numero_sensor: 1
-  #                 modelo_sensor: 
-  #                   nombre: "DHT11"
-  #                   tipo: "DHT11"
-  #                 nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
-  #                 direccion_lectura: "RASPBERRY"
-  #                 patilla_0_lectura: 20
-  #                 unidad_medida_0: 
-  #                   nombre: "ºC"
-  #                   tipo: "GRADOS_CENTIGRADOS"
-  #                 unidad_medida_1: 
-  #                   nombre: "%"
-  #                   tipo: "PORCENTAJE"
-  #                 fecha_creacion: 2023-05-15 10:01:03.791271
-  #               - tipo_sensor: 
-  #                   nombre: "Humedad"
-  #                   tipo: "HUMEDAD"
-  #                 zona_sensor: 
-  #                   nombre: "Maceta"
-  #                   tipo: "MACETA"
-  #                 numero_sensor: 1
-  #                 modelo_sensor: 
-  #                   nombre: "FC28"
-  #                   tipo: "FC28"
-  #                 nombre_sensor: "Humedad tierra 1 maceta 1"
-  #                 direccion_lectura: "MCP3008_0"
-  #                 patilla_0_lectura: 8
-  #                 patilla_1_lectura: 0
-  #                 unidad_medida_0: 
-  #                   nombre: "%"
-  #                   tipo: "PORCENTAJE"
-  #                 fecha_creacion: 2023-05-15 10:01:04.791271
-  #               - tipo_sensor: 
-  #                   nombre: "Luminosidad"
-  #                   tipo: "LUMINOSIDAD"
-  #                 zona_sensor: 
-  #                   nombre: "Ambiente"
-  #                   tipo: "AMBIENTE"
-  #                 numero_sensor: 1
-  #                 modelo_sensor: 
-  #                   nombre: "LDR"
-  #                   tipo: "LDR"
-  #                 nombre_sensor: "Luminosidad 1 maceta 1"
-  #                 direccion_lectura: "MCP3008_0"
-  #                 patilla_0_lectura: 8
-  #                 patilla_1_lectura: 1
-  #                 unidad_medida_0: 
-  #                   nombre: "Lux"
-  #                   tipo: "LUMENES"
-  #                 fecha_creacion: 2023-05-15 10:01:05.791271
-  #     tags:
-  #       - Sensores
+  /Plantas/All:
+    get:
+      summary: Obtener todas las plantas.
+      description: |
+        Obtener todas las plantas almacenadas en la base de datos.
+      operationId: backend.presentation.rest.planta_rest.getAll
+      responses:
+        "200":
+          description: Listado de todas las plantas.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/PlantaListModel"
+              example:
+                - nombre_planta: "Mi tomatera"
+                  tipo_planta: "Tomatera"
+                  fecha_plantacion: 2023-05-15 10:01:03.791271
+                - nombre_planta: "Mi fresal"
+                  tipo_planta: "Fresal"
+                  fecha_plantacion: 2023-03-16 12:01:03.791271
+      tags:
+        - Sensores
   #     # security:
   #     #   - api_key: []
   #     #     user_token: []
-  # /Sensores/All/Active:
-  #   get:
-  #     summary: Obtener todos los sensores activos.
-  #     description: |
-  #       Obtener todos los sensores activos almacenados en la base de datos.
-  #     operationId: backend.presentation.rest.sensor_rest.getAllActive
-  #     responses:
-  #       "200":
-  #         description: Listado de todos los sensores activos.
-  #         content:
-  #           "application/json":
-  #             schema:
-  #               $ref: "#/components/schemas/SensorListModel"
-  #             example:
-  #               - tipo_sensor: 
-  #                   nombre: "Temperatura y Humedad"
-  #                   tipo: "TEMPERATURA_Y_HUMEDAD"
-  #                 zona_sensor: 
-  #                   nombre: "Ambiente"
-  #                   tipo: "AMBIENTE"
-  #                 numero_sensor: 1
-  #                 modelo_sensor: 
-  #                   nombre: "DHT11"
-  #                   tipo: "DHT11"
-  #                 nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
-  #                 direccion_lectura: "RASPBERRY"
-  #                 patilla_0_lectura: 20
-  #                 unidad_medida_0: 
-  #                   nombre: "ºC"
-  #                   tipo: "GRADOS_CENTIGRADOS"
-  #                 unidad_medida_1: 
-  #                   nombre: "%"
-  #                   tipo: "PORCENTAJE"
-  #                 fecha_creacion: 2023-05-15 10:01:03.791271
-  #               - tipo_sensor: 
-  #                   nombre: "Humedad"
-  #                   tipo: "HUMEDAD"
-  #                 zona_sensor: 
-  #                   nombre: "Maceta"
-  #                   tipo: "MACETA"
-  #                 numero_sensor: 1
-  #                 modelo_sensor: 
-  #                   nombre: "FC28"
-  #                   tipo: "FC28"
-  #                 nombre_sensor: "Humedad tierra 1 maceta 1"
-  #                 direccion_lectura: "MCP3008_0"
-  #                 patilla_0_lectura: 8
-  #                 patilla_1_lectura: 0
-  #                 unidad_medida_0: 
-  #                   nombre: "%"
-  #                   tipo: "PORCENTAJE"
-  #                 fecha_creacion: 2023-05-15 10:01:04.791271
-  #               - tipo_sensor: 
-  #                   nombre: "Luminosidad"
-  #                   tipo: "LUMINOSIDAD"
-  #                 zona_sensor: 
-  #                   nombre: "Ambiente"
-  #                   tipo: "AMBIENTE"
-  #                 numero_sensor: 1
-  #                 modelo_sensor: 
-  #                   nombre: "LDR"
-  #                   tipo: "LDR"
-  #                 nombre_sensor: "Luminosidad 1 maceta 1"
-  #                 direccion_lectura: "MCP3008_0"
-  #                 patilla_0_lectura: 8
-  #                 patilla_1_lectura: 1
-  #                 unidad_medida_0: 
-  #                   nombre: "Lux"
-  #                   tipo: "LUMENES"
-  #                 fecha_creacion: 2023-05-15 10:01:05.791271
-  #     tags:
-  #       - Sensores
+  /Plantas/All/Active:
+    get:
+      summary: Obtener todas las plantas vivas actualmente.
+      description: |
+        Obtener todas las plantas vivas actualmente almacenadas en la base de datos.
+      operationId: backend.presentation.rest.planta_rest.getAllActive
+      responses:
+        "200":
+          description: Listado de todas las plantas vivas actualmente.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/PlantaListModel"
+              example:
+                - nombre_planta: "Mi tomatera"
+                  tipo_planta: "Tomatera"
+                  fecha_plantacion: 2023-05-15 10:01:03.791271
+                - nombre_planta: "Mi fresal"
+                  tipo_planta: "Fresal"
+                  fecha_plantacion: 2023-03-16 12:01:03.791271
+      tags:
+        - Sensores
+  #     # security:
+  #     #   - api_key: []
+  #     #     user_token: []
+  /Plantas/All/FromType:
+    get:
+      summary: Obtener todas las plantas de un tipo especificado.
+      description: |
+        Obtener todas las plantas de un tipo especificado almacenadas 
+        en la base de datos.
+      operationId: backend.presentation.rest.planta_rest.getAllFromType
+      responses:
+        "200":
+          description: Listado de todas las plantas de un tipo especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/PlantaListModel"
+              example:
+                - nombre_planta: "Mi tomatera"
+                  tipo_planta: "Tomatera"
+                  fecha_plantacion: 2023-05-15 10:01:03.791271
+                - nombre_planta: "Mi fresal"
+                  tipo_planta: "Fresal"
+                  fecha_plantacion: 2023-03-16 12:01:03.791271
+      tags:
+        - Sensores
   #     # security:
   #     #   - api_key: []
   #     #     user_token: []
 
+  /Plantas/All/Active/FromType:
+    get:
+      summary: Obtener todas las plantas vivas actualmente de un tipo especificado.
+      description: |
+        Obtener todas las plantas vivas actualmente de un tipo especificado almacenadas 
+        en la base de datos.
+      operationId: backend.presentation.rest.planta_rest.getAllActiveFromType
+      responses:
+        "200":
+          description: Listado de todas las plantas vivas actualmente de un tipo especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/PlantaListModel"
+              example:
+                - nombre_planta: "Mi tomatera"
+                  tipo_planta: "Tomatera"
+                  fecha_plantacion: 2023-05-15 10:01:03.791271
+                - nombre_planta: "Mi fresal"
+                  tipo_planta: "Fresal"
+                  fecha_plantacion: 2023-03-16 12:01:03.791271
+      tags:
+        - Sensores
+  #     # security:
+  #     #   - api_key: []
+  #     #     user_token: []
 
 
 components:

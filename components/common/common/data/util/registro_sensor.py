@@ -45,28 +45,28 @@ class RegistroSensor:
 
     def toJson(self) -> Dict:
         dic={}
-        dic["tipo_sensor"]={"str": str(self.getTipoSensor()),
+        dic["tipo_sensor"]={"nombre": str(self.getTipoSensor()),
                             "tipo": self.getTipoSensor().getTipo()}
         #dic["tipo_sensor"]=self.getTipoSensor().toJson()
-        dic["zona_sensor"]={"str": str(self.getZonaSensor()),
+        dic["zona_sensor"]={"nombre": str(self.getZonaSensor()),
                             "tipo": self.getZonaSensor().getTipo()}
         #dic["zona_sensor"]=self.getZonaSensor().toJson()
         dic["numero_sensor"]=self.getNumeroSensor()
         dic["valor"]=self.getValor()
-        dic["unidad_medida"]={"str": str(self.getUnidadMedida()),
+        dic["unidad_medida"]={"nombre": str(self.getUnidadMedida()),
                             "tipo": self.getUnidadMedida().getTipo()}
         #dic["unidad_medida"]=self.getUnidadMedida().toJson()
         dic["fecha"]=str(self.getFecha())
-        dic["id_"]=self.getId()
+        dic["id"]=self.getId()
         return dic
 
     @staticmethod
     def fromJson(dic: dict):
-        sensor = RegistroSensor(tipo_sensor=dic["tipo_sensor"]["tipo"],
-                                zona_sensor=dic["zona_sensor"]["tipo"],
-                                numero_sensor=dic["numero_sensor"],
-                                valor=dic["valor"],
-                                unidad_medida=dic["unidad_medida"]["tipo"],
+        sensor = RegistroSensor(tipo_sensor=dic.get("tipo_sensor").get("tipo"),
+                                zona_sensor=dic.get("zona_sensor").get("tipo"),
+                                numero_sensor=dic.get("numero_sensor"),
+                                valor=dic.get("valor"),
+                                unidad_medida=dic.get("unidad_medida").get("tipo"),
                                 fecha=datetime.fromisoformat(dic.get("fecha")),
-                                id_=dic["id_"])
+                                id_=dic.get("id"))
         return sensor

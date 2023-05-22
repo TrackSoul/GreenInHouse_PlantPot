@@ -8,18 +8,18 @@ from common.data.util import RegistroSensor as RegistroSensorCommon, Sensor as S
 from common.data.util import TipoSensor, ZonaSensor, TipoMedida, UnidadMedida
 
 
-def get(rsid: int) :
+def get(rsid: int) -> Dict:
     with current_app.app_context() :
         if RegistroSensorService.exists(current_app.db,rsid):
             return RegistroSensorService.get(current_app.db, rsid).toJson(), HTTPStatus.OK.value
         else:
             return ("El registro de sensor " + str(rsid) + "no existe", HTTPStatus.NOT_FOUND.value)
         
-def getAll() :
+def getAll() -> List[Dict]:
     with current_app.app_context() :
         return [item.toJson() for item in RegistroSensorService.listAll(current_app.db)], HTTPStatus.OK.value
 
-def getAllFromSensor(st:str, sz: str ,sid:int):
+def getAllFromSensor(st:str, sz: str ,sid:int) -> List[Dict]:
     try:
         tipo_sensor:TipoSensor = TipoSensor[st]
     except(KeyError):
@@ -42,7 +42,7 @@ def getAllFromSensor(st:str, sz: str ,sid:int):
 #     except:
 #         return ("Los datos del sensor no son correctos", HTTPStatus.NOT_ACCEPTABLE.value)
 
-def getAllFromSensorBetweenDates(st:str, sz: str ,sid:int, fi: str, ff: str = str(datetime.now())):
+def getAllFromSensorBetweenDates(st:str, sz: str ,sid:int, fi: str, ff: str = str(datetime.now())) -> List[Dict]:
     try:
         tipo_sensor:TipoSensor = TipoSensor[st]
     except(KeyError):
@@ -74,7 +74,7 @@ def getAllFromSensorBetweenDates(st:str, sz: str ,sid:int, fi: str, ff: str = st
 #     except:
 #         return ("Los datos del sensor no son correctos", HTTPStatus.NOT_ACCEPTABLE.value)
 
-def getAllFromPlant(np:str):
+def getAllFromPlant(np:str) -> List[Dict]:
     nombre_planta: str = np
     with current_app.app_context() :
         if PlantaService.exists(current_app.db,np):
@@ -82,7 +82,7 @@ def getAllFromPlant(np:str):
         else:
             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
 
-def getAllFromPlantBetweenDates(np:str, fi: str, ff: str = str(datetime.now())):
+def getAllFromPlantBetweenDates(np:str, fi: str, ff: str = str(datetime.now())) -> List[Dict]:
     nombre_planta: str = np
     try:
         fecha_inicio=datetime.fromisoformat(fi)
@@ -96,3 +96,32 @@ def getAllFromPlantBetweenDates(np:str, fi: str, ff: str = str(datetime.now())):
             return [item.toJson() for item in RegistroSensorService.listAllFromPlantBetweenDates(current_app.db, nombre_planta, fecha_inicio, fecha_fin)], HTTPStatus.OK.value
         else:
             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)  
+
+# def classifyDictRegistries(list_dic: List[RegistroSensorCommon]):
+#     dic_classified: List[Dict] = []
+#     for registro in list_dic:
+#         try:
+#             unidad_medida = UnidadMedida[registro.get("unidad_medida").get("tipo")]
+#         except:
+#             return ("Error al clasificar", HTTPStatus.NOT_FOUND.value) 
+
+# def classifyDictRegistries(list_dic: List[Dict]):
+#     dic_classified: List[Dict] = []
+#     for registro in list_dic:
+#         try:
+#             unidad_medida = UnidadMedida[registro.get("unidad_medida").get("tipo")]
+#         except:
+#             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)  
+
+
+# def getAllFromPlantToGraph(np:str) -> List[Dict]:
+#     nombre_planta: str = np
+#     with current_app.app_context() :
+#         if PlantaService.exists(current_app.db,np):
+            
+#             for registro in RegistroSensorService.listAllFromPlant(current_app.db, nombre_planta):
+
+
+#             return [item.toJson() for item in RegistroSensorService.listAllFromPlant(current_app.db, nombre_planta)], HTTPStatus.OK.value
+#         else:
+#             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
