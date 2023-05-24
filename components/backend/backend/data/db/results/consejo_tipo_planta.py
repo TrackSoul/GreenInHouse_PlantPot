@@ -1,4 +1,4 @@
-from datetime import datetimeunidad_temperatura
+from datetime import datetime
 from typing import Dict, Optional
 from sqlalchemy import Table, MetaData, Column, String, Boolean, Integer, Float, Enum # type: ignore
 from sqlalchemy import ForeignKey  # type: ignore
