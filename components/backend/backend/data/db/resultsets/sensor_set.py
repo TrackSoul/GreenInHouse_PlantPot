@@ -335,7 +335,7 @@ class SensorSet():
             raise ValueError('Necesario especificar la zona del sensor.')
         if not numero_sensor:
             raise ValueError('Necesario especificar el numero de sensor.')
-        sensor_modificado = None
+
         sensor_modificado: Sensor = None
         try:
             query = session.query(Sensor).filter_by(tipo_sensor=tipo_sensor,zona_sensor=zona_sensor,numero_sensor=numero_sensor)
