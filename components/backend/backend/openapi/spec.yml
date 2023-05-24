@@ -40,7 +40,6 @@ paths:
           $ref: "#/components/responses/Empty"
       tags:
         - Servidor
-  # /RegistrosSensores/{rsid}:
   /RegistrosSensores/One:
     get:
       summary: Obtener un registro de sensor por su id.
@@ -140,7 +139,6 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
-  # /RegistrosSensores/All/FromSensor/{st}/{sz}/{sid}:
   /RegistrosSensores/All/FromSensor:
     get:
       summary: Obtener todos los registros del sensor especificado.
@@ -225,7 +223,6 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
-  # /RegistrosSensores/All/FromSensor/{st}/{sz}/{sid}/BetweenDates/{fi}/{ff}:
   /RegistrosSensores/All/FromSensor/BetweenDates:
     get:
       summary: Obtener todos los registros del sensor especificado creados entre las fechas especificadas.
@@ -326,7 +323,6 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
-  # /RegistrosSensores/All/FromPlant/{np}:
   /RegistrosSensores/All/FromPlant:
     get:
       summary: Obtener todos los registros de los sensores de la planta especificada.
@@ -395,7 +391,74 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
-  # /RegistrosSensores/All/FromPlant/{np}/BetweenDates/{fi}/{ff}:
+  /RegistrosSensores/All/FromPlant/ToGraph:
+    get:
+      summary: Obtener todos los registros de los sensores de la planta especificada en formato para graficar.
+      description: |
+        Obtener todos los registros de los sensores de la planta especificada almacenados en la base de datos en formato para graficar.
+      operationId: backend.presentation.rest.registro_sensor_rest.getAllFromPlantToGraph
+      parameters:
+        - $ref: "#/components/parameters/NombrePlantaParam"
+      responses:
+        "200":
+          description: Lista de registros de los sensores asociados a la planta especificada.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/GrupoRegistrosGraficosModel"
+              example:
+                - TEMPERATURA: 
+                    AMBIENTE:
+                      unidad_medida: 
+                        nombre: "ºC"
+                        tipo: "GRADOS_CENTIGRADOS"
+                      tipo_medida: 
+                        nombre: "Temperatura"
+                        tipo: "TEMPERATURA"
+                      zona_sensor: 
+                        nombre: "Ambiente"
+                        tipo: "AMBIENTE"
+                      lista_valores: [22.0,23.0,22.0]
+                      lista_fechas: ["2023-05-14 21:55:16.483217", "2023-05-14 22:05:15.503486", "2023-05-14 22:15:14.536258"]
+                - HUMEDAD: 
+                    AMBIENTE:
+                      unidad_medida: 
+                        nombre: "%"
+                        tipo: "PORCENTAJE"
+                      tipo_medida: 
+                        nombre: "Humedad"
+                        tipo: "HUMEDA"
+                      zona_sensor: 
+                        nombre: "Ambiente"
+                        tipo: "AMBIENTE"
+                      lista_valores: [48.0,49.0,48.0]
+                      lista_fechas: ["2023-05-14 21:55:17.483217", "2023-05-14 22:05:16.503486", "2023-05-14 22:15:15.536258"]
+                -  HUMEDAD: 
+                    AMBIENTE:
+                      unidad_medida: 
+                        nombre: "%"
+                        tipo: "MACETA"
+                      tipo_medida: 
+                        nombre: "Humedad"
+                        tipo: "HUMEDA"
+                      zona_sensor: 
+                        nombre: "Maceta"
+                        tipo: "MACETA"
+                      lista_valores: [48.0,49.0,48.0]
+                      lista_fechas: ["2023-05-14 21:55:17.483217", "2023-05-14 22:05:16.503486", "2023-05-14 22:15:15.536258"]
+        "404":
+          description: La planta especificada no existe.
+          content:
+            "text/plain":
+              schema:
+                type: string
+              example: "La planta Mi Tomatera no existe."
+      tags:
+        - Registros Sensores
+        - Plantas
+      # security:
+      #   - api_key: []
+      #     user_token: []
   /RegistrosSensores/All/FromPlant/BetweenDates:
     get:
       summary: |
@@ -483,7 +546,6 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
-  # /Sensores/{st}/{sz}/{sid}:
   /Sensores/One:
     get:
       summary: Obtener el sensor especificado.
@@ -698,7 +760,6 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
-  # /Sensores/All/FromType/{st}:
   /Sensores/All/FromType:
     get:
       summary: Obtener todos los sensores de un tipo especifico.
@@ -767,7 +828,6 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
-  # /Sensores/All/Active/FromType/{st}:
   /Sensores/All/Active/FromType:
     get:
       summary: Obtener todos los sensores activos de un tipo especifico.
@@ -836,7 +896,6 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
-  # /Sensores/All/FromZone/{sz}:
   /Sensores/All/FromZone:
     get:
       summary: Obtener todos los sensores de una zona especifica.
@@ -903,7 +962,6 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
-  # /Sensores/All/Active/FromZone/{sz}:
   /Sensores/All/Active/FromZone:
     get:
       summary: Obtener todos los sensores activos de una zona especifica.
@@ -970,7 +1028,6 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
-  # /Sensores/All/FromTypeAndZone/{st}/{sz}:
   /Sensores/All/FromTypeAndZone:
     get:
       summary: Obtener todos los sensores de un tipo y zona especificos.
@@ -1047,7 +1104,6 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
-  # /Sensores/All/Active/FromTypeAndZone/{st}/{sz}:
   /Sensores/All/Active/FromTypeAndZone:
     get:
       summary: Obtener todos los sensores activos de un tipo y zona especificos.
@@ -1124,7 +1180,6 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
-  # /Sensores/All/FromModel/{sm}:
   /Sensores/All/FromModel:
     get:
       summary: Obtener todos los sensores de un modelo especifico.
@@ -1193,7 +1248,6 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
-  # /Sensores/All/Active/FromModel/{sm}:
   /Sensores/All/Active/FromModel:
     get:
       summary: Obtener todos los sensores activos de un modelo especifico.
@@ -1262,11 +1316,6 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
-
-
-
-
-  # /Plantas/{np}:
   /Plantas/One:
     get:
       summary: Obtener la planta especificada.
@@ -1320,9 +1369,9 @@ paths:
                   fecha_plantacion: 2023-03-16 12:01:03.791271
       tags:
         - Sensores
-  #     # security:
-  #     #   - api_key: []
-  #     #     user_token: []
+      # security:
+      #   - api_key: []
+      #     user_token: []
   /Plantas/All/Active:
     get:
       summary: Obtener todas las plantas vivas actualmente.
@@ -1345,9 +1394,9 @@ paths:
                   fecha_plantacion: 2023-03-16 12:01:03.791271
       tags:
         - Sensores
-  #     # security:
-  #     #   - api_key: []
-  #     #     user_token: []
+      # security:
+      #   - api_key: []
+      #     user_token: []
   /Plantas/All/FromType:
     get:
       summary: Obtener todas las plantas de un tipo especificado.
@@ -1371,10 +1420,9 @@ paths:
                   fecha_plantacion: 2023-03-16 12:01:03.791271
       tags:
         - Sensores
-  #     # security:
-  #     #   - api_key: []
-  #     #     user_token: []
-
+      # security:
+      #   - api_key: []
+      #     user_token: []
   /Plantas/All/Active/FromType:
     get:
       summary: Obtener todas las plantas vivas actualmente de un tipo especificado.
@@ -1398,9 +1446,9 @@ paths:
                   fecha_plantacion: 2023-03-16 12:01:03.791271
       tags:
         - Sensores
-  #     # security:
-  #     #   - api_key: []
-  #     #     user_token: []
+      # security:
+      #   - api_key: []
+      #     user_token: []
 
 
 components:
@@ -1537,8 +1585,10 @@ components:
           nullable: true
         fecha_creacion:
           type: string
+          format: date-time
         fecha_eliminacion:
           type: string
+          format: date-time
           nullable: true
       required:
         - tipo_sensor
@@ -1570,6 +1620,7 @@ components:
           $ref: "#/components/schemas/UnidadMedidaModel"
         fecha:
           type: string
+          format: date-time
         id_:
           type: integer
       required:
@@ -1598,8 +1649,10 @@ components:
           type: string
         fecha_asociacion:
           type: string
+          format: date-time
         fecha_anulacion:
           type: string
+          format: date-time
           nullable: true
         id_:
           type: integer
@@ -1624,8 +1677,10 @@ components:
           type: string
         fecha_plantacion:
           type: string
+          format: date-time
         fecha_marchitacion:
           type: string
+          format: date-time
           nullable: true
       required:
         - nombre_planta
@@ -1646,8 +1701,10 @@ components:
           type: string
         fecha_plantacion:
           type: string
+          format: date-time
         fecha_marchitacion:
           type: string
+          format: date-time
           nullable: true
       required:
         - nombre_planta
@@ -1657,7 +1714,49 @@ components:
     TipoPlantaListModel:
       type: array
       items:
-        $ref: "#/components/schemas/TipoPlantaModel"        
+        $ref: "#/components/schemas/TipoPlantaModel"     
+    RegistrosGraficoModel:
+      description: Datos de registros adaptados para ser leido por un grafico.
+      type: object
+      properties:
+        unidad_medida:
+          $ref: "#/components/schemas/UnidadMedidaModel"
+        tipo_medida:
+          $ref: "#/components/schemas/TipoMedidaModel"
+        zona_sensor:
+          $ref: "#/components/schemas/ZonaSensorModel"
+        lista_valores:
+          type: array
+          items:
+            type: number
+        lista_fechas:
+          type: array
+          items:
+            type: string
+            format: date-time
+      required:
+        - unidad_medida
+        - tipo_medida
+        - zona_sensor
+        - lista_valores
+        - lista_fechas
+    GrupoRegistrosGraficosModel:
+      description: Grupo de datos de registros adaptados para ser leido por un grafico.
+      type: object
+      properties:
+        TEMPERATURA:
+          type: object
+          properties:
+            AMBIENTE:
+              $ref: "#/components/schemas/UnidadMedidaModel"
+        HUMEDAD:
+          type: object
+          properties:
+            AMBIENTE:
+              $ref: "#/components/schemas/UnidadMedidaModel"
+            MACETA:
+              $ref: "#/components/schemas/UnidadMedidaModel"
+
   parameters:
     RegistroSensorIdParam:
       name: rsid
@@ -1731,6 +1830,7 @@ components:
       schema:
         type: string
       required: true
+  
   responses:
     Empty:
       description: Respuesta con contenido vacio.
@@ -1739,6 +1839,8 @@ components:
           schema:
             $ref: "#/components/schemas/EmptyContentModel"
           example: ""
+
+
 
 #   securitySchemes:
 #     api_key:

@@ -144,7 +144,6 @@ class RegistroSensorService():
         return RegistroSensorService.listAllFromPlantBetweenDates(esquema, planta.getNombrePlanta(), fecha_inicio, fecha_fin)
 
 
-
     @staticmethod
     def get(esquema: Esquema, id_ : int) -> RegistroSensorCommon:
         session : Session = esquema.new_session()
@@ -178,3 +177,62 @@ class RegistroSensorService():
         return RegistroSensorService.update(esquema, registro_sensor.getTipoSensor(), registro_sensor.getZonaSensor(), 
                                             registro_sensor.getNumeroSensor(), registro_sensor.getValor(), 
                                             registro_sensor.getUnidadMedida(), registro_sensor.getId())
+
+
+    @staticmethod
+    def processListForGraph(lista_registros_sensores: List[RegistroSensorCommon]) -> List[Dict]:
+        dic_registros_sensores = {}
+
+        for unidad_medida in list(UnidadMedida):
+            tipo_medida: TipoMedida = unidad_medida.getTipoMedida()
+            dic_tipo = {}
+            for zona in list(ZonaSensor):
+                dic_tipo_zona = {} 
+                dic_tipo_zona["unidad_medida"] = {"nombre": str(unidad_medida),
+                                                "tipo": unidad_medida.getTipo()}
+                dic_tipo_zona["tipo_medida"] = {"nombre": str(tipo_medida),
+                                                "tipo": tipo_medida.getTipo()}
+                dic_tipo_zona["zona_sensor"] = {"nombre": str(zona),
+                                        "tipo": zona.getTipo()}  
+                dic_tipo_zona["lista_valores"] = []
+                dic_tipo_zona["lista_fechas"] = []
+                dic_tipo[zona.getTipo()] = dic_tipo_zona 
+            dic_registros_sensores[tipo_medida.getTipo()] = dic_tipo
+
+        for zona in list(ZonaSensor):
+            dic_zona = {}
+            for unidad_medida in list(UnidadMedida):
+                tipo_medida: TipoMedida = unidad_medida.getTipoMedida()           
+                dic_zona_tipo = {}   
+                dic_zona_tipo["unidad_medida"] = {"nombre": str(unidad_medida),
+                                                "tipo": unidad_medida.getTipo()}
+                dic_zona_tipo["tipo_medida"] = {"nombre": str(tipo_medida),
+                                                "tipo": tipo_medida.getTipo()}
+                dic_zona_tipo["zona_sensor"] = {"nombre": str(zona),
+                                        "tipo": zona.getTipo()}  
+                dic_zona_tipo["lista_valores"] = []
+                dic_zona_tipo["lista_fechas"] = []
+                dic_zona[tipo_medida.getTipo()] = dic_zona_tipo
+            dic_registros_sensores[zona.getTipo()] = dic_zona 
+
+        for registro_sensor in lista_registros_sensores:
+            unidad_medida: UnidadMedida = registro_sensor.getUnidadMedida()
+            tipo_medida: TipoMedida = unidad_medida.getTipoMedida()
+            zona: ZonaSensor = registro_sensor.getZonaSensor()
+            if registro_sensor.getValor() == -100:
+                continue
+            
+            dic_tipo: Dict = dic_registros_sensores.get(tipo_medida.getTipo())
+            dic_tipo_zona: Dict = dic_tipo.get(zona.getTipo())                  
+            lista_valores: List = dic_tipo_zona.get("lista_valores")
+            lista_fechas_str: List = dic_tipo_zona.get("lista_fechas")
+            lista_valores.append(registro_sensor.getValor())
+            lista_fechas_str.append(str(registro_sensor.getFecha()))
+
+            dic_zona: Dict = dic_registros_sensores.get(zona.getTipo())
+            dic_zona_tipo: Dict = dic_zona.get(tipo_medida.getTipo())
+            lista_valores: List = dic_zona_tipo.get("lista_valores")
+            lista_fechas_str: List = dic_zona_tipo.get("lista_fechas")
+            lista_valores.append(registro_sensor.getValor())
+            lista_fechas_str.append(str(registro_sensor.getFecha()))
+        return dic_registros_sensores

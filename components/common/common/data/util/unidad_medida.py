@@ -11,7 +11,7 @@ class UnidadMedida(Enum):
     SIN_UNIDAD = 0, "Sin unidad", "SIN_UNIDAD", [TipoMedida.SIN_TIPO]
     PORCENTAJE = 1, "%", "PORCENTAJE", [TipoMedida.HUMEDAD]
     GRADOS_CENTIGRADOS = 2, "ºC", "GRADOS_CENTIGRADOS", [TipoMedida.TEMPERATURA]
-    GRADOS_FARENHEIT = 3, "ºF", "GRADOS_FARENHEIT", [TipoMedida.TEMPERATURA]   
+    # GRADOS_FARENHEIT = 3, "ºF", "GRADOS_FARENHEIT", [TipoMedida.TEMPERATURA]   
     LUMENES = 4, "Lux", "LUMENES", [TipoMedida.LUMINOSIDAD]
     OTRO = 99, "Otro", "OTRO", [TipoMedida.OTRO]        
 

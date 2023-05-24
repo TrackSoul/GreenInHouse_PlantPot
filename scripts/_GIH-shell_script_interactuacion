@@ -24,7 +24,7 @@ from sqlalchemy.orm.session import Session
 from backend.data.db.esquema import Esquema
 from backend.data.db.results import Sensor, Planta, RegistroSensor, TipoPlanta, SensorPlanta
 from backend.data.db.resultsets import SensorSet,PlantaSet, RegistroSensorSet, TipoPlantaSet, SensorPlantaSet
-from backend.service import SensorService, PlantaService, RegistroSensorService, TipoPlantaService, SensorPlantaService, GeneralService
+from backend.service import SensorService, PlantaService, RegistroSensorService, TipoPlantaService, SensorPlantaService
 from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon, Planta as PlantaCommon
 from common.data.util import TipoPlanta as TipoPlantaCommon, SensorPlanta as SensorPlantaCommon
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
@@ -38,6 +38,8 @@ db: Esquema = Esquema(cfg)
 sensores_activos=SensorService.listAllActive(db)
 registros=RegistroSensorService.listAllFromSensorFromCommonBetweenDates(db,sensores_activos[1],datetime(2023,4,24,1,00,00),datetime(2023,4,24,2,00,00))
 plants = PlantaService.listAllActive(db)
-sensor_plant = SensorPlantaService.listAllSensorsPerPlantFromCommonBetweenDates(db,plants[1],datetime(2023,4,24,1,0,0))
-rs = GeneralService.readRegistrosPlantaFromCommon(db,plants[1])
-rs2 = GeneralService.readRegistrosPlantaFromCommonBetweenDates(db,plants[1],datetime(2023,4,24,1,00,00),datetime(2023,4,24,2,00,00))
+sensor_plant = SensorPlantaService.listAllSensorsFromPlantFromCommonBetweenDates(db,plants[1],datetime(2023,4,24,1,0,0))
+rs = RegistroSensorService.listAllFromPlantFromCommon(db,plants[1])
+rs2 = RegistroSensorService.listAllFromPlantFromCommonBetweenDates(db,plants[1],datetime(2023,5,10,1,00,00),datetime(2023,5,15,2,00,00))
+
+RegistroSensorService.processListForGraph(rs2)

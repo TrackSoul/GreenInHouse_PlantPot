@@ -114,14 +114,18 @@ def getAllFromPlantBetweenDates(np:str, fi: str, ff: str = str(datetime.now())) 
 #             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)  
 
 
-# def getAllFromPlantToGraph(np:str) -> List[Dict]:
-#     nombre_planta: str = np
-#     with current_app.app_context() :
-#         if PlantaService.exists(current_app.db,np):
-            
-#             for registro in RegistroSensorService.listAllFromPlant(current_app.db, nombre_planta):
-
-
-#             return [item.toJson() for item in RegistroSensorService.listAllFromPlant(current_app.db, nombre_planta)], HTTPStatus.OK.value
-#         else:
-#             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
+def getAllFromPlantToGraph(np:str) -> List[Dict]:
+    nombre_planta: str = np
+    with current_app.app_context() :
+        if PlantaService.exists(current_app.db,np):
+            lista_registros = RegistroSensorService.listAllFromPlant(current_app.db, nombre_planta)
+            dic_registros_clasificados: Dict = RegistroSensorService.processListForGraph(lista_registros)
+            dic_registros_graficar = {}
+            dic_registros_graficar["TEMPERATURA"] = {}
+            dic_registros_graficar["TEMPERATURA"]["AMBIENTE"] = dic_registros_clasificados.get("TEMPERATURA").get("AMBIENTE")
+            dic_registros_graficar["HUMEDAD"] = {}
+            dic_registros_graficar["HUMEDAD"]["AMBIENTE"] = dic_registros_clasificados.get("HUMEDAD").get("AMBIENTE")
+            dic_registros_graficar["HUMEDAD"]["MACETA"] = dic_registros_clasificados.get("HUMEDAD").get("MACETA")
+            return dic_registros_graficar, HTTPStatus.OK.value
+        else:
+            return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
