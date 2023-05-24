@@ -29,10 +29,10 @@ class Planta(ModuloBase):
         """
         return Table(
             #str(self.tipo_sensor + str(self.numero_sensor)),
-            'registros_plantas',
+            'plantas',
             metadata,
             Column('nombre_planta', String(100), primary_key=True),
-            Column('tipo_planta', String(100), ForeignKey('registros_tipos_plantas.tipo_planta'), nullable=False ),
+            Column('tipo_planta', String(100), ForeignKey('tipos_plantas.tipo_planta'), nullable=False ),
             Column('fecha_plantacion', TIMESTAMP, nullable=True ),
             Column('fecha_marchitacion', TIMESTAMP, nullable=True ),
         )
@@ -47,3 +47,4 @@ class Planta(ModuloBase):
         return {
             #'registro_sensores': relationship(RegistroSensor, backref='nombre_planta')
         }
+    

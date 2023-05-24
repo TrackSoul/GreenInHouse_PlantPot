@@ -40,7 +40,7 @@ class SensorPlanta(ModuloBase):
             Column('tipo_sensor', Enum(TipoSensor), nullable=False ),
             Column('zona_sensor', Enum(ZonaSensor), nullable=False ),
             Column('numero_sensor', Integer, nullable=False),
-            Column('nombre_planta', String, ForeignKey('registros_plantas.nombre_planta'), nullable=False),
+            Column('nombre_planta', String, ForeignKey('plantas.nombre_planta'), nullable=False),
             Column('fecha_asociacion', TIMESTAMP, nullable=True),
             Column('fecha_anulacion', TIMESTAMP, nullable=True),
             ForeignKeyConstraint(['tipo_sensor','zona_sensor','numero_sensor'],

@@ -26,7 +26,7 @@ class TipoPlanta(ModuloBase):
             - Table: Objeto tabla con al definicion de la tabla.
         """
         return Table(
-            'registros_tipos_plantas',
+            'tipos_plantas',
             metadata,
             Column('tipo_planta', String(100), primary_key=True),
             Column('descripcion_planta', String(500), nullable=False )

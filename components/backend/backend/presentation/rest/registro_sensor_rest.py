@@ -7,7 +7,6 @@ from backend.service import RegistroSensorService, SensorService, PlantaService
 from common.data.util import RegistroSensor as RegistroSensorCommon, Sensor as SensorCommon, Planta as PlantaCommon
 from common.data.util import TipoSensor, ZonaSensor, TipoMedida, UnidadMedida
 
-
 def get(rsid: int) -> Dict:
     with current_app.app_context() :
         if RegistroSensorService.exists(current_app.db,rsid):
@@ -35,13 +34,6 @@ def getAllFromSensor(st:str, sz: str ,sid:int) -> List[Dict]:
         else:
             return ("El sensor " + str(numero_sensor) + " de tipo " + str(tipo_sensor) + " de la zona " + str(zona_sensor) + " no existe", HTTPStatus.NOT_FOUND.value)
 
-# def getAllFromSensorFromCommon(sensor_dic: dict):
-#     try:
-#         sensor=SensorCommon().fromJson(sensor_dic)
-#         return getAllFromSensor(sensor.getTipoSensor(), sensor.getZonaSensor(), sensor.getNumeroSensor())
-#     except:
-#         return ("Los datos del sensor no son correctos", HTTPStatus.NOT_ACCEPTABLE.value)
-
 def getAllFromSensorBetweenDates(st:str, sz: str ,sid:int, fi: str, ff: str = str(datetime.now())) -> List[Dict]:
     try:
         tipo_sensor:TipoSensor = TipoSensor[st]
@@ -65,14 +57,6 @@ def getAllFromSensorBetweenDates(st:str, sz: str ,sid:int, fi: str, ff: str = st
                                                                                                     fecha_inicio,fecha_fin)], HTTPStatus.OK.value
         else:
             return ("El sensor " + str(numero_sensor) + " de tipo " + str(tipo_sensor) + " de la zona " + str(zona_sensor) + " no existe", HTTPStatus.NOT_FOUND.value)
-    
-# def getAllFromSensorFromCommonBetweenDates(esquema: Esquema, sensor_dic: dict,  fecha_inicio: str, fecha_fin: str = str(datetime.now())):
-#     try:
-#         sensor=SensorCommon().fromJson(sensor_dic)
-#         return getAllFromSensorBetweenDates(esquema, sensor.getTipoSensor(), sensor.getZonaSensor(), sensor.getNumeroSensor(), 
-#                                                 fecha_inicio, fecha_fin)
-#     except:
-#         return ("Los datos del sensor no son correctos", HTTPStatus.NOT_ACCEPTABLE.value)
 
 def getAllFromPlant(np:str) -> List[Dict]:
     nombre_planta: str = np
@@ -95,37 +79,48 @@ def getAllFromPlantBetweenDates(np:str, fi: str, ff: str = str(datetime.now())) 
         if PlantaService.exists(current_app.db,np):
             return [item.toJson() for item in RegistroSensorService.listAllFromPlantBetweenDates(current_app.db, nombre_planta, fecha_inicio, fecha_fin)], HTTPStatus.OK.value
         else:
-            return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)  
+            return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)   
 
-# def classifyDictRegistries(list_dic: List[RegistroSensorCommon]):
-#     dic_classified: List[Dict] = []
-#     for registro in list_dic:
-#         try:
-#             unidad_medida = UnidadMedida[registro.get("unidad_medida").get("tipo")]
-#         except:
-#             return ("Error al clasificar", HTTPStatus.NOT_FOUND.value) 
-
-# def classifyDictRegistries(list_dic: List[Dict]):
-#     dic_classified: List[Dict] = []
-#     for registro in list_dic:
-#         try:
-#             unidad_medida = UnidadMedida[registro.get("unidad_medida").get("tipo")]
-#         except:
-#             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)  
-
+def __fromListToGraph(lista_registros: List[Dict]):
+    dic_registros_clasificados: Dict = RegistroSensorService.processListForGraph(lista_registros)
+    dic_registros_graficar = {}
+    dic_registros_graficar["TEMPERATURA"] = {}
+    dic_registros_graficar["TEMPERATURA"]["AMBIENTE"] = dic_registros_clasificados.get("TEMPERATURA").get("AMBIENTE")
+    dic_registros_graficar["HUMEDAD"] = {}
+    dic_registros_graficar["HUMEDAD"]["AMBIENTE"] = dic_registros_clasificados.get("HUMEDAD").get("AMBIENTE")
+    dic_registros_graficar["HUMEDAD"]["MACETA"] = dic_registros_clasificados.get("HUMEDAD").get("MACETA")
+    return dic_registros_graficar
 
 def getAllFromPlantToGraph(np:str) -> List[Dict]:
     nombre_planta: str = np
     with current_app.app_context() :
         if PlantaService.exists(current_app.db,np):
             lista_registros = RegistroSensorService.listAllFromPlant(current_app.db, nombre_planta)
-            dic_registros_clasificados: Dict = RegistroSensorService.processListForGraph(lista_registros)
-            dic_registros_graficar = {}
-            dic_registros_graficar["TEMPERATURA"] = {}
-            dic_registros_graficar["TEMPERATURA"]["AMBIENTE"] = dic_registros_clasificados.get("TEMPERATURA").get("AMBIENTE")
-            dic_registros_graficar["HUMEDAD"] = {}
-            dic_registros_graficar["HUMEDAD"]["AMBIENTE"] = dic_registros_clasificados.get("HUMEDAD").get("AMBIENTE")
-            dic_registros_graficar["HUMEDAD"]["MACETA"] = dic_registros_clasificados.get("HUMEDAD").get("MACETA")
+            try:
+                dic_registros_graficar = __fromListToGraph(lista_registros)
+            except:
+                return ("Error al procesar los datos de la planta " + np + " para graficar.", HTTPStatus.NOT_FOUND.value)
             return dic_registros_graficar, HTTPStatus.OK.value
         else:
             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
+
+def getAllFromPlantBetweenDatesToGraph(np:str, fi: str, ff: str = str(datetime.now())) -> List[Dict]:
+    nombre_planta: str = np
+    try:
+        fecha_inicio=datetime.fromisoformat(fi)
+        fecha_fin=datetime.fromisoformat(ff)
+    except(ValueError):
+        return ("Error en el formato de las fechas especificadas.", HTTPStatus.NOT_ACCEPTABLE.value)
+    if fecha_inicio > fecha_fin:
+        return ("La fecha de inicio no puede ser mayor que la fecha de fin.", HTTPStatus.NOT_ACCEPTABLE.value)
+    with current_app.app_context() :
+        if PlantaService.exists(current_app.db,np):
+            lista_registros = RegistroSensorService.listAllFromPlantBetweenDates(current_app.db, nombre_planta, fecha_inicio, fecha_fin)
+            try:
+                dic_registros_graficar = __fromListToGraph(lista_registros)
+            except:
+                return ("Error al procesar los datos de la planta " + np + " para graficar.", HTTPStatus.NOT_FOUND.value)
+            return dic_registros_graficar, HTTPStatus.OK.value
+        else:
+            return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value) 
+        

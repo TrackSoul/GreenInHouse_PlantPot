@@ -40,6 +40,7 @@ paths:
           $ref: "#/components/responses/Empty"
       tags:
         - Servidor
+  
   /RegistrosSensores/One:
     get:
       summary: Obtener un registro de sensor por su id.
@@ -70,12 +71,7 @@ paths:
                   fecha: 2023-05-15 10:01:03.791271
                   id_: 1
         "404":
-          description: El registro del sensor no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "El registro de sensor 5 no existe."
+          $ref: "#/components/responses/ResgistroSensorNoExiste"
       tags:
         - Registros Sensores
       # security:
@@ -197,29 +193,13 @@ paths:
                   fecha: 2023-05-15 10:01:04.791271
                   id_: 3
         "404":
-          description: El sensor especificado no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "El sensor 1 de tipo HUMEDAD de la zona AMBIENTE no existe."
+          $ref: "#/components/responses/SensorNoExiste"
         "406":
-          description: Los datos del tipo de sensor especificados no son correctos.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "El tipo de sensor especificado no es correcto."
+          $ref: "#/components/responses/ErrorTipoSensor"
         "406":
-          description: Los datos de la zona de sensor especificados no son correctos.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "La zona de sensor especificada no es correcta."
+          $ref: "#/components/responses/ErrorZonaSensor"
       tags:
         - Registros Sensores
-        - Sensores
       # security:
       #   - api_key: []
       #     user_token: []
@@ -283,43 +263,17 @@ paths:
                   fecha: 2023-05-15 10:01:04.791271
                   id_: 3
         "404":
-          description: El sensor especificado no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "El sensor 1 de tipo HUMEDAD de la zona AMBIENTE no existe."
+          $ref: "#/components/responses/SensorNoExiste"
         "406":
-          description: Los datos del tipo de sensor especificados no son correctos.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "El tipo de sensor especificado no es correcto."
+          $ref: "#/components/responses/ErrorTipoSensor"
         "406":
-          description: Los datos de la zona de sensor especificados no son correctos.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "La zona de sensor especificada no es correcta."
+          $ref: "#/components/responses/ErrorZonaSensor"
         "406":
-          description: Los datos de fecha no tienen el formato correcto.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "Error en el formato de las fechas especificadas."
+          $ref: "#/components/responses/ErrorFormatoFechas"
         "406":
-          description: Incongruencia en fechas.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: La fecha de inicio no puede ser mayor que la fecha de fin.
+          $ref: "#/components/responses/ErrorIncongruenciaFechas"
       tags:
         - Registros Sensores
-        - Sensores
       # security:
       #   - api_key: []
       #     user_token: []
@@ -379,21 +333,16 @@ paths:
                   fecha: 2023-05-15 10:01:04.791271
                   id_: 3
         "404":
-          description: La planta especificada no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "La planta Mi Tomatera no existe."
+          $ref: "#/components/responses/PlantaNoExiste"
       tags:
         - Registros Sensores
-        - Plantas
       # security:
       #   - api_key: []
       #     user_token: []
   /RegistrosSensores/All/FromPlant/ToGraph:
     get:
-      summary: Obtener todos los registros de los sensores de la planta especificada en formato para graficar.
+      summary: |
+        Obtener todos los registros de los sensores de la planta especificada en formato para graficar.
       description: |
         Obtener todos los registros de los sensores de la planta especificada almacenados en la base de datos en formato para graficar.
       operationId: backend.presentation.rest.registro_sensor_rest.getAllFromPlantToGraph
@@ -401,7 +350,8 @@ paths:
         - $ref: "#/components/parameters/NombrePlantaParam"
       responses:
         "200":
-          description: Lista de registros de los sensores asociados a la planta especificada.
+          description: |
+            Lista de registros de los sensores asociados a la planta especificada en formato para graficar.
           content:
             "application/json":
               schema:
@@ -447,15 +397,11 @@ paths:
                       lista_valores: [48.0,49.0,48.0]
                       lista_fechas: ["2023-05-14 21:55:17.483217", "2023-05-14 22:05:16.503486", "2023-05-14 22:15:15.536258"]
         "404":
-          description: La planta especificada no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "La planta Mi Tomatera no existe."
+          $ref: "#/components/responses/PlantaNoExiste"
+        "404":
+          $ref: "#/components/responses/ErrorProcesarDatosParaGraficar"
       tags:
         - Registros Sensores
-        - Plantas
       # security:
       #   - api_key: []
       #     user_token: []
@@ -474,7 +420,9 @@ paths:
         - $ref: "#/components/parameters/FechaFinParam"
       responses:
         "200":
-          description: Lista de registros de los sensores asociadas a la planta especificada.
+          description: |
+            Lista de registros de los sensores asociadas a la planta especificada y
+            creados entre las fechas especificadas.
           content:
             "application/json":
               schema:
@@ -520,32 +468,98 @@ paths:
                   fecha: 2023-05-15 10:01:04.791271
                   id_: 3
         "404":
-          description: La planta especificada no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "La planta Mi Tomatera no existe."
+          $ref: "#/components/responses/PlantaNoExiste"
         "406":
-          description: Los datos de fecha no tienen el formato correcto.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "Error en el formato de las fechas especificadas."
+          $ref: "#/components/responses/ErrorFormatoFechas"
         "406":
+          $ref: "#/components/responses/ErrorIncongruenciaFechas"
+      tags:
+        - Registros Sensores
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  /RegistrosSensores/All/FromPlant/BetweenDates/ToGraph:
+    get:
+      summary: |
+        Obtener todos los registros de los sensores de la planta especificada 
+        creados entre las fechas especificadas en formato para graficar.
+      description: |
+        Obtener todos los registros de los sensores de la planta especificada almacenados en la base de datos en formato para graficar.
+      operationId: backend.presentation.rest.registro_sensor_rest.getAllFromPlantBetweenDatesToGraph
+      parameters:
+        - $ref: "#/components/parameters/NombrePlantaParam"
+        - $ref: "#/components/parameters/FechaInicioParam"
+        - $ref: "#/components/parameters/FechaFinParam"
+      responses:
+        "200":
+          description: |
+            Lista de registros de los sensores asociadas a la planta especificada y
+            creados entre las fechas especificadas en formato para graficar.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/GrupoRegistrosGraficosModel"
+              example:
+                - TEMPERATURA: 
+                    AMBIENTE:
+                      unidad_medida: 
+                        nombre: "ºC"
+                        tipo: "GRADOS_CENTIGRADOS"
+                      tipo_medida: 
+                        nombre: "Temperatura"
+                        tipo: "TEMPERATURA"
+                      zona_sensor: 
+                        nombre: "Ambiente"
+                        tipo: "AMBIENTE"
+                      lista_valores: [22.0,23.0,22.0]
+                      lista_fechas: ["2023-05-14 21:55:16.483217", "2023-05-14 22:05:15.503486", "2023-05-14 22:15:14.536258"]
+                - HUMEDAD: 
+                    AMBIENTE:
+                      unidad_medida: 
+                        nombre: "%"
+                        tipo: "PORCENTAJE"
+                      tipo_medida: 
+                        nombre: "Humedad"
+                        tipo: "HUMEDA"
+                      zona_sensor: 
+                        nombre: "Ambiente"
+                        tipo: "AMBIENTE"
+                      lista_valores: [48.0,49.0,48.0]
+                      lista_fechas: ["2023-05-14 21:55:17.483217", "2023-05-14 22:05:16.503486", "2023-05-14 22:15:15.536258"]
+                -  HUMEDAD: 
+                    AMBIENTE:
+                      unidad_medida: 
+                        nombre: "%"
+                        tipo: "MACETA"
+                      tipo_medida: 
+                        nombre: "Humedad"
+                        tipo: "HUMEDA"
+                      zona_sensor: 
+                        nombre: "Maceta"
+                        tipo: "MACETA"
+                      lista_valores: [48.0,49.0,48.0]
+                      lista_fechas: ["2023-05-14 21:55:17.483217", "2023-05-14 22:05:16.503486", "2023-05-14 22:15:15.536258"]
+        "404":
+          $ref: "#/components/responses/PlantaNoExiste"
+        "406":
+          $ref: "#/components/responses/ErrorFormatoFechas"
+        "406":
+          $ref: "#/components/responses/ErrorIncongruenciaFechas"
           description: Incongruencia en fechas.
           content:
             "text/plain":
               schema:
                 type: string
               example: La fecha de inicio no puede ser mayor que la fecha de fin.
+        "404":
+          $ref: "#/components/responses/ErrorProcesarDatosParaGraficar"
+
       tags:
         - Registros Sensores
-        - Plantas
       # security:
       #   - api_key: []
       #     user_token: []
+
   /Sensores/One:
     get:
       summary: Obtener el sensor especificado.
@@ -585,26 +599,11 @@ paths:
                     tipo: "PORCENTAJE"
                   fecha_creacion: 2023-05-15 10:01:03.791271
         "404":
-          description: El sensor especificado no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "El sensor 1 de tipo HUMEDAD de la zona AMBIENTE no existe."
+          $ref: "#/components/responses/SensorNoExiste"
         "406":
-          description: Los datos del tipo de sensor especificados no son correctos.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "El tipo de sensor especificado no es correcto."
+          $ref: "#/components/responses/ErrorTipoSensor"
         "406":
-          description: Los datos de la zona de sensor especificados no son correctos.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "La zona de sensor especificada no es correcta."
+          $ref: "#/components/responses/ErrorZonaSensor"
       tags:
         - Sensores
       # security:
@@ -817,12 +816,7 @@ paths:
                     tipo: "PORCENTAJE"
                   fecha_creacion: 2023-05-15 10:01:04.791271
         "406":
-          description: El tipo de sensor especificado no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "Los datos del tipo de sensor HUMEDA no son correctos."
+          $ref: "#/components/responses/ErrorTipoSensor"
       tags:
         - Sensores
       # security:
@@ -885,12 +879,7 @@ paths:
                     tipo: "PORCENTAJE"
                   fecha_creacion: 2023-05-15 10:01:04.791271
         "406":
-          description: El tipo de sensor especificado no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "Los datos del tipo de sensor HUMEDA no son correctos."
+          $ref: "#/components/responses/ErrorTipoSensor"
       tags:
         - Sensores
       # security:
@@ -951,12 +940,7 @@ paths:
                     tipo: "LUMENES"
                   fecha_creacion: 2023-05-15 10:01:04.791271
         "406":
-          description: La zona de sensor especificada no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "Los datos de la zona de sensor AMBIENT no son correctos."
+          $ref: "#/components/responses/ErrorZonaSensor"
       tags:
         - Sensores
       # security:
@@ -1017,12 +1001,7 @@ paths:
                     tipo: "LUMENES"
                   fecha_creacion: 2023-05-15 10:01:04.791271
         "406":
-          description: La zona de sensor especificada no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "Los datos de la zona de sensor AMBIENT no son correctos."
+          $ref: "#/components/responses/ErrorZonaSensor"
       tags:
         - Sensores
       # security:
@@ -1086,19 +1065,9 @@ paths:
                     tipo: "PORCENTAJE"
                   fecha_creacion: 2023-05-15 10:01:04.791271
         "406":
-          description: El tipo de sensor especificado no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "Los datos del tipo de sensor TEMPERATURA_Y_HUMEDA no son correctos."
+          $ref: "#/components/responses/ErrorTipoSensor"
         "406":
-          description: La zona de sensor especificada no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "Los datos de la zona de sensor AMBIENT no son correctos."
+          $ref: "#/components/responses/ErrorZonaSensor"
       tags:
         - Sensores
       # security:
@@ -1162,19 +1131,9 @@ paths:
                     tipo: "PORCENTAJE"
                   fecha_creacion: 2023-05-15 10:01:04.791271
         "406":
-          description: El tipo de sensor especificado no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "Los datos del tipo de sensor TEMPERATURA_Y_HUMEDA no son correctos."
+          $ref: "#/components/responses/ErrorTipoSensor"
         "406":
-          description: La zona de sensor especificada no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "Los datos de la zona de sensor AMBIENT no son correctos."
+          $ref: "#/components/responses/ErrorZonaSensor"
       tags:
         - Sensores
       # security:
@@ -1237,12 +1196,7 @@ paths:
                     tipo: "PORCENTAJE"
                   fecha_creacion: 2023-05-15 10:01:03.791271
         "406":
-          description: El modelo de sensor especificado no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "Los datos del modelo de sensor DHT1 no son correctos."
+          $ref: "#/components/responses/ErrorModeloSensor"
       tags:
         - Sensores
       # security:
@@ -1305,17 +1259,14 @@ paths:
                     tipo: "PORCENTAJE"
                   fecha_creacion: 2023-05-15 10:01:03.791271
         "406":
-          description: El modelo de sensor especificado no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "Los datos del modelo de sensor DHT1 no son correctos."
+          $ref: "#/components/responses/ErrorModeloSensor"
+
       tags:
         - Sensores
       # security:
       #   - api_key: []
       #     user_token: []
+ 
   /Plantas/One:
     get:
       summary: Obtener la planta especificada.
@@ -1336,12 +1287,8 @@ paths:
                   tipo_planta: "Tomatera"
                   fecha_plantacion: 2023-05-15 10:01:03.791271
         "404":
-          description: La planta especificada no existe.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: "La planta Tomatera1 no existe."
+          $ref: "#/components/responses/PlantaNoExiste"
+
       tags:
         - Plantas
       # security:
@@ -1368,7 +1315,7 @@ paths:
                   tipo_planta: "Fresal"
                   fecha_plantacion: 2023-03-16 12:01:03.791271
       tags:
-        - Sensores
+        - Plantas
       # security:
       #   - api_key: []
       #     user_token: []
@@ -1393,7 +1340,7 @@ paths:
                   tipo_planta: "Fresal"
                   fecha_plantacion: 2023-03-16 12:01:03.791271
       tags:
-        - Sensores
+        - Plantas
       # security:
       #   - api_key: []
       #     user_token: []
@@ -1418,8 +1365,10 @@ paths:
                 - nombre_planta: "Mi fresal"
                   tipo_planta: "Fresal"
                   fecha_plantacion: 2023-03-16 12:01:03.791271
+        "404":
+          $ref: "#/components/responses/TipoPlantaNoExiste"
       tags:
-        - Sensores
+        - Plantas
       # security:
       #   - api_key: []
       #     user_token: []
@@ -1444,12 +1393,63 @@ paths:
                 - nombre_planta: "Mi fresal"
                   tipo_planta: "Fresal"
                   fecha_plantacion: 2023-03-16 12:01:03.791271
+        "404":
+          $ref: "#/components/responses/TipoPlantaNoExiste"
       tags:
-        - Sensores
+        - Plantas
       # security:
       #   - api_key: []
       #     user_token: []
 
+  /TiposPlantas/One:
+    get:
+      summary: Obtener el tipo de planta especificada.
+      description: |
+        Obtener el tipo de planta especificada almacenada en la base de datos.
+      operationId: backend.presentation.rest.tipo_planta_rest.get
+      parameters:
+        - $ref: "#/components/parameters/NombreTipoPlantaParam"
+      responses:
+        "200":
+          description: Tipo de planta especificada.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/TipoPlantaModel"
+              example:
+                - tipo_planta: "Tomatera"
+                  descripcion_planta: "Planta que da tomates. Es facil de cultivar"
+        "404":
+          $ref: "#/components/responses/TipoPlantaNoExiste"
+
+      tags:
+        - Tipos Plantas
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  /TiposPlantas/All:
+    get:
+      summary: Obtener todos los tipos de plantas.
+      description: |
+        Obtener todos los tipos de plantas almacenadas en la base de datos.
+      operationId: backend.presentation.rest.tipo_planta_rest.getAll
+      responses:
+        "200":
+          description: Listado de todos los tipos de plantas.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/TipoPlantaListModel"
+              example:
+                - tipo_planta: "Tomatera"
+                  descripcion_planta: "Planta que da tomates. Es facil de cultivar."
+                - tipo_planta: "Fresal"
+                  descripcion_planta: "Planta que da fresas. Es facil de cultivar."
+      tags:
+        - Tipos Plantas
+      # security:
+      #   - api_key: []
+      #     user_token: []
 
 components:
   schemas:
@@ -1686,7 +1686,6 @@ components:
         - nombre_planta
         - tipo_planta
         - fecha_plantacion
-        - fecha_marchitacion
     PlantaListModel:
       type: array
       items:
@@ -1695,22 +1694,13 @@ components:
       description: Datos de un tipo de planta.
       type: object
       properties:
-        nombre_planta:
-          type: string
         tipo_planta:
           type: string
-        fecha_plantacion:
+        descripcion_planta:
           type: string
-          format: date-time
-        fecha_marchitacion:
-          type: string
-          format: date-time
-          nullable: true
       required:
-        - nombre_planta
         - tipo_planta
-        - fecha_plantacion
-        - fecha_marchitacion
+        - descripcion_planta
     TipoPlantaListModel:
       type: array
       items:
@@ -1755,6 +1745,11 @@ components:
             AMBIENTE:
               $ref: "#/components/schemas/UnidadMedidaModel"
             MACETA:
+              $ref: "#/components/schemas/UnidadMedidaModel"
+        LUMINOSIDAD:
+          type: object
+          properties:
+            AMBIENTE:
               $ref: "#/components/schemas/UnidadMedidaModel"
 
   parameters:
@@ -1840,6 +1835,88 @@ components:
             $ref: "#/components/schemas/EmptyContentModel"
           example: ""
 
+    # 404
+    ResgistroSensorNoExiste:
+      description: El registro del sensor no existe.
+      content:
+        "text/plain":
+          schema:
+            $ref: "#/components/schemas/EmptyContentModel"
+          example: "El registro de sensor 5 no existe."
+    SensorNoExiste:
+      description: El sensor especificado no existe.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "El sensor 1 de tipo HUMEDAD de la zona AMBIENTE no existe."
+    PlantaNoExiste:      
+      description: La planta especificada no existe.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "La planta Mi tomatera no existe."
+    TipoPlantaNoExiste:      
+      description: El tipo de planta especificada no existe.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "El tipo de planta Tomatera no existe."
+    SensorPlantaNoExiste:      
+      description: La relaccion entre el sensor y la planta especificados no existe.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "La relaccion entre el sensor 1 de tipo HUMEDAD de la zona AMBIENTE y la planta Mi tomatera no existe."
+
+    # 406
+    ErrorTipoSensor:
+      description: Los datos del tipo de sensor especificados no son correctos.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "El tipo de sensor especificado no es correcto."
+    ErrorZonaSensor:
+      description: Los datos de la zona de sensor especificados no son correctos.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "La zona de sensor especificada no es correcta."
+    ErrorModeloSensor:
+      description: El modelo de sensor especificado no existe.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "Los datos del modelo de sensor DHT1 no son correctos."
+    ErrorFormatoFechas:
+      description: Los datos de fecha no tienen el formato correcto.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "Error en el formato de las fechas especificadas."
+    ErrorIncongruenciaFechas:
+      description: Incongruencia en fechas.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: La fecha de inicio no puede ser mayor que la fecha de fin.
+  
+    # 404
+    ErrorProcesarDatosParaGraficar:
+      description: Error al procesar los datos de la planta para graficar .
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: Error al procesar los datos de la planta Mi tomatera para graficar.
 
 
 #   securitySchemes:

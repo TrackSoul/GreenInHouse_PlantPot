@@ -7,7 +7,6 @@ from backend.service import SensorService, PlantaService, SensorPlantaService, T
 from common.data.util import Sensor as SensorCommon, Planta as PlantaCommon, SensorPlanta as SensorPlantaCommon, TipoPlanta as TipoPlantaCommon
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 
-
 def get(np:str) :
     nombre_planta:str = np
     with current_app.app_context() :
