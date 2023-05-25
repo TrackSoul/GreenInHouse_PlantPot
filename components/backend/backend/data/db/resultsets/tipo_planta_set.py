@@ -10,7 +10,7 @@ class TipoPlantaSet():
     Clase responsable a nivel de tabla de las operaciones con los registros.
     """
     @staticmethod
-    def create(session: Session, tipo_planta:str, descripcion_planta:str) -> TipoPlanta:
+    def create(session: Session, nombre_tipo_planta:str, descripcion_tipo_planta:str) -> TipoPlanta:
         """
         Creacion de un nuevo registro de un tipo de planta.
 
@@ -29,19 +29,19 @@ class TipoPlantaSet():
         Returns:
             - Sensor: Registro creado del sensor.
         """
-        if tipo_planta is None:
+        if nombre_tipo_planta is None:
             raise ValueError('Necesario especificar el tipo de la planta.')
-        if descripcion_planta is None:
+        if descripcion_tipo_planta is None:
             raise ValueError('Necesario especificar una descripcion de la planta.')
         nuevo_tipo_planta = None
         try:
-            nuevo_tipo_planta = TipoPlanta(tipo_planta, descripcion_planta)
+            nuevo_tipo_planta = TipoPlanta(nombre_tipo_planta, descripcion_tipo_planta)
             session.add(nuevo_tipo_planta)
             session.commit()
         except IntegrityError as ex:
             session.rollback()
             raise ErrorTipoPlantaExiste(
-                'El nombre de planta ' + str(tipo_planta) + ' ya está registrado.'
+                'El nombre de planta ' + str(nombre_tipo_planta) + ' ya está registrado.'
                 ) from ex
         finally:
             return nuevo_tipo_planta
@@ -61,7 +61,7 @@ class TipoPlantaSet():
         return query.all()
 
     @staticmethod
-    def get(session: Session, tipo_planta: str) -> Optional[TipoPlanta]:
+    def get(session: Session, nombre_tipo_planta: str) -> Optional[TipoPlanta]:
         """ 
         Obtener un registro de tipo de planta.
 
@@ -72,21 +72,21 @@ class TipoPlantaSet():
         Returns:
             - Optional[Pregunta]: The question 
         """
-        if not tipo_planta:
+        if not nombre_tipo_planta:
             raise ValueError('Necesario especificar el tipo de la planta.')
         tipo_planta: TipoPlanta = None
         try:
-            query = session.query(TipoPlanta).filter_by(tipo_planta=tipo_planta)
+            query = session.query(TipoPlanta).filter_by(tipo_planta=nombre_tipo_planta)
             tipo_planta: TipoPlanta = query.one()
         except NoResultFound as ex:
             raise ErrorTipoPlantaNoExiste(
-                'El tipo de planta con el nombre' + tipo_planta + 'no existe'
+                'El tipo de planta con el nombre' + nombre_tipo_planta + 'no existe'
                 ) from ex
         finally:
             return tipo_planta
 
     @staticmethod
-    def update(session: Session, tipo_planta:str, descripcion_planta:str) -> TipoPlanta:
+    def update(session: Session, nombre_tipo_planta:str, descripcion_tipo_planta:str) -> TipoPlanta:
         """
         Modificacion de un registro de un tipo de planta.
 
@@ -105,22 +105,22 @@ class TipoPlantaSet():
         Returns:
             - Sensor: Registro creado del sensor.
         """
-        if not tipo_planta:
+        if not nombre_tipo_planta:
             raise ValueError('Necesario especificar el tipo de la planta.')
-        if not descripcion_planta:
+        if not descripcion_tipo_planta:
             raise ValueError('Necesario especificar una descripcion de la planta.')
         tipo_planta_modificado: TipoPlanta = None
         try:
-            query = session.query(TipoPlanta).filter_by(tipo_planta=tipo_planta)
+            query = session.query(TipoPlanta).filter_by(tipo_planta=nombre_tipo_planta)
             tipo_planta: TipoPlanta = query.one()
-            if tipo_planta.descripcion_planta != descripcion_planta:
-                query.update({'descripcion_planta' : descripcion_planta})
+            if tipo_planta.descripcion_planta != descripcion_tipo_planta:
+                query.update({'descripcion_planta' : descripcion_tipo_planta})
             session.commit()
             tipo_planta_modificado: TipoPlanta = query.one() 
         except NoResultFound as ex:
             session.rollback()
             raise ErrorTipoPlantaNoExiste(
-                'El tipo de planta con el nombre' + tipo_planta + 'no existe'
+                'El tipo de planta con el nombre' + nombre_tipo_planta + 'no existe'
                 ) from ex
         finally:
             return tipo_planta_modificado

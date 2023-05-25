@@ -22,11 +22,11 @@ def getAllFromSensor(st:str, sz: str ,sid:int) -> List[Dict]:
     try:
         tipo_sensor:TipoSensor = TipoSensor[st]
     except(KeyError):
-        return ("El tipo de sensor especificado no es correcto.", HTTPStatus.NOT_ACCEPTABLE.value)   
+        return ("El tipo de sensor " + str(st) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     try:
         zona_sensor: ZonaSensor = ZonaSensor[sz]
     except(KeyError):
-        return ("La zona de sensor especificada no es correcta.", HTTPStatus.NOT_ACCEPTABLE.value)   
+        return ("La zona de sensor " + str(sz) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     numero_sensor:int = sid
     with current_app.app_context() :
         if SensorService.exists(current_app.db,tipo_sensor,zona_sensor,numero_sensor):
@@ -38,19 +38,22 @@ def getAllFromSensorBetweenDates(st:str, sz: str ,sid:int, fi: str, ff: str = st
     try:
         tipo_sensor:TipoSensor = TipoSensor[st]
     except(KeyError):
-        return ("El tipo de sensor especificado no es correcto.", HTTPStatus.NOT_ACCEPTABLE.value)   
+        return ("El tipo de sensor " + str(st) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     try:
         zona_sensor: ZonaSensor = ZonaSensor[sz]
     except(KeyError):
-        return ("La zona de sensor especificada no es correcta.", HTTPStatus.NOT_ACCEPTABLE.value)   
+        return ("La zona de sensor " + str(sz) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     numero_sensor:int = sid
     try:
         fecha_inicio=datetime.fromisoformat(fi)
+    except(ValueError):
+        return ("Error en el formato de la fecha de inicio " + str(fi) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
+    try:
         fecha_fin=datetime.fromisoformat(ff)
     except(ValueError):
-        return ("Error en el formato de las fechas especificadas.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("Error en el formato de la fecha de fin " + str(ff) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
     if fecha_inicio > fecha_fin:
-        return ("La fecha de inicio no puede ser mayor que la fecha de fin.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("La fecha de inicio " + str(fi) + " no puede ser mayor que la fecha de fin " + str(ff) + " .", HTTPStatus.NOT_ACCEPTABLE.value)
     with current_app.app_context() :
         if SensorService.exists(current_app.db,tipo_sensor,zona_sensor,numero_sensor):
             return [item.toJson() for item in RegistroSensorService.listAllFromSensorBetweenDates(current_app.db,tipo_sensor,zona_sensor,numero_sensor,
@@ -59,24 +62,27 @@ def getAllFromSensorBetweenDates(st:str, sz: str ,sid:int, fi: str, ff: str = st
             return ("El sensor " + str(numero_sensor) + " de tipo " + str(tipo_sensor) + " de la zona " + str(zona_sensor) + " no existe", HTTPStatus.NOT_FOUND.value)
 
 def getAllFromPlant(np:str) -> List[Dict]:
-    nombre_planta: str = np
     with current_app.app_context() :
         if PlantaService.exists(current_app.db,np):
+            nombre_planta: str = np
             return [item.toJson() for item in RegistroSensorService.listAllFromPlant(current_app.db, nombre_planta)], HTTPStatus.OK.value
         else:
             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
 
 def getAllFromPlantBetweenDates(np:str, fi: str, ff: str = str(datetime.now())) -> List[Dict]:
-    nombre_planta: str = np
     try:
         fecha_inicio=datetime.fromisoformat(fi)
+    except(ValueError):
+        return ("Error en el formato de la fecha de inicio " + str(fi) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
+    try:
         fecha_fin=datetime.fromisoformat(ff)
     except(ValueError):
-        return ("Error en el formato de las fechas especificadas.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("Error en el formato de la fecha de fin " + str(ff) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
     if fecha_inicio > fecha_fin:
-        return ("La fecha de inicio no puede ser mayor que la fecha de fin.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("La fecha de inicio " + str(fi) + " no puede ser mayor que la fecha de fin " + str(ff) + " .", HTTPStatus.NOT_ACCEPTABLE.value)
     with current_app.app_context() :
         if PlantaService.exists(current_app.db,np):
+            nombre_planta: str = np
             return [item.toJson() for item in RegistroSensorService.listAllFromPlantBetweenDates(current_app.db, nombre_planta, fecha_inicio, fecha_fin)], HTTPStatus.OK.value
         else:
             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)   
@@ -92,9 +98,9 @@ def __fromListToGraph(lista_registros: List[Dict]):
     return dic_registros_graficar
 
 def getAllFromPlantToGraph(np:str) -> List[Dict]:
-    nombre_planta: str = np
     with current_app.app_context() :
         if PlantaService.exists(current_app.db,np):
+            nombre_planta: str = np
             lista_registros = RegistroSensorService.listAllFromPlant(current_app.db, nombre_planta)
             try:
                 dic_registros_graficar = __fromListToGraph(lista_registros)
@@ -105,16 +111,19 @@ def getAllFromPlantToGraph(np:str) -> List[Dict]:
             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
 
 def getAllFromPlantBetweenDatesToGraph(np:str, fi: str, ff: str = str(datetime.now())) -> List[Dict]:
-    nombre_planta: str = np
     try:
         fecha_inicio=datetime.fromisoformat(fi)
+    except(ValueError):
+        return ("Error en el formato de la fecha de inicio " + str(fi) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
+    try:
         fecha_fin=datetime.fromisoformat(ff)
     except(ValueError):
-        return ("Error en el formato de las fechas especificadas.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("Error en el formato de la fecha de fin " + str(ff) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
     if fecha_inicio > fecha_fin:
-        return ("La fecha de inicio no puede ser mayor que la fecha de fin.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("La fecha de inicio " + str(fi) + " no puede ser mayor que la fecha de fin " + str(ff) + " .", HTTPStatus.NOT_ACCEPTABLE.value)
     with current_app.app_context() :
         if PlantaService.exists(current_app.db,np):
+            nombre_planta: str = np
             lista_registros = RegistroSensorService.listAllFromPlantBetweenDates(current_app.db, nombre_planta, fecha_inicio, fecha_fin)
             try:
                 dic_registros_graficar = __fromListToGraph(lista_registros)

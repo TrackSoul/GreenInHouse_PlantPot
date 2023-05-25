@@ -39,5 +39,4 @@ class TipoPlanta(ModuloBase):
         Returns:
             - Dict: Diccionario con las propiedades de mapeado.
         """
-        return {
-        }
+        return {}

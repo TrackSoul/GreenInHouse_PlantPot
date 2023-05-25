@@ -12,7 +12,7 @@ class ConsejoTipoPlanta:
         self.__tipo_planta: str = tipo_planta
         self.__zona_consejo: ZonaSensor = zona_consejo
         self.__tipo_medida: TipoMedida = tipo_medida       
-        self.__unidad_medida: UnidadMedida = unidad_medida,
+        self.__unidad_medida: UnidadMedida = unidad_medida
         self.__valor_minimo: float = valor_minimo
         self.__valor_maximo: float  = valor_maximo
         self.__horas_minimas: float = horas_minimas

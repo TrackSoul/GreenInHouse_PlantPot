@@ -24,6 +24,8 @@ tags:
     description: Operaciones relaccionadas con los tipos de plantas.
   - name: Sensores Plantas
     description: Operaciones relaccionadas con las relacciones entre sensores y plantas.
+  - name: Consejos
+    description: Operaciones relaccionadas con los consejos de los tipos de plantas.
 servers:
   - url: /api/v1
 
@@ -269,7 +271,9 @@ paths:
         "406":
           $ref: "#/components/responses/ErrorZonaSensor"
         "406":
-          $ref: "#/components/responses/ErrorFormatoFechas"
+          $ref: "#/components/responses/ErrorFormatoFechaInicio"
+        "406":
+          $ref: "#/components/responses/ErrorFormatoFechaFin"
         "406":
           $ref: "#/components/responses/ErrorIncongruenciaFechas"
       tags:
@@ -470,7 +474,9 @@ paths:
         "404":
           $ref: "#/components/responses/PlantaNoExiste"
         "406":
-          $ref: "#/components/responses/ErrorFormatoFechas"
+          $ref: "#/components/responses/ErrorFormatoFechaInicio"
+        "406":
+          $ref: "#/components/responses/ErrorFormatoFechaFin"
         "406":
           $ref: "#/components/responses/ErrorIncongruenciaFechas"
       tags:
@@ -544,13 +550,9 @@ paths:
         "406":
           $ref: "#/components/responses/ErrorFormatoFechas"
         "406":
-          $ref: "#/components/responses/ErrorIncongruenciaFechas"
-          description: Incongruencia en fechas.
-          content:
-            "text/plain":
-              schema:
-                type: string
-              example: La fecha de inicio no puede ser mayor que la fecha de fin.
+          $ref: "#/components/responses/ErrorFormatoFechaInicio"
+        "406":
+          $ref: "#/components/responses/ErrorFormatoFechaFin"
         "404":
           $ref: "#/components/responses/ErrorProcesarDatosParaGraficar"
 
@@ -1260,7 +1262,6 @@ paths:
                   fecha_creacion: 2023-05-15 10:01:03.791271
         "406":
           $ref: "#/components/responses/ErrorModeloSensor"
-
       tags:
         - Sensores
       # security:
@@ -1288,7 +1289,6 @@ paths:
                   fecha_plantacion: 2023-05-15 10:01:03.791271
         "404":
           $ref: "#/components/responses/PlantaNoExiste"
-
       tags:
         - Plantas
       # security:
@@ -1447,6 +1447,303 @@ paths:
                   descripcion_planta: "Planta que da fresas. Es facil de cultivar."
       tags:
         - Tipos Plantas
+      # security:
+      #   - api_key: []
+      #     user_token: []
+
+  /Consejos/TiposPlantas/One:
+    get:
+      summary: Obtener el consejo especificado de un tipo de planta, zona y tipo de medida.
+      description: |
+        Obtener el consejo especificado de un tipo de planta, zona y tipo de medida almacenado en la base de datos.
+      operationId: backend.presentation.rest.consejo_tipo_planta_rest.get
+      parameters:
+        - $ref: "#/components/parameters/NombreTipoPlantaParam"
+        - $ref: "#/components/parameters/ConsejoZonaParam"
+        - $ref: "#/components/parameters/MedidaTipoParam"
+      responses:
+        "200":
+          description: Consejo de tipo de planta, zona y tipo de medida especificados.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoTipoPlantaModel"
+              example:
+                - descripcion: "La temperatura ambiente de una tomatera tiene que estar entre 15 y 25 ºC."
+                  tipo_planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Temperatura"
+                    tipo: "TEMPERATURA"
+                  unidad_medida: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  valor_minimo: 15.0
+                  valor_minimo: 25.0
+        "404":
+          $ref: "#/components/responses/ConsejoTipoPlantaNoExiste"
+        "404":
+          $ref: "#/components/responses/TipoPlantaNoExiste"
+        "406":
+          $ref: "#/components/responses/ErrorZonaConsejo"
+        "406":
+          $ref: "#/components/responses/ErrorTipoMedida"
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  /Consejos/TiposPlantas/All:
+    get:
+      summary: Obtener todos los consejos de tipos de plantas.
+      description: |
+        Obtener todos los consejos de tipos de plantas almacenados en la base de datos.
+      operationId: backend.presentation.rest.consejo_tipo_planta_rest.getAll
+      responses:
+        "200":
+          description: Todos los consejo de tipos de plantas especificados.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
+              example:
+                - descripcion: "Temperatura ambiente recomendada para una tomatera."
+                  tipo_planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Temperatura"
+                    tipo: "TEMPERATURA"
+                  unidad_medida: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  valor_minimo: 15.0
+                  valor_maximo: 25.0
+                - descripcion: "Luminosidad ambiente recomendada para una tomatera."
+                  tipo_planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Luminosidad"
+                    tipo: "LUMINOSIDAD"
+                  unidad_medida: 
+                    nombre: "Lux"
+                    tipo: "LUMINOSIDAD"
+                  valor_minimo: 500.0
+                  valor_maximo: 800.0
+                  horas_minimas: 6.0
+                  horas_maximas: 8.0
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  /Consejos/TiposPlantas/All/FromTypePlant:
+    get:
+      summary: Obtener todos los consejos de un tipo de planta especificado.
+      description: |
+        Obtener todos los consejos del tipo de planta almacenados en la base de datos.
+      operationId: backend.presentation.rest.consejo_tipo_planta_rest.getAllFromTypePlant
+      parameters:
+        - $ref: "#/components/parameters/NombreTipoPlantaParam"
+      responses:
+        "200":
+          description: Todos los consejos de un tipo de planta especificados.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
+              example:
+                - descripcion: "Temperatura ambiente recomendada para una tomatera."
+                  tipo_planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Temperatura"
+                    tipo: "TEMPERATURA"
+                  unidad_medida: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  valor_minimo: 15.0
+                  valor_maximo: 25.0
+                - descripcion: "Luminosidad ambiente recomendada para una tomatera."
+                  tipo_planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Luminosidad"
+                    tipo: "LUMINOSIDAD"
+                  unidad_medida: 
+                    nombre: "Lux"
+                    tipo: "LUMINOSIDAD"
+                  valor_minimo: 500.0
+                  valor_maximo: 800.0
+                  horas_minimas: 6.0
+                  horas_maximas: 8.0
+        "404":
+          $ref: "#/components/responses/TipoPlantaNoExiste"
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  /Consejos/TiposPlantas/All/FromZone:
+    get:
+      summary: Obtener todos los consejos de la zona especificada de todos los tipos de plantas.
+      description: |
+        Obtener todos los consejos de la zona especificada de todos los tipos de plantas almacenados en la base de datos.
+      operationId: backend.presentation.rest.consejo_tipo_planta_rest.getAllFromZone
+      parameters:
+        - $ref: "#/components/parameters/ConsejoZonaParam"
+      responses:
+        "200":
+          description: Todos los consejos de una zona especificada de todos los tipos de plantas.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
+              example:
+                - descripcion: "Temperatura ambiente recomendada para una tomatera."
+                  tipo_planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Temperatura"
+                    tipo: "TEMPERATURA"
+                  unidad_medida: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  valor_minimo: 15.0
+                  valor_maximo: 25.0
+                - descripcion: "Luminosidad ambiente recomendada para una tomatera."
+                  tipo_planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Luminosidad"
+                    tipo: "LUMINOSIDAD"
+                  unidad_medida: 
+                    nombre: "Lux"
+                    tipo: "LUMINOSIDAD"
+                  valor_minimo: 500.0
+                  valor_maximo: 800.0
+                  horas_minimas: 6.0
+                  horas_maximas: 8.0
+        "406":
+          $ref: "#/components/responses/ErrorZonaConsejo"
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  /Consejos/TiposPlantas/All/FromTypeMeasure:
+    get:
+      summary: Obtener todos los consejos del tipo de medida especificados de todos los tipos de plantas.
+      description: |
+        Obtener todos los consejos del tipo de medida especificados de todos los tipos de plantas almacenados en la base de datos.
+      operationId: backend.presentation.rest.consejo_tipo_planta_rest.getAllFromTypeMeasure
+      parameters:
+        - $ref: "#/components/parameters/MedidaTipoParam"
+      responses:
+        "200":
+          description: Todos los consejos de un tipo de medida especificado de todos los tipos de plantas.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
+              example:
+                - descripcion: "Humedad ambiente recomendada para una tomatera."
+                  tipo_planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Humedad"
+                    tipo: "HUMEDAD"
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  valor_minimo: 30.0
+                  valor_maximo: 60.0
+                - descripcion: "Humedad de la maceta recomendada para una tomatera."
+                  tipo_planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Maceta"
+                    tipo: "MACETA"
+                  tipo_medida: 
+                    nombre: "Humedad"
+                    tipo: "HUMEDAD"
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  valor_minimo: 40.0
+                  valor_maximo: 70.0
+        "406":
+          $ref: "#/components/responses/ErrorTipoMedida"
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  /Consejos/TiposPlantas/All/FromTypePlantAndZone:
+    get:
+      summary: Obtener todos los consejos de un tipo de planta y de una zona zona especificados.
+      description: |
+        Obtener todos los consejos del tipo de planta y zona especificados almacenados en la base de datos.
+      operationId: backend.presentation.rest.consejo_tipo_planta_rest.getAllFromTypePlantAndZone
+      parameters:
+        - $ref: "#/components/parameters/NombreTipoPlantaParam"
+        - $ref: "#/components/parameters/ConsejoZonaParam"
+      responses:
+        "200":
+          description: Todos los consejos de un tipo de planta y de una zona zona especificados.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
+              example:
+                - descripcion: "Temperatura ambiente recomendada para una tomatera."
+                  tipo_planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Temperatura"
+                    tipo: "TEMPERATURA"
+                  unidad_medida: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  valor_minimo: 15.0
+                  valor_minimo: 25.0
+                - descripcion: "Luminosidad ambiente recomendada para una tomatera."
+                  tipo_planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Luminosidad"
+                    tipo: "LUMINOSIDAD"
+                  unidad_medida: 
+                    nombre: "Lux"
+                    tipo: "LUMINOSIDAD"
+                  valor_minimo: 500.0
+                  valor_minimo: 800.0
+                  horas_minimas: 6.0
+                  horas_maximas: 8.0
+        "404":
+          $ref: "#/components/responses/TipoPlantaNoExiste"
+        "406":
+          $ref: "#/components/responses/ErrorZonaConsejo"
+      tags:
+        - Consejos
       # security:
       #   - api_key: []
       #     user_token: []
@@ -1704,7 +2001,41 @@ components:
     TipoPlantaListModel:
       type: array
       items:
-        $ref: "#/components/schemas/TipoPlantaModel"     
+        $ref: "#/components/schemas/TipoPlantaModel"
+    ConsejoTipoPlantaModel:
+      description: Datos de un consejo de un tipo de planta.
+      type: object
+      properties:
+        descripcion:
+          type: string
+        tipo_planta:
+          type: string
+        zona_consejo:
+          $ref: "#/components/schemas/ZonaSensorModel"
+        tipo_medida:
+          $ref: "#/components/schemas/TipoMedidaModel"
+        unidad_medida:
+          $ref: "#/components/schemas/UnidadMedidaModel"
+        valor_minimo:
+          type: number
+        valor_maximo:
+          type: number
+        horas_minimas:
+          type: number
+        horas_maximas:
+          type: number
+      required:
+        - descripcion
+        - tipo_planta
+        - zona_consejo
+        - tipo_medida
+        - unidad_medida
+        - valor_minimo
+        - valor_maximo
+    ConsejoTipoPlantaListModel:
+      type: array
+      items:
+        $ref: "#/components/schemas/ConsejoTipoPlantaModel"       
     RegistrosGraficoModel:
       description: Datos de registros adaptados para ser leido por un grafico.
       type: object
@@ -1757,7 +2088,6 @@ components:
       name: rsid
       description: Id del registro de sensor.
       in: query
-      # in: path
       schema:
         type: integer
       required: true
@@ -1765,7 +2095,6 @@ components:
       name: st
       description: Tipo del sensor.
       in: query
-      # in: path
       schema:
         type: string
       required: true
@@ -1773,7 +2102,6 @@ components:
       name: sz
       description: Zona del sensor.
       in: query
-      # in: path
       schema:
         type: string
       required: true
@@ -1781,7 +2109,6 @@ components:
       name: sid
       description: Id del sensor.
       in: query
-      # in: path
       schema:
         type: integer
       required: true
@@ -1789,7 +2116,6 @@ components:
       name: sm
       description: Modelo del sensor.
       in: query
-      # in: path
       schema:
         type: string
       required: true
@@ -1797,7 +2123,6 @@ components:
       name: np
       description: Nombre de la planta.
       in: query
-      # in: path
       schema:
         type: string
       required: true    
@@ -1805,7 +2130,6 @@ components:
       name: ntp
       description: Nombre del tipo de la planta.
       in: query
-      # in: path
       schema:
         type: string
       required: true
@@ -1813,7 +2137,6 @@ components:
       name: fi
       description: Fecha de inicio de busqueda.
       in: query
-      # in: path
       schema:
         type: string
       required: true
@@ -1825,7 +2148,28 @@ components:
       schema:
         type: string
       required: true
-  
+    ConsejoZonaParam:
+      name: cz
+      description: Zona del consejo.
+      in: query
+      schema:
+        type: string
+      required: true
+    MedidaTipoParam:
+      name: mt
+      description: Tipo de medida.
+      in: query
+      schema:
+        type: string
+      required: true
+    MedidaUnidadParam:
+      name: mu
+      description: Unidad de medida.
+      in: query
+      schema:
+        type: string
+      required: true
+
   responses:
     Empty:
       description: Respuesta con contenido vacio.
@@ -1842,35 +2186,42 @@ components:
         "text/plain":
           schema:
             $ref: "#/components/schemas/EmptyContentModel"
-          example: "El registro de sensor 5 no existe."
+          example: "El registro de sensor EJEMPLO no existe."
     SensorNoExiste:
       description: El sensor especificado no existe.
       content:
         "text/plain":
           schema:
             type: string
-          example: "El sensor 1 de tipo HUMEDAD de la zona AMBIENTE no existe."
+          example: "El sensor EJEMPLO_ID de tipo EJEMPLO_TIPO de la zona EJEMPLO_ZONA no existe."
     PlantaNoExiste:      
       description: La planta especificada no existe.
       content:
         "text/plain":
           schema:
             type: string
-          example: "La planta Mi tomatera no existe."
+          example: "La planta EJEMPLO no existe."
     TipoPlantaNoExiste:      
       description: El tipo de planta especificada no existe.
       content:
         "text/plain":
           schema:
             type: string
-          example: "El tipo de planta Tomatera no existe."
+          example: "El tipo de planta EJEMPLO no existe."
     SensorPlantaNoExiste:      
       description: La relaccion entre el sensor y la planta especificados no existe.
       content:
         "text/plain":
           schema:
             type: string
-          example: "La relaccion entre el sensor 1 de tipo HUMEDAD de la zona AMBIENTE y la planta Mi tomatera no existe."
+          example: "La relaccion entre el sensor EJEMPLO_ID de tipo EJEMPLO_TIPO de la zona EJEMPLO_ZONA y la planta EJEMPLO_PLANTA no existe."
+    ConsejoTipoPlantaNoExiste:      
+      description: El consejo del tipo de planta, zona y tipo de medida especificados no existe.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "El consejo del tipo de planta EJEMPLO_TIPO_PLANTA para la medida EJEMPLO_TIPO_MEDIDA en la zona EJEMPLO_ZONA no existe."
 
     # 406
     ErrorTipoSensor:
@@ -1879,35 +2230,63 @@ components:
         "text/plain":
           schema:
             type: string
-          example: "El tipo de sensor especificado no es correcto."
+          example: "El tipo de sensor EJEMPLO no existe."
     ErrorZonaSensor:
       description: Los datos de la zona de sensor especificados no son correctos.
       content:
         "text/plain":
           schema:
             type: string
-          example: "La zona de sensor especificada no es correcta."
+          example: "La zona de sensor EJEMPLO no existe."
     ErrorModeloSensor:
       description: El modelo de sensor especificado no existe.
       content:
         "text/plain":
           schema:
             type: string
-          example: "Los datos del modelo de sensor DHT1 no son correctos."
-    ErrorFormatoFechas:
-      description: Los datos de fecha no tienen el formato correcto.
+          example: "El modelo de sensor EJEMPLO no existe."
+    ErrorZonaConsejo:
+      description: Los datos de la zona del consejo especificados no son correctos.
       content:
         "text/plain":
           schema:
             type: string
-          example: "Error en el formato de las fechas especificadas."
+          example: "La zona de consejo EJEMPLO no existe."   
+    ErrorTipoMedida:
+      description: Los datos del tipo de medida especificados no son correctos.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "El tipo de medida EJEMPLO no existe."   
+    ErrorUnidadMedida:
+      description: Los datos de la unidad de medida especificados no son correctos.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "La unidad de medida EJEMPLO no existe."    
+    ErrorFormatoFechaInicio:
+      description: Los datos de fecha inicio no tienen el formato correcto.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "Error en el formato de la fecha de inicio EJEMPLO ."
+    ErrorFormatoFechaFin:
+      description: Los datos de fecha fin no tienen el formato correcto.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "Error en el formato de la fecha de fin EJEMPLO ."
     ErrorIncongruenciaFechas:
       description: Incongruencia en fechas.
       content:
         "text/plain":
           schema:
             type: string
-          example: La fecha de inicio no puede ser mayor que la fecha de fin.
+          example: La fecha de inicio EJEMPLO_INICIO no puede ser mayor que la fecha de fin EJEMPLO_FIN .
   
     # 404
     ErrorProcesarDatosParaGraficar:
@@ -1916,7 +2295,7 @@ components:
         "text/plain":
           schema:
             type: string
-          example: Error al procesar los datos de la planta Mi tomatera para graficar.
+          example: Error al procesar los datos de la planta EJEMPLO para graficar.
 
 
 #   securitySchemes:

@@ -11,11 +11,11 @@ def get(st:str, sz: str ,sid:int) :
     try:
         tipo_sensor:TipoSensor = TipoSensor[st]
     except(KeyError):
-        return ("El tipo de sensor especificado no es correcto.", HTTPStatus.NOT_ACCEPTABLE.value)   
+        return ("El tipo de sensor " + str(st) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     try:
         zona_sensor: ZonaSensor = ZonaSensor[sz]
     except(KeyError):
-        return ("La zona de sensor especificada no es correcta.", HTTPStatus.NOT_ACCEPTABLE.value)   
+        return ("La zona de sensor " + str(sz) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     numero_sensor:int = sid
     with current_app.app_context() :
         if SensorService.exists(current_app.db,tipo_sensor,zona_sensor,numero_sensor):
@@ -35,7 +35,7 @@ def getAllFromType(st:str):
     try:
         tipo_sensor:TipoSensor = TipoSensor[st]
     except(KeyError):
-        return ("Los datos del tipo de sensor " + str(st) + " no son correctos.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("El tipo de sensor " + str(st) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     with current_app.app_context() :
         return [item.toJson() for item in SensorService.listAllFromType(current_app.db,tipo_sensor)], HTTPStatus.OK.value
  
@@ -43,7 +43,7 @@ def getAllActiveFromType(st:str):
     try:
         tipo_sensor:TipoSensor = TipoSensor[st]
     except(KeyError):
-        return ("Los datos del tipo de sensor " + str(st) + " no son correctos.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("El tipo de sensor " + str(st) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     with current_app.app_context() :
         return [item.toJson() for item in SensorService.listAllActiveFromType(current_app.db,tipo_sensor)], HTTPStatus.OK.value
 
@@ -51,7 +51,7 @@ def getAllFromZone(sz:str):
     try:
         zona_sensor: ZonaSensor = ZonaSensor[sz]
     except(KeyError):
-        return ("Los datos de la zona de sensor " + str(sz) + " no son correctos.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("La zona de sensor " + str(sz) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     with current_app.app_context() :
         return [item.toJson() for item in SensorService.listAllFromZone(current_app.db,zona_sensor)], HTTPStatus.OK.value
  
@@ -59,7 +59,7 @@ def getAllActiveFromZone(sz:str):
     try:
         zona_sensor: ZonaSensor = ZonaSensor[sz]
     except(KeyError):
-        return ("Los datos de la zona de sensor " + str(sz) + " no son correctos.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("La zona de sensor " + str(sz) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     with current_app.app_context() :
         return [item.toJson() for item in SensorService.listAllActiveFromZone(current_app.db,zona_sensor)], HTTPStatus.OK.value
 
@@ -67,11 +67,11 @@ def getAllFromTypeAndZone(st:str, sz:str):
     try:
         tipo_sensor:TipoSensor = TipoSensor[st]
     except(KeyError):
-        return ("Los datos del tipo de sensor " + str(st) + " no son correctos.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("El tipo de sensor " + str(st) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     try:
         zona_sensor: ZonaSensor = ZonaSensor[sz]
     except(KeyError):
-        return ("Los datos de la zona de sensor " + str(sz) + " no son correctos.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("La zona de sensor " + str(sz) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     with current_app.app_context() :
         return [item.toJson() for item in SensorService.listAllFromTypeAndZone(current_app.db,tipo_sensor,zona_sensor)], HTTPStatus.OK.value
  
@@ -79,11 +79,11 @@ def getAllActiveFromTypeAndZone(st:str, sz:str):
     try:
         tipo_sensor:TipoSensor = TipoSensor[st]
     except(KeyError):
-        return ("Los datos del tipo de sensor " + str(st) + " no son correctos.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("El tipo de sensor " + str(st) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     try:
         zona_sensor: ZonaSensor = ZonaSensor[sz]
     except(KeyError):
-        return ("Los datos de la zona de sensor " + str(sz) + " no son correctos.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("La zona de sensor " + str(sz) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     with current_app.app_context() :
         return [item.toJson() for item in SensorService.listAllActiveFromTypeAndZone(current_app.db,tipo_sensor,zona_sensor)], HTTPStatus.OK.value
 
@@ -91,7 +91,7 @@ def getAllFromModel(sm:str):
     try:
         modelo_sensor: ModeloSensor = ModeloSensor[sm]
     except(KeyError):
-        return ("Los datos del modelo de sensor " + str(sm) + " no son correctos.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("El modelo de sensor " + str(sm) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     with current_app.app_context() :
         return [item.toJson() for item in SensorService.listAllFromModel(current_app.db,modelo_sensor)], HTTPStatus.OK.value
  
@@ -99,7 +99,7 @@ def getAllActiveFromModel(sm:str):
     try:
         modelo_sensor: ModeloSensor = ModeloSensor[sm]
     except(KeyError):
-        return ("Los datos del modelo de sensor " + str(sm) + " no son correctos.", HTTPStatus.NOT_ACCEPTABLE.value)
+        return ("El modelo de sensor " + str(sm) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     with current_app.app_context() :
         return [item.toJson() for item in SensorService.listAllFromModel(current_app.db,modelo_sensor)], HTTPStatus.OK.value
 

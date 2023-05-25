@@ -56,19 +56,19 @@ class RegistroSensor(ModuloBase):
         """
         return {}
 
-    def toJson(self) -> Dict:
-        dict={}
-        dict["id_"]=self.id_
-        dict["tipo_sensor"]=self.tipo_sensor
-        dict["zona_sensor"]=self.zona_sensor
-        dict["numero_sensor"]=self.numero_sensor
-        dict["valor"]=self.valor
-        dict["unidad_medida"]=self.unidad_medida
-        dict["fecha"]=self.getFecha()#.isoformat()
-        return dict
+    # def toJson(self) -> Dict:
+    #     dict={}
+    #     dict["id_"]=self.id_
+    #     dict["tipo_sensor"]=self.tipo_sensor
+    #     dict["zona_sensor"]=self.zona_sensor
+    #     dict["numero_sensor"]=self.numero_sensor
+    #     dict["valor"]=self.valor
+    #     dict["unidad_medida"]=self.unidad_medida
+    #     dict["fecha"]=self.getFecha()#.isoformat()
+    #     return dict
 
-    @staticmethod
-    def fromJson(dict: dict):
-        sensor = RegistroSensor(dict["id_"],dict["tipo_sensor"],dict["zona_sensor"],dict["numero_sensor"],
-                                dict["valor"],dict["unidad_medida"], dict["fecha"])
-        return sensor
+    # @staticmethod
+    # def fromJson(dict: dict):
+    #     sensor = RegistroSensor(dict["id_"],dict["tipo_sensor"],dict["zona_sensor"],dict["numero_sensor"],
+    #                             dict["valor"],dict["unidad_medida"], dict["fecha"])
+    #     return sensor

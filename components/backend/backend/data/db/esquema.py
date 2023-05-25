@@ -8,8 +8,8 @@ from sqlalchemy.ext.declarative import declarative_base  # type: ignore
 from sqlalchemy.orm import sessionmaker, scoped_session, registry  # type: ignore
 from sqlalchemy.orm.session import Session  # type: ignore
 from backend.data.config import BackendConfiguration
-from backend.data.db.results import Sensor, RegistroSensor, Planta, TipoPlanta, SensorPlanta
-
+from backend.data.db.results import Sensor, RegistroSensor, Planta
+from backend.data.db.results import TipoPlanta, SensorPlanta, ConsejoTipoPlanta
 
 
 # Requerido por SQLite para forzxar la integridad de claves foraneas
@@ -45,12 +45,12 @@ class Esquema:
         self.__create_engine = create_engine(db_connection_string)
         self.__session_maker = scoped_session(sessionmaker(bind=self.__create_engine))
 
-        #TODO
         Sensor.map(self.__registry)
         TipoPlanta.map(self.__registry)
         Planta.map(self.__registry)
         RegistroSensor.map(self.__registry)
         SensorPlanta.map(self.__registry)
+        ConsejoTipoPlanta.map(self.__registry)
 
         self.__registry.metadata.create_all(self.__create_engine)
 

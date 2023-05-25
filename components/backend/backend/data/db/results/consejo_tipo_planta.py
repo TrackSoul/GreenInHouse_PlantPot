@@ -18,7 +18,7 @@ class ConsejoTipoPlanta(ModuloBase):
         self.tipo_planta: str = tipo_planta
         self.zona_consejo: ZonaSensor = zona_consejo
         self.tipo_medida: TipoMedida = tipo_medida       
-        self.unidad_medida: UnidadMedida = unidad_medida,
+        self.unidad_medida: UnidadMedida = unidad_medida
         self.valor_minimo: float = valor_minimo
         self.valor_maximo: float  = valor_maximo
         self.horas_minimas: float = horas_minimas
@@ -57,5 +57,4 @@ class ConsejoTipoPlanta(ModuloBase):
         Returns:
             - Dict: Diccionario con las propiedades de mapeado.
         """
-        return {
-        }
+        return {}

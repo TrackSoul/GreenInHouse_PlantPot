@@ -57,10 +57,9 @@ class ConsejoTipoPlantaSet():
 
         nuevo_consejo_tipo_planta = None
         try:
-            nuevo_consejo_tipo_planta = ConsejoTipoPlanta( tipo_planta, descripcion, tipo_planta, 
-                                                          zona_consejo, tipo_medida, unidad_medida, 
-                                                          valor_minimo, valor_maximo, horas_minimas,
-                                                          horas_maximas)
+            nuevo_consejo_tipo_planta = ConsejoTipoPlanta(descripcion, tipo_planta, zona_consejo,
+                                                          tipo_medida, unidad_medida, valor_minimo,
+                                                          valor_maximo, horas_minimas, horas_maximas)
             session.add(nuevo_consejo_tipo_planta)
             session.commit()
         except IntegrityError as ex:
@@ -266,11 +265,11 @@ class ConsejoTipoPlantaSet():
             if consejo.valor_minimo != valor_minimo:
                 query.update({'valor_minimo' : valor_minimo})
             if consejo.valor_maximo != valor_maximo:
-                consejo.update({'valor_maximo' : valor_maximo})
+                query.update({'valor_maximo' : valor_maximo})
             if consejo.horas_minimas != horas_minimas:
                 query.update({'horas_minimas' : horas_minimas})
             if consejo.horas_maximas != horas_maximas:
-                query.update({'patilla_3_lectura' : horas_maximas})
+                query.update({'horas_maximas' : horas_maximas})
             session.commit()
             consejo_modificado: ConsejoTipoPlanta = query.one() 
         except NoResultFound as ex:

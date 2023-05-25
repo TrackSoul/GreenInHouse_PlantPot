@@ -44,7 +44,5 @@ class Planta(ModuloBase):
         Returns:
             - Dict: Diccionario con las propiedades de mapeado.
         """
-        return {
-            #'registro_sensores': relationship(RegistroSensor, backref='nombre_planta')
-        }
+        return {}
     
