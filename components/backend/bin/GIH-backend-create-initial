@@ -21,23 +21,26 @@ if __name__ == '__main__':
 
 
     #datos de inicializacion del sistema
-    tipo_planta_ninguno = TipoPlantaService.create(db,"Ninguno","Sin descripcion")
-    tipo_planta_tomatera = TipoPlantaCommon("Tomatera","Planta facil de cultivar")
-    tipo_planta_tomatera = TipoPlantaService.createFromCommon(db,tipo_planta_tomatera)
+    tipo_planta_ninguno = TipoPlantaService.create(db,"Plantilla","Plantilla de consejos vacia a copiar por el resto de tipo de plantas durante su creacion.")
 
-    planta_vacia = PlantaService.create(db,"Sin planta","Ninguno",None,None)
-    planta_mi_tomatera = PlantaCommon("Mi tomatera","Tomatera")
-    planta_mi_tomatera = PlantaService.createFromCommon(db,planta_mi_tomatera)
-
-    #datos de pruebas
+    consejo_temperatura_ambiente_sin_tipo_planta = ConsejoTipoPlantaService.create(db, "Temperatura de ambiente optima.", "Plantilla", ZonaSensor.AMBIENTE, 
+                                                            TipoMedida.TEMPERATURA, UnidadMedida.GRADOS_CENTIGRADOS, 0.0, 0.0)
+    consejo_humedad_ambiente_sin_tipo_planta = ConsejoTipoPlantaService.create(db, "Humedad de ambiente optima.", "Plantilla", ZonaSensor.AMBIENTE, 
+                                                            TipoMedida.HUMEDAD, UnidadMedida.PORCENTAJE, 0.0, 0.0)
+    consejo_humedad_maceta_sin_tipo_planta = ConsejoTipoPlantaService.create(db, "Humedad de maceta optima.", "Plantilla", ZonaSensor.MACETA, 
+                                                            TipoMedida.HUMEDAD, UnidadMedida.PORCENTAJE, 0.0, 0.0)
+    consejo_humedad_suelo_sin_tipo_planta = ConsejoTipoPlantaService.create(db, "Humedad de suelo optima.", "Plantilla", ZonaSensor.SUELO, 
+                                                            TipoMedida.HUMEDAD, UnidadMedida.PORCENTAJE, 0.0, 0.0)
+    consejo_luminosidad_ambiente_sin_tipo_planta = ConsejoTipoPlantaService.create(db, "Luminosidad de ambiente optima.", "Plantilla", ZonaSensor.AMBIENTE, 
+                                                            TipoMedida.LUMINOSIDAD, UnidadMedida.LUMENES, 0.0, 0.0, 0.0, 0.0)
+    
     #Sensores conectados a Raspberry
     sensor_temperatura_y_humedad_ambiente_1 = SensorCommon(TipoSensor.TEMPERATURA_Y_HUMEDAD,ZonaSensor.AMBIENTE,1,ModeloSensor.DHT11, "Humedad y temperatura ambiente 1 maceta 1",
                                                             direccion_lectura="RASPBERRY",patilla_0_lectura=board.D20.id, 
                                                             unidad_medida_0=UnidadMedida.PORCENTAJE, unidad_medida_1=UnidadMedida.GRADOS_CENTIGRADOS)
-    sensor_temperatura_y_humedad_ambiente_1 =SensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1)
-    # sensor_temperatura_y_humedad_ambiente_1 =SensorService.create(db,TipoSensor.TEMPERATURA_Y_HUMEDAD,ZonaSensor.AMBIENTE,1,ModeloSensor.DHT11, "Humedad y temperatura ambiente 1 maceta 1",
-    #                                                         direccion_lectura="RASPBERRY",patilla_0_lectura=board.D20.id, 
-    #                                                         unidad_medida_0=UnidadMedida.PORCENTAJE, unidad_medida_1=UnidadMedida.GRADOS_CENTIGRADOS)
+    sensor_temperatura_y_humedad_ambiente_1 =SensorService.create(db,TipoSensor.TEMPERATURA_Y_HUMEDAD,ZonaSensor.AMBIENTE,1,ModeloSensor.DHT11, 
+                                                                    "Humedad y temperatura ambiente 1 maceta 1", direccion_lectura="RASPBERRY",patilla_0_lectura=board.D20.id, 
+                                                                    unidad_medida_0=UnidadMedida.PORCENTAJE, unidad_medida_1=UnidadMedida.GRADOS_CENTIGRADOS)
 
     #Sensores conectados a MCP3008
     sensor_humedad_maceta_1 = SensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,ModeloSensor.FC28, "Humedad tierra 1 maceta 1",
@@ -51,147 +54,47 @@ if __name__ == '__main__':
                                                         unidad_medida_0=UnidadMedida.LUMENES)
     sensor_luminosidad_ambiente_3 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,3,ModeloSensor.LDR, "Luminosidad 3 maceta 1",
                                                         direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P3, 
-                                                        unidad_medida_0=UnidadMedida.LUMENES)                                               
+                                                        unidad_medida_0=UnidadMedida.LUMENES)     
+    
+    #Creacion de primer tipo de planta
+    tipo_planta_tomatera = TipoPlantaService.create(db,"Tomatera","Planta que da tomates. Facil de cultivar.")
 
-    sensor_planta_1 = SensorPlantaService.createRelationFromCommon(db, sensor_temperatura_y_humedad_ambiente_1, planta_mi_tomatera)
-    sensor_planta_2 = SensorPlantaService.createRelationFromCommon(db, sensor_humedad_maceta_1, planta_mi_tomatera)
-    sensor_planta_3 = SensorPlantaService.createRelationFromCommon(db, sensor_luminosidad_ambiente_1, planta_mi_tomatera)
-    sensor_planta_4 = SensorPlantaService.createRelationFromCommon(db, sensor_luminosidad_ambiente_2, planta_mi_tomatera)
-    sensor_planta_5 = SensorPlantaService.createRelationFromCommon(db, sensor_luminosidad_ambiente_3, planta_mi_tomatera)
+    consejo_temperatura_ambiente_tomatera = ConsejoTipoPlantaService.get(db, "Tomatera", ZonaSensor.AMBIENTE, TipoMedida.TEMPERATURA)
+    consejo_temperatura_ambiente_tomatera.setValorMinimo(10.0)
+    consejo_temperatura_ambiente_tomatera.setValorMaximo(25.0)
+    consejo_temperatura_ambiente_tomatera = ConsejoTipoPlantaService.updateFromCommon(db, consejo_temperatura_ambiente_tomatera)
 
-    consejo_tipo_planta_1 = ConsejoTipoPlantaService.create(db, "Temperatura de ambiente optima de Tomatera", "Tomatera", ZonaSensor.AMBIENTE, 
-                                                            TipoMedida.TEMPERATURA, UnidadMedida.GRADOS_CENTIGRADOS, 10.0, 25.0)
-    consejo_tipo_planta_2 = ConsejoTipoPlantaService.create(db, "Humedad de ambiente optima de Tomatera", "Tomatera", ZonaSensor.AMBIENTE, 
-                                                            TipoMedida.HUMEDAD, UnidadMedida.PORCENTAJE, 30.0, 70.0)
-    consejo_tipo_planta_3 = ConsejoTipoPlantaService.create(db, "Humedad de maceta optima de Tomatera", "Tomatera", ZonaSensor.MACETA, 
-                                                            TipoMedida.HUMEDAD, UnidadMedida.PORCENTAJE, 40.0, 80.0)
-    consejo_tipo_planta_4 = ConsejoTipoPlantaService.create(db, "Luminosidad de ambiente optima de Tomatera", "Tomatera", ZonaSensor.AMBIENTE, 
-                                                            TipoMedida.LUMINOSIDAD, UnidadMedida.LUMENES, 50.0, 90.0, 4.0, 6.0)
+    consejo_humedad_ambiente_tomatera = ConsejoTipoPlantaService.get(db, "Tomatera", ZonaSensor.AMBIENTE, TipoMedida.HUMEDAD)
+    consejo_humedad_ambiente_tomatera.setValorMinimo(30.0)
+    consejo_humedad_ambiente_tomatera.setValorMaximo(60.0)
+    consejo_humedad_ambiente_tomatera = ConsejoTipoPlantaService.updateFromCommon(db, consejo_humedad_ambiente_tomatera)
 
-    '''
-    ElectronicSensorService.readActiveSensorsAndSaveRecords(db)
+    consejo_humedad_maceta_tomatera = ConsejoTipoPlantaService.get(db, "Tomatera", ZonaSensor.MACETA, TipoMedida.HUMEDAD)
+    consejo_humedad_maceta_tomatera.setValorMinimo(40.0)
+    consejo_humedad_maceta_tomatera.setValorMaximo(70.0)
+    consejo_humedad_maceta_tomatera = ConsejoTipoPlantaService.updateFromCommon(db, consejo_humedad_maceta_tomatera)
 
-    SensorPlantaService.unsubscribeFromCommon(db,sensor_planta_5)
+    consejo_humedad_maceta_tomatera = ConsejoTipoPlantaService.get(db, "Tomatera", ZonaSensor.SUELO, TipoMedida.HUMEDAD)
+    consejo_humedad_maceta_tomatera.setValorMinimo(40.0)
+    consejo_humedad_maceta_tomatera.setValorMaximo(70.0)
+    consejo_humedad_maceta_tomatera = ConsejoTipoPlantaService.updateFromCommon(db, consejo_humedad_maceta_tomatera)
 
-    ElectronicSensorService.readActiveSensorsAndSaveRecords(db)
+    consejo_temperatura_ambiente_tomatera = ConsejoTipoPlantaService.get(db, "Tomatera", ZonaSensor.AMBIENTE, TipoMedida.LUMINOSIDAD)
+    consejo_temperatura_ambiente_tomatera.setValorMinimo(60.0)
+    consejo_temperatura_ambiente_tomatera.setValorMaximo(90.0)
+    consejo_temperatura_ambiente_tomatera.setHorasMinimas(6.0)
+    consejo_temperatura_ambiente_tomatera.setHorasMaximas(10.0)
+    consejo_temperatura_ambiente_tomatera = ConsejoTipoPlantaService.updateFromCommon(db, consejo_temperatura_ambiente_tomatera)
 
-    sensor_planta_6 = SensorPlantaService.createRelationFromCommon(db,sensor_luminosidad_ambiente_3,planta_mi_tomatera)
+    #Creacion de primera planta
+    planta_mi_tomatera = PlantaService.create(db,"Mi tomatera","Tomatera")                                         
 
-    ElectronicSensorService.readActiveSensorsAndSaveRecords(db)
-    '''
+    # sensor_planta_1 = SensorPlantaService.createRelationFromCommon(db, sensor_temperatura_y_humedad_ambiente_1, planta_mi_tomatera)
+    # sensor_planta_2 = SensorPlantaService.createRelationFromCommon(db, sensor_humedad_maceta_1, planta_mi_tomatera)
+    # sensor_planta_3 = SensorPlantaService.createRelationFromCommon(db, sensor_luminosidad_ambiente_1, planta_mi_tomatera)
+    # sensor_planta_4 = SensorPlantaService.createRelationFromCommon(db, sensor_luminosidad_ambiente_2, planta_mi_tomatera)
+    # sensor_planta_5 = SensorPlantaService.createRelationFromCommon(db, sensor_luminosidad_ambiente_3, planta_mi_tomatera)
 
-    '''
-    for reg in SensorService.listAll(db):
-        print(str(reg))
-    print('*******************************************************************')   
-    for reg in SensorService.listAllActive(db):
-        print(str(reg))
-    print('*******************************************************************')   
-    print('-------------------------------------------------------------------')
+    #hacer que automaticamente se asignen todos los sensores activos al crear una nueva planta
+    # for sensor in SensorService.listAllActive(db):
 
-    for reg in PlantaService.listAll(db):
-        print(str(reg))
-    print('*******************************************************************')
-    for reg in PlantaService.listAllActive(db):
-        print(str(reg))
-    print('*******************************************************************')
-    for reg in PlantaService.listAllFromTypeFromCommon(db,tipo_planta_tomatera):
-        print(str(reg))
-    print('*******************************************************************')  
-    for reg in PlantaService.listAllActiveFromTypeFromCommon(db,tipo_planta_tomatera):
-        print(str(reg))
-    print('*******************************************************************')  
-    print('-------------------------------------------------------------------') 
-
-    for reg in TipoPlantaService.listAll(db):
-        print(str(reg))
-    print('*******************************************************************')
-    print('-------------------------------------------------------------------')
-
-    for reg in SensorPlantaService.listAll(db):
-        print(str(reg))       
-    print('*******************************************************************')   
-    for reg in SensorPlantaService.listAllActive(db):
-        print(str(reg))       
-    print('*******************************************************************')  
-    for reg in SensorPlantaService.listAllSensorsPerPlantFromCommon(db,planta_mi_tomatera):
-        print(str(reg))
-    print('*******************************************************************')  
-    for reg in SensorPlantaService.listAllActiveSensorsPerPlantFromCommon(db,planta_mi_tomatera):
-        print(str(reg))
-    print('*******************************************************************')
-    print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-
-    print('*******************************************************************')  
-    for reg in SensorPlantaService.listAllPlantsPerSensorFromCommon(db,sensor_temperatura_y_humedad_ambiente_1):
-        print(str(reg))
-    print('*******************************************************************')  
-    for reg in SensorPlantaService.listAllActivePlantsPerSensorFromCommon(db,sensor_temperatura_y_humedad_ambiente_1):
-        print(str(reg))
-    print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-
-    for reg in RegistroSensorService.listAll(db):
-        print(str(reg))
-    print('*******************************************************************')  
-    print('-------------------------------------------------------------------')
-    '''
-    '''
-    #datos de inicializacion del sistema
-    tipo_planta_ninguno = TipoPlantaService.create(db,"Ninguno","Sin descripcion")
-    planta_vacia = PlantaService.create(db,"Sin planta","Ninguno",None,None)
-
-    #datos de pruebas
-    #Sensores conectados a Raspberry
-    sensor_temperatura_y_humedad_ambiente_1 =SensorService.create(db,TipoSensor.TEMPERATURA_Y_HUMEDAD,ZonaSensor.AMBIENTE,1,ModeloSensor.DHT11,
-                                                                direccion_lectura="RASPBERRY",patilla_0_lectura=20, 
-                                                                unidad_medida_0=UnidadMedida.PORCENTAJE, unidad_medida_1=UnidadMedida.GRADOS_CENTIGRADOS)
-    #Sensores conectados a MCP3008
-    sensor_humedad_maceta_1 = SensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,ModeloSensor.FC28,
-                                                direccion_lectura="MCP3008",patilla_0_lectura=0, 
-                                                unidad_medida_0=UnidadMedida.PORCENTAJE)
-    sensor_luminosidad_ambiente_1 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,1,ModeloSensor.LDR,
-                                                        direccion_lectura="MCP3008",patilla_0_lectura=1,
-                                                        unidad_medida_0=UnidadMedida.LUMENES)
-    sensor_luminosidad_ambiente_2 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,2,ModeloSensor.LDR,
-                                                        direccion_lectura="MCP3008",patilla_0_lectura=2,
-                                                        unidad_medida_0=UnidadMedida.LUMENES)
-    sensor_luminosidad_ambiente_3 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,3,ModeloSensor.LDR,
-                                                        direccion_lectura="MCP3008",patilla_0_lectura=3,
-                                                        unidad_medida_0=UnidadMedida.LUMENES)
-
-    sensor_temperatura_ambiente_1 = SensorCommon(TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,ModeloSensor.LM35,
-                                            direccion_lectura="MCP3008",patilla_0_lectura=4, 
-                                            unidad_medida_0=UnidadMedida.GRADOS_CENTIGRADOS)
-    sensor_temperatura_ambiente_1 =SensorService.createFromCommon(db,sensor_temperatura_ambiente_1)
-    sensor_humedad_ambiente_1 = SensorCommon(TipoSensor.HUMEDAD,ZonaSensor.AMBIENTE,1,ModeloSensor.OTRO,
-                                            direccion_lectura="MCP3008",patilla_0_lectura=5, 
-                                            unidad_medida_0=UnidadMedida.PORCENTAJE)
-    sensor_humedad_ambiente_1 =SensorService.createFromCommon(db,sensor_humedad_ambiente_1)
-
-    tipo_planta_tomatera = TipoPlantaCommon("Tomatera","Planta facil de cultivar")
-    tipo_planta_tomatera = TipoPlantaService.createFromCommon(db,tipo_planta_tomatera)
-    planta_mi_tomatera = PlantaCommon("Mi tomatera","Tomatera")
-    planta_mi_tomatera = PlantaService.createFromCommon(db,planta_mi_tomatera)
-    planta_mi_tomatera_2 = PlantaCommon("Mi tomatera 2","Tomatera")
-    planta_mi_tomatera_2 = PlantaService.createFromCommon(db,planta_mi_tomatera_2)
-
-    sensor_planta_1 = SensorPlantaService.createRelationFromCommon(db,sensor_humedad_ambiente_1,planta_mi_tomatera)
-    sensor_planta_2 = SensorPlantaService.createRelationFromCommon(db,sensor_humedad_maceta_1,planta_mi_tomatera)
-    sensor_planta_3 = SensorPlantaService.createRelationFromCommon(db,sensor_temperatura_ambiente_1,planta_mi_tomatera)
-    sensor_planta_4 = SensorPlantaService.createRelationFromCommon(db,sensor_temperatura_y_humedad_ambiente_1,planta_mi_tomatera)
-
-    sensor_planta_1 = SensorPlantaService.createRelationFromCommon(db,sensor_humedad_ambiente_1,planta_mi_tomatera_2)
-    sensor_planta_2 = SensorPlantaService.createRelationFromCommon(db,sensor_humedad_maceta_1,planta_mi_tomatera_2)
-    sensor_planta_3 = SensorPlantaService.createRelationFromCommon(db,sensor_temperatura_ambiente_1,planta_mi_tomatera_2)
-    sensor_planta_4 = SensorPlantaService.createRelationFromCommon(db,sensor_temperatura_y_humedad_ambiente_1,planta_mi_tomatera_2)
-
-    RegistroSensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.AMBIENTE,1,65.0, UnidadMedida.PORCENTAJE)
-    RegistroSensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,65.0,UnidadMedida.PORCENTAJE)
-    RegistroSensorService.create(db,TipoSensor.TEMPERATURA,ZonaSensor.AMBIENTE,1,29.0,UnidadMedida.GRADOS_CENTIGRADOS)
-    RegistroSensorService.create(db,TipoSensor.TEMPERATURA_Y_HUMEDAD,ZonaSensor.AMBIENTE,1,29.0,UnidadMedida.GRADOS_CENTIGRADOS)
-
-    #RegistroSensorService.createFromCommon(db,sensor_humedad_ambiente_1.crearRegistroSensor(75.0,UnidadMedida.PORCENTAJE))
-    #RegistroSensorService.createFromCommon(db,sensor_temperatura_ambiente_1.crearRegistroSensor(19.0,UnidadMedida.GRADOS_CENTIGRADOS))
-    #RegistroSensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1.crearRegistroSensor(70.0,UnidadMedida.PORCENTAJE))
-    #RegistroSensorService.createFromCommon(db,sensor_temperatura_y_humedad_ambiente_1.crearRegistroSensor(22.0,UnidadMedida.GRADOS_CENTIGRADOS))
-    '''

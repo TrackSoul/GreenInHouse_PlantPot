@@ -12,4 +12,6 @@ from .planta import Planta
 from .tipo_planta import TipoPlanta
 from .sensor import Sensor
 from .sensor_planta import SensorPlanta
+from .consejo import Consejo
 from .consejo_tipo_planta import ConsejoTipoPlanta
+from .consejo_planta import ConsejoPlanta

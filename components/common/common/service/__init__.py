@@ -1,5 +1,4 @@
 """ 
-Capa de servicios de clases de Backend
+Capa de servicios de clases de Common
 """
 
-from .wifi_service import WifiService

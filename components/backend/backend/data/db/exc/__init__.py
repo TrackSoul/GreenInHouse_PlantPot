@@ -13,3 +13,5 @@ from .error_sensor_planta_existe import ErrorSensorPlantaExiste
 from .error_sensor_planta_no_existe import ErrorSensorPlantaNoExiste
 from .error_consejo_tipo_planta_existe import ErrorConsejoTipoPlantaExiste
 from .error_consejo_tipo_planta_no_existe import ErrorConsejoTipoPlantaNoExiste
+from .error_consejo_planta_existe import ErrorConsejoPlantaExiste
+from .error_consejo_planta_no_existe import ErrorConsejoPlantaNoExiste

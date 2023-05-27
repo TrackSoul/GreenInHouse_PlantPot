@@ -4,14 +4,14 @@ from sqlalchemy.orm.session import Session # type: ignore
 from backend.data.db.esquema import Esquema
 from backend.data.db.results import Planta,  TipoPlanta
 from backend.data.db.resultsets import PlantaSet
-from backend.service import SensorPlantaService
+from backend.service import SensorPlantaService, SensorService, ConsejoPlantaService, ConsejoTipoPlantaService
 from common.data.util import Planta as PlantaCommon, SensorPlanta as SensorPlantaCommon
 
 class PlantaService():
 
     @staticmethod
-    def create(esquema: Esquema, nombre_planta: str, tipo_planta: str, 
-                fecha_plantacion: datetime = datetime.now(), fecha_marchitacion: datetime = None) -> PlantaCommon:
+    def create(esquema: Esquema, nombre_planta: str, tipo_planta: str, fecha_plantacion: datetime = datetime.now(),
+                 fecha_marchitacion: datetime = None, asociar_sensores_activos = True) -> PlantaCommon:
         session: Session = esquema.new_session()
         out: PlantaCommon = None
         try:
@@ -19,6 +19,13 @@ class PlantaService():
                                                                            fecha_plantacion, fecha_marchitacion)
             out= PlantaCommon(new_planta.nombre_planta,new_planta.tipo_planta,
                                       new_planta.fecha_plantacion,new_planta.fecha_marchitacion)
+            for consejo in ConsejoTipoPlantaService.listAllFromTypePlant(esquema,tipo_planta):
+                ConsejoPlantaService.create(esquema, consejo.getDescripcion(), nombre_planta, consejo.getZonaConsejo(), 
+                                            consejo.getTipoMedida(), consejo.getUnidadMedida(), consejo.getValorMinimo(), 
+                                            consejo.getValorMaximo(), consejo.getHorasMinimas(), consejo.getHorasMaximas())
+            if asociar_sensores_activos:
+                for sensor in SensorService.listAllActive(esquema):
+                    SensorPlantaService.createRelationFromCommon(esquema, sensor, out)
         except Exception as ex:
             raise ex
         finally:

@@ -13,7 +13,7 @@ class SensorBackend():
 
     def createRecordSensor(self, valor: float, unidad_medida: UnidadMedida) -> RegistroSensorCommon:
         return RegistroSensorCommon(self.sensor_common.getTipoSensor(),self.sensor_common.getZonaSensor(),
-                                    self.sensor_common.getNumeroSensor(),valor,unidad_medida)
+                                    self.sensor_common.getNumeroSensor(),valor,unidad_medida, datetime.now())
 
     def createRecordsSensor(self, lista_valor_unidad_medida: List[Tuple[float, UnidadMedida]]) -> List[RegistroSensorCommon]:
         lista_registros_sensor  = []

@@ -3,7 +3,8 @@ from sqlalchemy.orm.session import Session # type: ignore
 from backend.data.db.esquema import Esquema
 from backend.data.db.results import TipoPlanta
 from backend.data.db.resultsets import TipoPlantaSet
-from common.data.util import TipoPlanta as TipoPlantaCommon
+from backend.service import ConsejoTipoPlantaService
+from common.data.util import TipoPlanta as TipoPlantaCommon, ConsejoTipoPlanta as ConsejoTipoPlantaCommon
 
 class TipoPlantaService():
 
@@ -14,6 +15,10 @@ class TipoPlantaService():
         try:
             new_tipo_planta: TipoPlanta = TipoPlantaSet.create(session, tipo_planta, descripcion_planta)
             out= TipoPlantaCommon(new_tipo_planta.tipo_planta,new_tipo_planta.descripcion_planta)
+            #Creacion de consejos por defecto asociados al nuevo tipo de planta
+            for consejo in ConsejoTipoPlantaService.listAllFromTypePlant(esquema,"Plantilla"):
+                consejo.setTipoPlanta(tipo_planta)
+                ConsejoTipoPlantaService.createFromCommon(esquema, consejo)
         except Exception as ex:
             raise ex
         finally:

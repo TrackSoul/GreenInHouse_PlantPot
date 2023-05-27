@@ -1,5 +1,5 @@
 """ 
-Clase del modulo ErrorTipoPlantaExiste
+Clase del modulo ErrorConsejoTipoPlantaExiste
 """
 
 

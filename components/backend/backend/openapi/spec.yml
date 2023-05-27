@@ -25,7 +25,7 @@ tags:
   - name: Sensores Plantas
     description: Operaciones relaccionadas con las relacciones entre sensores y plantas.
   - name: Consejos
-    description: Operaciones relaccionadas con los consejos de los tipos de plantas.
+    description: Operaciones relaccionadas con los consejos de cuidado.
 servers:
   - url: /api/v1
 
@@ -1509,7 +1509,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
               example:
-                - descripcion: "Temperatura ambiente recomendada para una tomatera."
+                - descripcion: "Temperatura ambiente recomendada."
                   tipo_planta: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
@@ -1522,7 +1522,7 @@ paths:
                     tipo: "GRADOS_CENTIGRADOS"
                   valor_minimo: 15.0
                   valor_maximo: 25.0
-                - descripcion: "Luminosidad ambiente recomendada para una tomatera."
+                - descripcion: "Luminosidad ambiente recomendada."
                   tipo_planta: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
@@ -1558,7 +1558,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
               example:
-                - descripcion: "Temperatura ambiente recomendada para una tomatera."
+                - descripcion: "Temperatura ambiente recomendada."
                   tipo_planta: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
@@ -1571,7 +1571,7 @@ paths:
                     tipo: "GRADOS_CENTIGRADOS"
                   valor_minimo: 15.0
                   valor_maximo: 25.0
-                - descripcion: "Luminosidad ambiente recomendada para una tomatera."
+                - descripcion: "Luminosidad ambiente recomendada."
                   tipo_planta: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
@@ -1609,7 +1609,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
               example:
-                - descripcion: "Temperatura ambiente recomendada para una tomatera."
+                - descripcion: "Temperatura ambiente recomendada."
                   tipo_planta: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
@@ -1622,7 +1622,7 @@ paths:
                     tipo: "GRADOS_CENTIGRADOS"
                   valor_minimo: 15.0
                   valor_maximo: 25.0
-                - descripcion: "Luminosidad ambiente recomendada para una tomatera."
+                - descripcion: "Luminosidad ambiente recomendada."
                   tipo_planta: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
@@ -1660,7 +1660,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
               example:
-                - descripcion: "Humedad ambiente recomendada para una tomatera."
+                - descripcion: "Humedad ambiente recomendada."
                   tipo_planta: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
@@ -1673,7 +1673,7 @@ paths:
                     tipo: "PORCENTAJE"
                   valor_minimo: 30.0
                   valor_maximo: 60.0
-                - descripcion: "Humedad de la maceta recomendada para una tomatera."
+                - descripcion: "Humedad de la maceta recomendada."
                   tipo_planta: "Tomatera"
                   zona_consejo: 
                     nombre: "Maceta"
@@ -1710,7 +1710,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
               example:
-                - descripcion: "Temperatura ambiente recomendada para una tomatera."
+                - descripcion: "Temperatura ambiente recomendada."
                   tipo_planta: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
@@ -1723,7 +1723,7 @@ paths:
                     tipo: "GRADOS_CENTIGRADOS"
                   valor_minimo: 15.0
                   valor_minimo: 25.0
-                - descripcion: "Luminosidad ambiente recomendada para una tomatera."
+                - descripcion: "Luminosidad ambiente recomendada."
                   tipo_planta: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
@@ -1747,6 +1747,304 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
+
+  /Consejos/Plantas/One:
+    get:
+      summary: Obtener el consejo especificado de una planta, zona y tipo de medida.
+      description: |
+        Obtener el consejo especificado de una planta, zona y tipo de medida almacenado en la base de datos.
+      operationId: backend.presentation.rest.consejo_planta_rest.get
+      parameters:
+        - $ref: "#/components/parameters/NombrePlantaParam"
+        - $ref: "#/components/parameters/ConsejoZonaParam"
+        - $ref: "#/components/parameters/MedidaTipoParam"
+      responses:
+        "200":
+          description: Consejo de planta, zona y tipo de medida especificados.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoPlantaModel"
+              example:
+                - descripcion: "La temperatura ambiente de una tomatera tiene que estar entre 15 y 25 ºC."
+                  planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Temperatura"
+                    tipo: "TEMPERATURA"
+                  unidad_medida: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  valor_minimo: 15.0
+                  valor_minimo: 25.0
+        "404":
+          $ref: "#/components/responses/ConsejoPlantaNoExiste"
+        "404":
+          $ref: "#/components/responses/PlantaNoExiste"
+        "406":
+          $ref: "#/components/responses/ErrorZonaConsejo"
+        "406":
+          $ref: "#/components/responses/ErrorTipoMedida"
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  /Consejos/Plantas/All:
+    get:
+      summary: Obtener todos los consejos de plantas.
+      description: |
+        Obtener todos los consejos de plantas almacenados en la base de datos.
+      operationId: backend.presentation.rest.consejo_planta_rest.getAll
+      responses:
+        "200":
+          description: Todos los consejo de plantas especificados.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoPlantaListModel"
+              example:
+                - descripcion: "Temperatura ambiente recomendada."
+                  planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Temperatura"
+                    tipo: "TEMPERATURA"
+                  unidad_medida: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  valor_minimo: 15.0
+                  valor_maximo: 25.0
+                - descripcion: "Luminosidad ambiente recomendada."
+                  planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Luminosidad"
+                    tipo: "LUMINOSIDAD"
+                  unidad_medida: 
+                    nombre: "Lux"
+                    tipo: "LUMINOSIDAD"
+                  valor_minimo: 500.0
+                  valor_maximo: 800.0
+                  horas_minimas: 6.0
+                  horas_maximas: 8.0
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  /Consejos/Plantas/All/FromPlant:
+    get:
+      summary: Obtener todos los consejos de una planta especificado.
+      description: |
+        Obtener todos los consejos de la planta almacenados en la base de datos.
+      operationId: backend.presentation.rest.consejo_planta_rest.getAllFromPlant
+      parameters:
+        - $ref: "#/components/parameters/NombrePlantaParam"
+      responses:
+        "200":
+          description: Todos los consejos de una planta especificados.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoPlantaListModel"
+              example:
+                - descripcion: "Temperatura ambiente recomendada."
+                  planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Temperatura"
+                    tipo: "TEMPERATURA"
+                  unidad_medida: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  valor_minimo: 15.0
+                  valor_maximo: 25.0
+                - descripcion: "Luminosidad ambiente recomendada."
+                  planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Luminosidad"
+                    tipo: "LUMINOSIDAD"
+                  unidad_medida: 
+                    nombre: "Lux"
+                    tipo: "LUMINOSIDAD"
+                  valor_minimo: 500.0
+                  valor_maximo: 800.0
+                  horas_minimas: 6.0
+                  horas_maximas: 8.0
+        "404":
+          $ref: "#/components/responses/PlantaNoExiste"
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  /Consejos/Plantas/All/FromZone:
+    get:
+      summary: Obtener todos los consejos de la zona especificada de todas las plantas.
+      description: |
+        Obtener todos los consejos de la zona especificada de todas las plantas almacenados en la base de datos.
+      operationId: backend.presentation.rest.consejo_planta_rest.getAllFromZone
+      parameters:
+        - $ref: "#/components/parameters/ConsejoZonaParam"
+      responses:
+        "200":
+          description: Todos los consejos de una zona especificada de todas las plantas.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoPlantaListModel"
+              example:
+                - descripcion: "Temperatura ambiente recomendada."
+                  planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Temperatura"
+                    tipo: "TEMPERATURA"
+                  unidad_medida: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  valor_minimo: 15.0
+                  valor_maximo: 25.0
+                - descripcion: "Luminosidad ambiente recomendada."
+                  planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Luminosidad"
+                    tipo: "LUMINOSIDAD"
+                  unidad_medida: 
+                    nombre: "Lux"
+                    tipo: "LUMINOSIDAD"
+                  valor_minimo: 500.0
+                  valor_maximo: 800.0
+                  horas_minimas: 6.0
+                  horas_maximas: 8.0
+        "406":
+          $ref: "#/components/responses/ErrorZonaConsejo"
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  /Consejos/Plantas/All/FromTypeMeasure:
+    get:
+      summary: Obtener todos los consejos del tipo de medida especificados de todas las plantas.
+      description: |
+        Obtener todos los consejos del tipo de medida especificados de todas las plantas almacenados en la base de datos.
+      operationId: backend.presentation.rest.consejo_planta_rest.getAllFromTypeMeasure
+      parameters:
+        - $ref: "#/components/parameters/MedidaTipoParam"
+      responses:
+        "200":
+          description: Todos los consejos de un tipo de medida especificado de todas las plantas.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoPlantaListModel"
+              example:
+                - descripcion: "Humedad ambiente recomendada."
+                  planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Humedad"
+                    tipo: "HUMEDAD"
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  valor_minimo: 30.0
+                  valor_maximo: 60.0
+                - descripcion: "Humedad de la maceta recomendada."
+                  planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Maceta"
+                    tipo: "MACETA"
+                  tipo_medida: 
+                    nombre: "Humedad"
+                    tipo: "HUMEDAD"
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  valor_minimo: 40.0
+                  valor_maximo: 70.0
+        "406":
+          $ref: "#/components/responses/ErrorTipoMedida"
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []
+  /Consejos/Plantas/All/FromPlantAndZone:
+    get:
+      summary: Obtener todos los consejos de una planta y de una zona zona especificados.
+      description: |
+        Obtener todos los consejos de la planta y zona especificados almacenados en la base de datos.
+      operationId: backend.presentation.rest.consejo_planta_rest.getAllFromPlantAndZone
+      parameters:
+        - $ref: "#/components/parameters/NombrePlantaParam"
+        - $ref: "#/components/parameters/ConsejoZonaParam"
+      responses:
+        "200":
+          description: Todos los consejos de una planta y de una zona zona especificados.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoPlantaListModel"
+              example:
+                - descripcion: "Temperatura ambiente recomendada."
+                  planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Temperatura"
+                    tipo: "TEMPERATURA"
+                  unidad_medida: 
+                    nombre: "ºC"
+                    tipo: "GRADOS_CENTIGRADOS"
+                  valor_minimo: 15.0
+                  valor_minimo: 25.0
+                - descripcion: "Luminosidad ambiente recomendada."
+                  planta: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Luminosidad"
+                    tipo: "LUMINOSIDAD"
+                  unidad_medida: 
+                    nombre: "Lux"
+                    tipo: "LUMINOSIDAD"
+                  valor_minimo: 500.0
+                  valor_minimo: 800.0
+                  horas_minimas: 6.0
+                  horas_maximas: 8.0
+        "404":
+          $ref: "#/components/responses/PlantaNoExiste"
+        "406":
+          $ref: "#/components/responses/ErrorZonaConsejo"
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []
+
 
 components:
   schemas:
@@ -2036,6 +2334,40 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/ConsejoTipoPlantaModel"       
+    ConsejoPlantaModel:
+      description: Datos de un consejo de una planta.
+      type: object
+      properties:
+        descripcion:
+          type: string
+        nombre_planta:
+          type: string
+        zona_consejo:
+          $ref: "#/components/schemas/ZonaSensorModel"
+        tipo_medida:
+          $ref: "#/components/schemas/TipoMedidaModel"
+        unidad_medida:
+          $ref: "#/components/schemas/UnidadMedidaModel"
+        valor_minimo:
+          type: number
+        valor_maximo:
+          type: number
+        horas_minimas:
+          type: number
+        horas_maximas:
+          type: number
+      required:
+        - descripcion
+        - nombre_planta
+        - zona_consejo
+        - tipo_medida
+        - unidad_medida
+        - valor_minimo
+        - valor_maximo
+    ConsejoPlantaListModel:
+      type: array
+      items:
+        $ref: "#/components/schemas/ConsejoPlantaModel"       
     RegistrosGraficoModel:
       description: Datos de registros adaptados para ser leido por un grafico.
       type: object
@@ -2222,6 +2554,13 @@ components:
           schema:
             type: string
           example: "El consejo del tipo de planta EJEMPLO_TIPO_PLANTA para la medida EJEMPLO_TIPO_MEDIDA en la zona EJEMPLO_ZONA no existe."
+    ConsejoPlantaNoExiste:      
+      description: El consejo de la planta, zona y tipo de medida especificados no existe.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "El consejo de la planta EJEMPLO_PLANTA para la medida EJEMPLO_TIPO_MEDIDA en la zona EJEMPLO_ZONA no existe."
 
     # 406
     ErrorTipoSensor:

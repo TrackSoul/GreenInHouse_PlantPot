@@ -34,8 +34,7 @@ class ConsejoTipoPlantaSet():
 
         Raises:
             - ValueError: Si no es proporcionado alguno de los datos necesarios.
-            - ErrorConsejoTipoPlantaExiste: Si el consejo del tipo
-                    de planta de esa zona y tipo de medida especificados ya existe
+            - ErrorConsejoTipoPlantaExiste: Si el consejo del tipo de planta de esa zona y tipo de medida especificados ya existe
 
         Returns:
             - Sensor: Registro creado del sensor.
@@ -131,10 +130,10 @@ class ConsejoTipoPlantaSet():
         Returns:
             - List[ConsejoTipoPlanta]: Listado de consejos de tipo de planta.
         """
-        plantas_de_tipo = None
+        consejos = None
         query = session.query(ConsejoTipoPlanta).filter_by(tipo_medida=tipo_medida)
-        plantas_de_tipo: List[ConsejoTipoPlanta] = query.all()
-        return plantas_de_tipo
+        consejos: List[ConsejoTipoPlanta] = query.all()
+        return consejos
     
     @staticmethod
     def listAllFromTypePlantAndZone(session: Session, tipo_planta: str, zona_consejo: ZonaSensor) -> List[ConsejoTipoPlanta]:
@@ -233,8 +232,7 @@ class ConsejoTipoPlantaSet():
 
         Raises:
             - ValueError: Si no es proporcionado alguno de los datos necesarios.
-            - ErrorConsejoTipoPlantaNoExiste: Si el consejo del tipo
-                    de planta de esa zona y tipo de medida especificados no existe
+            - ErrorConsejoTipoPlantaNoExiste: Si el consejo del tipo de planta de esa zona y tipo de medida especificados no existe
 
         Returns:
             - Sensor: Registro creado del sensor.

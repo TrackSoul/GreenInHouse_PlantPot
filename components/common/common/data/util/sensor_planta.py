@@ -69,10 +69,8 @@ class SensorPlanta:
         dic={}
         dic["tipo_sensor"]={"nombre": str(self.getTipoSensor()),
                             "tipo": self.getTipoSensor().getTipo()}
-        #dic["tipo_sensor"]=self.getTipoSensor().toJson()
         dic["zona_sensor"]={"nombre": str(self.getZonaSensor()),
                             "tipo": self.getZonaSensor().getTipo()}
-        #dic["zona_sensor"]=self.getZonaSensor().toJson()
         dic["numero_sensor"]=self.getNumeroSensor()
         dic["nombre_planta"]=self.getNombrePlanta()
         dic["fecha_asociacion"]=self.getFechaAsociacion()

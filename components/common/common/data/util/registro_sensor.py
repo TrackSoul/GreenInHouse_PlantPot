@@ -6,7 +6,7 @@ from common.data.util import TipoSensor, ZonaSensor, TipoMedida, UnidadMedida
 class RegistroSensor:
 
     def __init__(self, tipo_sensor:TipoSensor, zona_sensor:ZonaSensor ,numero_sensor:int, valor:float, 
-                 unidad_medida: UnidadMedida,  fecha:datetime = datetime.now(), id_: int=0):
+                 unidad_medida: UnidadMedida,  fecha:datetime = None, id_: int=0):
         self.__tipo_sensor:TipoSensor = tipo_sensor
         self.__zona_sensor:ZonaSensor = zona_sensor
         self.__numero_sensor:int = numero_sensor
@@ -47,15 +47,12 @@ class RegistroSensor:
         dic={}
         dic["tipo_sensor"]={"nombre": str(self.getTipoSensor()),
                             "tipo": self.getTipoSensor().getTipo()}
-        #dic["tipo_sensor"]=self.getTipoSensor().toJson()
         dic["zona_sensor"]={"nombre": str(self.getZonaSensor()),
                             "tipo": self.getZonaSensor().getTipo()}
-        #dic["zona_sensor"]=self.getZonaSensor().toJson()
         dic["numero_sensor"]=self.getNumeroSensor()
         dic["valor"]=self.getValor()
         dic["unidad_medida"]={"nombre": str(self.getUnidadMedida()),
                             "tipo": self.getUnidadMedida().getTipo()}
-        #dic["unidad_medida"]=self.getUnidadMedida().toJson()
         dic["fecha"]=str(self.getFecha())
         dic["id"]=self.getId()
         return dic

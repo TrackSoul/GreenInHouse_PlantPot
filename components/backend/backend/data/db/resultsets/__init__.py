@@ -4,3 +4,4 @@ from .tipo_planta_set import TipoPlantaSet
 from .sensor_set import SensorSet
 from .sensor_planta_set import SensorPlantaSet
 from .consejo_tipo_planta_set import ConsejoTipoPlantaSet
+from .consejo_planta_set import ConsejoPlantaSet

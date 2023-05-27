@@ -4,7 +4,7 @@ from sqlalchemy.orm.session import Session
 from backend.data.db.esquema import Esquema
 from backend.data.db.results import Sensor, Planta, RegistroSensor, TipoPlanta, SensorPlanta
 from backend.data.db.resultsets import SensorSet,PlantaSet, RegistroSensorSet, TipoPlantaSet, SensorPlantaSet
-from backend.service import SensorService, PlantaService, RegistroSensorService, TipoPlantaService, SensorPlantaService
+from backend.service import SensorService, RegistroSensorService
 from backend.data.util import SensorBackend
 from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon, Planta as PlantaCommon
 from common.data.util import TipoPlanta as TipoPlantaCommon, SensorPlanta as SensorPlantaCommon

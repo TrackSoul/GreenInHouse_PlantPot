@@ -12,10 +12,11 @@ from adafruit_mcp3xxx.analog_in import AnalogIn
 class SensorElectronicoMCP3008 (SensorElectronico):
 
     def __init__(self, sensor_common: SensorCommon):
-        self.direccion_lectura:str = sensor_common.getDireccionLectura()
-        self.patilla_0_lectura:int = sensor_common.getPatillaLectura(0)
-        self.patilla_1_lectura:int = sensor_common.getPatillaLectura(1)
-        self.unidad_medida_0:UnidadMedida = sensor_common.getUnidadMedida(0)
+        super().__init__(sensor_common)
+        # self.direccion_lectura:str = sensor_common.getDireccionLectura()
+        # self.patilla_0_lectura:int = sensor_common.getPatillaLectura(0)
+        # self.patilla_1_lectura:int = sensor_common.getPatillaLectura(1)
+        # self.unidad_medida_0:UnidadMedida = sensor_common.getUnidadMedida(0)
         if ( 'MCP3008_0' == self.direccion_lectura ):
             self.spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI)
         elif ('MCP3008_1' == self.direccion_lectura ):

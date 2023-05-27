@@ -9,8 +9,8 @@ from sqlalchemy.orm import sessionmaker, scoped_session, registry  # type: ignor
 from sqlalchemy.orm.session import Session  # type: ignore
 from backend.data.config import BackendConfiguration
 from backend.data.db.results import Sensor, RegistroSensor, Planta
-from backend.data.db.results import TipoPlanta, SensorPlanta, ConsejoTipoPlanta
-
+from backend.data.db.results import TipoPlanta, SensorPlanta
+from backend.data.db.results import ConsejoTipoPlanta, ConsejoPlanta
 
 # Requerido por SQLite para forzxar la integridad de claves foraneas
 @event.listens_for(Engine, "connect")
@@ -51,6 +51,7 @@ class Esquema:
         RegistroSensor.map(self.__registry)
         SensorPlanta.map(self.__registry)
         ConsejoTipoPlanta.map(self.__registry)
+        ConsejoPlanta.map(self.__registry)
 
         self.__registry.metadata.create_all(self.__create_engine)
 
