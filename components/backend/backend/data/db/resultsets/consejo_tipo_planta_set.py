@@ -97,7 +97,7 @@ class ConsejoTipoPlantaSet():
             - List[ConsejoTipoPlanta]: Listado de consejos de tipo de planta.
         """
         consejos = None
-        query = session.query(ConsejoTipoPlanta).filter_by(tipo_planta=tipo_planta)
+        query = session.query(ConsejoTipoPlanta).filter_by(nombre_elemento=tipo_planta)
         consejos: List[ConsejoTipoPlanta] = query.all()
         return consejos
     
@@ -149,7 +149,7 @@ class ConsejoTipoPlantaSet():
             - List[ConsejoTipoPlanta]: Listado de consejos de tipo de planta.
         """
         consejos = None
-        query = session.query(ConsejoTipoPlanta).filter_by(tipo_planta=tipo_planta, zona_consejo=zona_consejo)
+        query = session.query(ConsejoTipoPlanta).filter_by(nombre_elemento=tipo_planta, zona_consejo=zona_consejo)
         consejos: List[ConsejoTipoPlanta] = query.all()
         return consejos
     
@@ -167,7 +167,7 @@ class ConsejoTipoPlantaSet():
             - List[ConsejoTipoPlanta]: Listado de consejos de tipo de planta.
         """
         consejos = None
-        query = session.query(ConsejoTipoPlanta).filter_by(tipo_planta=tipo_planta, tipo_medida=tipo_medida)
+        query = session.query(ConsejoTipoPlanta).filter_by(nombre_elemento=tipo_planta, tipo_medida=tipo_medida)
         consejos: List[ConsejoTipoPlanta] = query.all()
         return consejos
     
@@ -198,7 +198,7 @@ class ConsejoTipoPlantaSet():
             raise ValueError('Necesario especificar el tipo de medida de los consejos del tipo de la planta.')
         consejo: ConsejoTipoPlanta = None
         try:
-            query = session.query(ConsejoTipoPlanta).filter_by(tipo_planta=tipo_planta, zona_consejo=zona_consejo, tipo_medida=tipo_medida)
+            query = session.query(ConsejoTipoPlanta).filter_by(nombre_elemento=tipo_planta, zona_consejo=zona_consejo, tipo_medida=tipo_medida)
             consejo: ConsejoTipoPlanta = query.one()
         except NoResultFound as ex:
             raise ErrorConsejoTipoPlantaNoExiste(
@@ -254,7 +254,7 @@ class ConsejoTipoPlantaSet():
 
         consejo_modificado = None
         try:
-            query = session.query(ConsejoTipoPlanta).filter_by(tipo_planta=tipo_planta, zona_consejo=zona_consejo, tipo_medida=tipo_medida)
+            query = session.query(ConsejoTipoPlanta).filter_by(nombre_elemento=tipo_planta, zona_consejo=zona_consejo, tipo_medida=tipo_medida)
             consejo: ConsejoTipoPlanta = query.one()
             if consejo.descripcion != descripcion:
                 query.update({'descripcion' : descripcion})

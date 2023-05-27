@@ -17,7 +17,7 @@ class TipoPlantaService():
             out= TipoPlantaCommon(new_tipo_planta.tipo_planta,new_tipo_planta.descripcion_planta)
             #Creacion de consejos por defecto asociados al nuevo tipo de planta
             for consejo in ConsejoTipoPlantaService.listAllFromTypePlant(esquema,"Plantilla"):
-                consejo.setTipoPlanta(tipo_planta)
+                consejo.setNombreElemento(tipo_planta)
                 ConsejoTipoPlantaService.createFromCommon(esquema, consejo)
         except Exception as ex:
             raise ex

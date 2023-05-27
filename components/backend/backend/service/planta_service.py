@@ -20,9 +20,8 @@ class PlantaService():
             out= PlantaCommon(new_planta.nombre_planta,new_planta.tipo_planta,
                                       new_planta.fecha_plantacion,new_planta.fecha_marchitacion)
             for consejo in ConsejoTipoPlantaService.listAllFromTypePlant(esquema,tipo_planta):
-                ConsejoPlantaService.create(esquema, consejo.getDescripcion(), nombre_planta, consejo.getZonaConsejo(), 
-                                            consejo.getTipoMedida(), consejo.getUnidadMedida(), consejo.getValorMinimo(), 
-                                            consejo.getValorMaximo(), consejo.getHorasMinimas(), consejo.getHorasMaximas())
+                consejo.setNombreElemento(nombre_planta)
+                ConsejoPlantaService.createFromCommon(esquema, consejo)
             if asociar_sensores_activos:
                 for sensor in SensorService.listAllActive(esquema):
                     SensorPlantaService.createRelationFromCommon(esquema, sensor, out)

@@ -1470,7 +1470,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoTipoPlantaModel"
               example:
                 - descripcion: "La temperatura ambiente de una tomatera tiene que estar entre 15 y 25 ºC."
-                  tipo_planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1510,7 +1510,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
               example:
                 - descripcion: "Temperatura ambiente recomendada."
-                  tipo_planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1523,7 +1523,7 @@ paths:
                   valor_minimo: 15.0
                   valor_maximo: 25.0
                 - descripcion: "Luminosidad ambiente recomendada."
-                  tipo_planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1559,7 +1559,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
               example:
                 - descripcion: "Temperatura ambiente recomendada."
-                  tipo_planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1572,7 +1572,7 @@ paths:
                   valor_minimo: 15.0
                   valor_maximo: 25.0
                 - descripcion: "Luminosidad ambiente recomendada."
-                  tipo_planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1610,7 +1610,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
               example:
                 - descripcion: "Temperatura ambiente recomendada."
-                  tipo_planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1623,8 +1623,7 @@ paths:
                   valor_minimo: 15.0
                   valor_maximo: 25.0
                 - descripcion: "Luminosidad ambiente recomendada."
-                  tipo_planta: "Tomatera"
-                  zona_consejo: 
+                  nombre_elemeto: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
                   tipo_medida: 
@@ -1661,7 +1660,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
               example:
                 - descripcion: "Humedad ambiente recomendada."
-                  tipo_planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1674,7 +1673,7 @@ paths:
                   valor_minimo: 30.0
                   valor_maximo: 60.0
                 - descripcion: "Humedad de la maceta recomendada."
-                  tipo_planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Maceta"
                     tipo: "MACETA"
@@ -1711,7 +1710,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
               example:
                 - descripcion: "Temperatura ambiente recomendada."
-                  tipo_planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1724,7 +1723,7 @@ paths:
                   valor_minimo: 15.0
                   valor_minimo: 25.0
                 - descripcion: "Luminosidad ambiente recomendada."
-                  tipo_planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1767,7 +1766,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoPlantaModel"
               example:
                 - descripcion: "La temperatura ambiente de una tomatera tiene que estar entre 15 y 25 ºC."
-                  planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1807,7 +1806,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoPlantaListModel"
               example:
                 - descripcion: "Temperatura ambiente recomendada."
-                  planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1820,7 +1819,7 @@ paths:
                   valor_minimo: 15.0
                   valor_maximo: 25.0
                 - descripcion: "Luminosidad ambiente recomendada."
-                  planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1856,7 +1855,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoPlantaListModel"
               example:
                 - descripcion: "Temperatura ambiente recomendada."
-                  planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1869,7 +1868,7 @@ paths:
                   valor_minimo: 15.0
                   valor_maximo: 25.0
                 - descripcion: "Luminosidad ambiente recomendada."
-                  planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1907,7 +1906,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoPlantaListModel"
               example:
                 - descripcion: "Temperatura ambiente recomendada."
-                  planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1920,7 +1919,7 @@ paths:
                   valor_minimo: 15.0
                   valor_maximo: 25.0
                 - descripcion: "Luminosidad ambiente recomendada."
-                  planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1958,7 +1957,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoPlantaListModel"
               example:
                 - descripcion: "Humedad ambiente recomendada."
-                  planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1971,7 +1970,7 @@ paths:
                   valor_minimo: 30.0
                   valor_maximo: 60.0
                 - descripcion: "Humedad de la maceta recomendada."
-                  planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Maceta"
                     tipo: "MACETA"
@@ -2008,7 +2007,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoPlantaListModel"
               example:
                 - descripcion: "Temperatura ambiente recomendada."
-                  planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -2021,7 +2020,7 @@ paths:
                   valor_minimo: 15.0
                   valor_minimo: 25.0
                 - descripcion: "Luminosidad ambiente recomendada."
-                  planta: "Tomatera"
+                  nombre_elemeto: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -2306,7 +2305,7 @@ components:
       properties:
         descripcion:
           type: string
-        tipo_planta:
+        nombre_elemento:
           type: string
         zona_consejo:
           $ref: "#/components/schemas/ZonaSensorModel"
@@ -2324,7 +2323,7 @@ components:
           type: number
       required:
         - descripcion
-        - tipo_planta
+        - nombre_elemento
         - zona_consejo
         - tipo_medida
         - unidad_medida
@@ -2340,7 +2339,7 @@ components:
       properties:
         descripcion:
           type: string
-        nombre_planta:
+        nombre_elemento:
           type: string
         zona_consejo:
           $ref: "#/components/schemas/ZonaSensorModel"
@@ -2358,7 +2357,7 @@ components:
           type: number
       required:
         - descripcion
-        - nombre_planta
+        - nombre_elemento
         - zona_consejo
         - tipo_medida
         - unidad_medida

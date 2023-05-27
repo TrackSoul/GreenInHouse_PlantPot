@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
 
     #datos de inicializacion del sistema
-    tipo_planta_ninguno = TipoPlantaService.create(db,"Plantilla","Plantilla de consejos vacia a copiar por el resto de tipo de plantas durante su creacion.")
+    tipo_planta_plantilla = TipoPlantaService.create(db,"Plantilla","Plantilla de consejos vacia a copiar por el resto de tipo de plantas durante su creacion.")
 
     consejo_temperatura_ambiente_sin_tipo_planta = ConsejoTipoPlantaService.create(db, "Temperatura de ambiente optima.", "Plantilla", ZonaSensor.AMBIENTE, 
                                                             TipoMedida.TEMPERATURA, UnidadMedida.GRADOS_CENTIGRADOS, 0.0, 0.0)

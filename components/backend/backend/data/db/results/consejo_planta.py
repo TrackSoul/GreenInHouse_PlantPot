@@ -11,11 +11,11 @@ class ConsejoPlanta(ModuloBase):
     Definicion y almacenamiento de los consejos de una planta.
     """
 
-    def __init__(self, descripcion: str, nombre_planta:str, zona_consejo:ZonaSensor,
+    def __init__(self, descripcion: str, nombre_elemento:str, zona_consejo:ZonaSensor,
                  tipo_medida:TipoMedida, unidad_medida:UnidadMedida, valor_minimo:float, 
                  valor_maximo:float, horas_minimas:float, horas_maximas:float):
         self.descripcion: str = descripcion
-        self.nombre_planta: str = nombre_planta
+        self.nombre_elemento: str = nombre_elemento
         self.zona_consejo: ZonaSensor = zona_consejo
         self.tipo_medida: TipoMedida = tipo_medida       
         self.unidad_medida: UnidadMedida = unidad_medida
@@ -40,7 +40,7 @@ class ConsejoPlanta(ModuloBase):
             'consejos_plantas',
             metadata,
             Column('descripcion', String(500), nullable=False ),
-            Column('nombre_planta', String(100), ForeignKey('plantas.nombre_planta'), primary_key=True ),
+            Column('nombre_elemento', String(100), ForeignKey('plantas.nombre_planta'), primary_key=True ),
             Column('zona_consejo', Enum(ZonaSensor), primary_key=True),
             Column('tipo_medida', Enum(TipoMedida), primary_key=True ),
             Column('unidad_medida', Enum(UnidadMedida), nullable=False ),

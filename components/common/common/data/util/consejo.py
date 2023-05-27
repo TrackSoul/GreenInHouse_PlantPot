@@ -5,11 +5,12 @@ from common.data.util import ZonaSensor, TipoMedida, UnidadMedida
 
 class Consejo:
 
-    def __init__(self, descripcion: str, zona_consejo:ZonaSensor,
+    def __init__(self, descripcion: str, nombre_elemento: str, zona_consejo:ZonaSensor,
                  tipo_medida:TipoMedida, unidad_medida:UnidadMedida, 
                  valor_minimo:float, valor_maximo:float, 
                  horas_minimas:float, horas_maximas:float):
         self.__descripcion: str = descripcion
+        self.__nombre_elemento: str = nombre_elemento
         self.__zona_consejo: ZonaSensor = zona_consejo
         self.__tipo_medida: TipoMedida = tipo_medida       
         self.__unidad_medida: UnidadMedida = unidad_medida
@@ -66,8 +67,14 @@ class Consejo:
     def setHorasMaximas(self, horas_maximas:float):
         self.__horas_maximas = horas_maximas
     
+    def getNombreElemento(self) -> str:
+        return self.__nombre_elemento
+    
+    def setNombreElemento(self, nombre_elemento:str):
+        self.__nombre_elemento = nombre_elemento
+    
     def __str__(self) -> str:
-        texto: str = str("El consejo de la zona " + str(self.getZonaConsejo()) + " del tipo de medida " +  str(self.getTipoMedida()) + 
+        texto: str = str("El consejo del elemento " + str(self.getNombreElemento) + " de la zona " + str(self.getZonaConsejo()) + " del tipo de medida " +  str(self.getTipoMedida()) + 
                          " tiene la unidad de medida " +  str(self.getUnidadMedida()) + " con el valor minimo en " + str(self.getValorMinimo()) + 
                          " y el valor maximo en " + str(self.getValorMaximo()) +  " y la descripcion " + str(self.getDescripcion()) + " .")
         return texto
@@ -75,6 +82,7 @@ class Consejo:
     def toJson(self) -> Dict:
         dic:Dict={}
         dic["descripcion"]=self.getDescripcion()
+        dic["nombre_elemento"]=self.getNombreElemento()
         dic["zona_consejo"]={"nombre": str(self.getZonaConsejo()),
                             "tipo": self.getZonaConsejo().getTipo()}
         dic["tipo_medida"]={"nombre": str(self.getTipoMedida()),
@@ -90,11 +98,12 @@ class Consejo:
     @staticmethod
     def fromJson(dic: Dict):
         consejo = Consejo(descripcion=dic.get("descripcion"),
-                            zona_consejo=dic.get("zona_consejo").get("tipo"),
-                            tipo_medida=dic.get("tipo_medida").get("tipo"),
-                            unidad_medida=dic.get("unidad_medida").get("tipo"),
-                            valor_minimo=dic.get("valor_minimo"),
-                            valor_maximo=dic.get("valor_maximo"),
-                            horas_minimas=dic.get("horas_minimas"),
-                            horas_maximas=dic.get("horas_maximas"))
+                          nombre_elemento=dic.get("nombre_elemento"),
+                          zona_consejo=dic.get("zona_consejo").get("tipo"),
+                          tipo_medida=dic.get("tipo_medida").get("tipo"),
+                          unidad_medida=dic.get("unidad_medida").get("tipo"),
+                          valor_minimo=dic.get("valor_minimo"),
+                          valor_maximo=dic.get("valor_maximo"),
+                          horas_minimas=dic.get("horas_minimas"),
+                          horas_maximas=dic.get("horas_maximas"))
         return consejo
