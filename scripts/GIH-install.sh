@@ -5,8 +5,8 @@
 
 apt-get update
 apt-get upgrade
-apt-get install python3-dev python3-pip
-apt install python3.8-venv
+apt-get install python3-dev python3-pip python3-wheel
+apt install python3.9-venv
 apt install sqlite3
 apt-get install nmap
 apt install network-manager
