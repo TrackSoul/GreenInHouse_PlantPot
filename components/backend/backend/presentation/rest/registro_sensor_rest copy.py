@@ -1,5 +1,4 @@
 import traceback
-from datetime import datetime
 import arrow
 from http import HTTPStatus
 from flask import current_app
@@ -36,7 +35,7 @@ def getAllFromSensor(st:str, sz: str ,sid:int) -> List[Dict]:
         else:
             return ("El sensor " + str(numero_sensor) + " de tipo " + str(tipo_sensor) + " de la zona " + str(zona_sensor) + " no existe", HTTPStatus.NOT_FOUND.value)
 
-def getAllFromSensorBetweenDates(st:str, sz: str ,sid:int, fi: str, ff: str = str(datetime.now())) -> List[Dict]:
+def getAllFromSensorBetweenDates(st:str, sz: str ,sid:int, fi: str, ff: str = str(arrow.now())) -> List[Dict]:
     try:
         tipo_sensor:TipoSensor = TipoSensor[st]
     except(KeyError):
@@ -47,11 +46,11 @@ def getAllFromSensorBetweenDates(st:str, sz: str ,sid:int, fi: str, ff: str = st
         return ("La zona de sensor " + str(sz) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     numero_sensor:int = sid
     try:
-        fecha_inicio=datetime.fromisoformat(fi)
+        fecha_inicio=arrow.get(fi)
     except(ValueError):
         return ("Error en el formato de la fecha de inicio " + str(fi) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
     try:
-        fecha_fin=datetime.fromisoformat(ff)
+        fecha_fin=arrow.get(ff)
     except(ValueError):
         return ("Error en el formato de la fecha de fin " + str(ff) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
     if fecha_inicio > fecha_fin:
@@ -71,13 +70,13 @@ def getAllFromPlant(np:str) -> List[Dict]:
         else:
             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
 
-def getAllFromPlantBetweenDates(np:str, fi: str, ff: str = str(datetime.now())) -> List[Dict]:
+def getAllFromPlantBetweenDates(np:str, fi: str, ff: str = str(arrow.now())) -> List[Dict]:
     try:
-        fecha_inicio=datetime.fromisoformat(fi)
+        fecha_inicio=arrow.get(fi)
     except(ValueError):
         return ("Error en el formato de la fecha de inicio " + str(fi) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
     try:
-        fecha_fin=datetime.fromisoformat(ff)
+        fecha_fin=arrow.get(ff)
     except(ValueError):
         return ("Error en el formato de la fecha de fin " + str(ff) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
     if fecha_inicio > fecha_fin:
@@ -88,7 +87,6 @@ def getAllFromPlantBetweenDates(np:str, fi: str, ff: str = str(datetime.now())) 
             return [item.toJson() for item in RegistroSensorService.listAllFromPlantBetweenDates(current_app.db, nombre_planta, fecha_inicio, fecha_fin)], HTTPStatus.OK.value
         else:
             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)   
-
 
 def __convertRecordsListToGraph(lista_registros_sensores: List[RegistroSensorCommon], dic_registros_graficar) -> List[Dict]:
 
@@ -162,7 +160,6 @@ def __addTipsListToGraph(lista_consejos: List[ConsejoCommon], dic_registros_graf
         dic_medida_zona["lista_valores_maximos"] = lista_valores_maximos
     return dic_registros_graficar
 
-
 def getAllFromPlantToGraph(np:str) -> List[Dict]:
     with current_app.app_context() :
         if PlantaService.exists(current_app.db,np):
@@ -179,13 +176,13 @@ def getAllFromPlantToGraph(np:str) -> List[Dict]:
         else:
             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
 
-def getAllFromPlantBetweenDatesToGraph(np:str, fi: str, ff: str = str(datetime.now())) -> List[Dict]:
+def getAllFromPlantBetweenDatesToGraph(np:str, fi: str, ff: str = str(arrow.now())) -> List[Dict]:
     try:
-        fecha_inicio=datetime.get(fi)
+        fecha_inicio=arrow.get(fi)
     except(ValueError):
         return ("Error en el formato de la fecha de inicio " + str(fi) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
     try:
-        fecha_fin=datetime.get(ff)
+        fecha_fin=arrow.get(ff)
     except(ValueError):
         return ("Error en el formato de la fecha de fin " + str(ff) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
     if fecha_inicio > fecha_fin:
@@ -207,7 +204,7 @@ def getAllFromPlantBetweenDatesToGraph(np:str, fi: str, ff: str = str(datetime.n
         
 
 
-def getAllFromPlantToGraphByDays(np:str, d: int, ff=str(datetime.now())) -> List[Dict]:
+def getAllFromPlantToGraphByDays(np:str, d: int, ff=str(arrow.now())) -> List[Dict]:
     with current_app.app_context() :
         if d > 0:
             if PlantaService.exists(current_app.db,np):
@@ -254,3 +251,14 @@ def getAllFromPlantToGraphByDays(np:str, d: int, ff=str(datetime.now())) -> List
 #     while fecha < fecha_fin:
 #         lista_fechas.append(fecha)
 #         fecha.shift(hours=+horas_intervalo)
+    
+
+
+        
+
+        
+        
+
+    
+
+
