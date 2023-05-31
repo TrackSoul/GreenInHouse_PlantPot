@@ -41,6 +41,7 @@ class TipoSensor(Enum):
             return self.__tipos_medida[val]
         else:
             return TipoMedida.SIN_TIPO
+            # return None
     
     def toJson(self) -> dict:
         dic={}

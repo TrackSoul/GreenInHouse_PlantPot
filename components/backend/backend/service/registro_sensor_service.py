@@ -102,6 +102,13 @@ class RegistroSensorService():
         out: List[RegistroSensorCommon] = []
         session: Session = esquema.new_session()
         registros_sensor: List[RegistroSensor] = RegistroSensorSet.getAvgFromSensorBetweenDates(session, tipo_sensor, zona_sensor, numero_sensor,fecha_inicio,fecha_fin)
+        if len(registros_sensor)==0:
+            registros_sensor: List[RegistroSensor] = []
+            sensor: SensorCommon = SensorService.get(esquema,tipo_sensor,zona_sensor,numero_sensor)
+            for unidad_medida in sensor.getUnidadesMedida():
+                registro_sensor = RegistroSensor(tipo_sensor, zona_sensor, numero_sensor, 0, unidad_medida, fecha_inicio)
+                registro_sensor.id_ = -1
+                registros_sensor.append(registro_sensor)
         for registro_sensor in registros_sensor:
             out.append(RegistroSensorCommon(registro_sensor.tipo_sensor,registro_sensor.zona_sensor,
                                       registro_sensor.numero_sensor,registro_sensor.valor, 
@@ -172,11 +179,6 @@ class RegistroSensorService():
                 fecha_fin = datetime.now()
             fecha_i = fecha_inicio
             fecha_f = fecha_fin
-            if fecha_inicio < sensor_planta_asociado.getFechaAsociacion():
-                fecha_i = sensor_planta_asociado.getFechaAsociacion()
-            if sensor_planta_asociado.getFechaAnulacion() is not None:
-                if fecha_fin > sensor_planta_asociado.getFechaAnulacion():
-                    fecha_f = sensor_planta_asociado.getFechaAnulacion()
             registros_sensor_planta = RegistroSensorService.getAvgFromSensorFromCommonBetweenDates(esquema,sensor,fecha_i, fecha_f)
             if len(registros_sensor_planta)==0:
                 for unidad_medida in sensor.getUnidadesMedida():
@@ -187,25 +189,24 @@ class RegistroSensorService():
         return lista_registros_sensores_planta
     
     # @staticmethod
-    # def listAllAvgFromPlantBetweenDates(esquema: Esquema, nombre_planta: str, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensorCommon]:
+    # def listAllTypesAndZonesAvgFromPlantBetweenDates(esquema: Esquema, nombre_planta: str, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensorCommon]:
     #     planta: PlantaCommon = PlantaService.get(esquema,nombre_planta)
     #     lista_registros_sensores_planta: List[RegistroSensorCommon] = []
-    #     # sensores_planta_asociados: List[SensorPlantaCommon] =  SensorPlantaService.listAllSensorsFromPlantFromCommon(esquema,planta)
-    #     # for sensor_planta_asociado in sensores_planta_asociados:
-    #         # sensor: SensorCommon = SensorService.getSensorFromRelationFromCommon(esquema, sensor_planta_asociado)
-    #     for unidad_medida in list(UnidadMedida):
-    #         for zona in list(ZonaSensor):    
-    #             if (fecha_fin is None):
-    #                 fecha_fin = datetime.now()
-    #             fecha_i = fecha_inicio
-    #             fecha_f = fecha_fin
-    #             registros_sensor_planta = RegistroSensorService.getAvgFromSensorFromCommonBetweenDates(esquema,sensor,fecha_i, fecha_f)
-    #             if len(registros_sensor_planta)==0:
-    #                 for unidad_medida in sensor.getUnidadesMedida():
-    #                     registro = RegistroSensorCommon(sensor.getTipoSensor(), sensor.getZonaSensor(), sensor.getNumeroSensor(), 0, unidad_medida, fecha_i)
-    #                     registros_sensor_planta.append(registro)
-    #             for registro_sensor_planta in registros_sensor_planta:
-    #                 lista_registros_sensores_planta.append(registro_sensor_planta)
+        
+    #     sensores_planta_asociados: List[SensorPlantaCommon] =  SensorPlantaService.listAllSensorsFromPlantFromCommon(esquema,planta)
+    #     for sensor_planta_asociado in sensores_planta_asociados:
+    #         sensor: SensorCommon = SensorService.getSensorFromRelationFromCommon(esquema, sensor_planta_asociado)
+    #         if (fecha_fin is None):
+    #             fecha_fin = datetime.now()
+    #         fecha_i = fecha_inicio
+    #         fecha_f = fecha_fin
+    #         registros_sensor_planta = RegistroSensorService.getAvgFromSensorFromCommonBetweenDates(esquema,sensor,fecha_i, fecha_f)
+    #         if len(registros_sensor_planta)==0:
+    #             for unidad_medida in sensor.getUnidadesMedida():
+    #                 registro = RegistroSensorCommon(sensor.getTipoSensor(), sensor.getZonaSensor(), sensor.getNumeroSensor(), 0, unidad_medida, fecha_i)
+    #                 registros_sensor_planta.append(registro)
+    #         for registro_sensor_planta in registros_sensor_planta:
+    #             lista_registros_sensores_planta.append(registro_sensor_planta)
     #     return lista_registros_sensores_planta
 
     @staticmethod

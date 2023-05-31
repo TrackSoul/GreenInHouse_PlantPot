@@ -41,29 +41,6 @@ cfg: BackendConfiguration = BackendConfiguration()
 cfg.load_from_file(cfg.default_config_file())
 db: Esquema = Esquema(cfg)
 
-# jws: JsonWebSignature = JsonWebSignature()
-
-# specification_dir = os.path.dirname(
-#     inspect.getfile(backend)) + '/openapi'
-# app = connexion.FlaskApp(
-#     __name__,
-#     specification_dir=specification_dir,
-#     options={
-#         "swagger_ui": True,
-#         "serve_spec": True
-#     }
-# )
-
-# app.add_api("spec.yml", strict_validation=True)
-# flask_app = app.app
-# #flask_app.json_encoder = FlaskJSONEncoder
-# with flask_app.app_context():
-#     current_app.db = db
-#     current_app.cfg = cfg
-#     current_app.jws = jws
-#     #current_app.authservice = auth_service
-
-
 sensores_activos=SensorService.listAllActive(db)
 registros=RegistroSensorService.listAllFromSensorFromCommonBetweenDates(db,sensores_activos[1],datetime(2023,4,24,1,00,00),datetime(2023,4,24,2,00,00))
 plants = PlantaService.listAllActive(db)
