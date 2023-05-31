@@ -69,6 +69,9 @@ class Sensor:
         if val < len(self.__patillas_lectura):
             self.__patillas_lectura[val] = patilla_lectura
 
+    def getUnidadesMedida(self) -> List[UnidadMedida]:
+        return self.__unidades_medida
+
     def getUnidadMedida(self, val: int = 0) -> Optional[UnidadMedida]:
         if val < len(self.__unidades_medida):
             return self.__unidades_medida[val]

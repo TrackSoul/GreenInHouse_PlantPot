@@ -3,6 +3,7 @@ from typing import List, Optional
 from sqlalchemy.exc import IntegrityError  # type: ignore
 from sqlalchemy.orm.session import Session  # type: ignore
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore
+from sqlalchemy.sql import func
 from backend.data.db.results import RegistroSensor, Sensor
 from backend.data.db.exc import ErrorSensorExiste, ErrorSensorNoExiste, ErrorRegistroSensorExiste, ErrorRegistroSensorNoExiste
 from common.data.util import TipoSensor, ZonaSensor, TipoMedida, UnidadMedida
@@ -75,18 +76,40 @@ class RegistroSensorSet():
 
     @staticmethod
     def listAllFromSensor(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int) -> List[RegistroSensor]:
-        sensores = None
+        registros_sensores = None
         query = session.query(RegistroSensor).filter_by(tipo_sensor=tipo_sensor, zona_sensor=zona_sensor, numero_sensor=numero_sensor)
-        sensores: List[RegistroSensor] = query.all()
-        return sensores
+        registros_sensores: List[RegistroSensor] = query.all()
+        return registros_sensores
 
     @staticmethod
     def listAllFromSensorBetweenDates(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensor]:
-        sensores = None
+        registros_sensores = None
         query = session.query(RegistroSensor).filter(RegistroSensor.tipo_sensor == tipo_sensor, RegistroSensor.zona_sensor == zona_sensor,
                                                      RegistroSensor.numero_sensor == numero_sensor, RegistroSensor.fecha >= fecha_inicio, RegistroSensor.fecha <= fecha_fin)
-        sensores: List[RegistroSensor] = query.all()
-        return sensores
+        registros_sensores: List[RegistroSensor] = query.all()
+        return registros_sensores
+    
+    @staticmethod
+    def getAvgFromSensorBetweenDates(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensor]:
+        registros_sensores = None
+        query = session.query(func.avg(RegistroSensor.valor),RegistroSensor.unidad_medida).filter(RegistroSensor.tipo_sensor == tipo_sensor, RegistroSensor.zona_sensor == zona_sensor, RegistroSensor.numero_sensor == numero_sensor, RegistroSensor.fecha >= fecha_inicio, RegistroSensor.fecha <= fecha_fin).group_by(RegistroSensor.unidad_medida)
+        registros_sensores: List[RegistroSensor] = []
+        for registro in query.all():
+            registro_sensor = RegistroSensor(tipo_sensor, zona_sensor, numero_sensor, registro[0], registro[1], fecha_inicio)
+            registro_sensor.id_ = -1
+            registros_sensores.append(registro_sensor)
+        return registros_sensores
+    
+    @staticmethod
+    def getAvgFromTypeAndZoneBetweenDates(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor , fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensor]:
+        registros_sensores = None
+        query = session.query(func.avg(RegistroSensor.valor),RegistroSensor.unidad_medida).filter(RegistroSensor.tipo_sensor == tipo_sensor, RegistroSensor.zona_sensor == zona_sensor, RegistroSensor.fecha >= fecha_inicio, RegistroSensor.fecha <= fecha_fin).group_by(RegistroSensor.unidad_medida)
+        registros_sensores: List[RegistroSensor] = []
+        for registro in query.all():
+            registro_sensor = RegistroSensor(tipo_sensor, zona_sensor, 0, registro[0], registro[1], fecha_inicio)
+            registro_sensor.id_ = -1
+            registros_sensores.append(registro_sensor)
+        return registros_sensores
 
     @staticmethod
     def get(session: Session, id_: str) -> Optional[RegistroSensor]:

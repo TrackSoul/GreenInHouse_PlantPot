@@ -25,21 +25,59 @@ from backend.data.db.esquema import Esquema
 from backend.data.db.results import Sensor, Planta, RegistroSensor, TipoPlanta, SensorPlanta, ConsejoTipoPlanta
 from backend.data.db.resultsets import SensorSet,PlantaSet, RegistroSensorSet, TipoPlantaSet, SensorPlantaSet, ConsejoTipoPlantaSet
 from backend.service import SensorService, PlantaService, RegistroSensorService, TipoPlantaService, SensorPlantaService, ConsejoTipoPlantaService
+from backend.presentation.rest import sensor_rest, planta_rest, registro_sensor_rest, tipo_planta_rest, consejo_tipo_planta_rest
 from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon, Planta as PlantaCommon
 from common.data.util import TipoPlanta as TipoPlantaCommon, SensorPlanta as SensorPlantaCommon, ConsejoTipoPlanta as ConsejoTipoPlantaCommon
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 from backend.data.util import SensorBackend  #DELETEC COMMENT #
 
+from sqlalchemy.exc import IntegrityError  # type: ignore
+from sqlalchemy.orm.session import Session  # type: ignore
+from sqlalchemy.orm.exc import NoResultFound  # type: ignore
+from sqlalchemy.sql import func
+from http import HTTPStatus
+
 cfg: BackendConfiguration = BackendConfiguration()
 cfg.load_from_file(cfg.default_config_file())
 db: Esquema = Esquema(cfg)
+
+# jws: JsonWebSignature = JsonWebSignature()
+
+# specification_dir = os.path.dirname(
+#     inspect.getfile(backend)) + '/openapi'
+# app = connexion.FlaskApp(
+#     __name__,
+#     specification_dir=specification_dir,
+#     options={
+#         "swagger_ui": True,
+#         "serve_spec": True
+#     }
+# )
+
+# app.add_api("spec.yml", strict_validation=True)
+# flask_app = app.app
+# #flask_app.json_encoder = FlaskJSONEncoder
+# with flask_app.app_context():
+#     current_app.db = db
+#     current_app.cfg = cfg
+#     current_app.jws = jws
+#     #current_app.authservice = auth_service
 
 
 sensores_activos=SensorService.listAllActive(db)
 registros=RegistroSensorService.listAllFromSensorFromCommonBetweenDates(db,sensores_activos[1],datetime(2023,4,24,1,00,00),datetime(2023,4,24,2,00,00))
 plants = PlantaService.listAllActive(db)
 sensor_plant = SensorPlantaService.listAllSensorsFromPlantFromCommonBetweenDates(db,plants[1],datetime(2023,4,24,1,0,0))
-rs = RegistroSensorService.listAllFromPlantFromCommon(db,plants[1])
-rs2 = RegistroSensorService.listAllFromPlantFromCommonBetweenDates(db,plants[1],datetime(2023,5,10,1,00,00),datetime(2023,5,15,2,00,00))
+rs = RegistroSensorService.listAllFromPlantFromCommon(db,plants[0])
+rs2 = RegistroSensorService.listAllFromPlantFromCommonBetweenDates(db,plants[0],datetime(2023,5,28,1,00,00),datetime(2023,5,29,1,00,00))
 
-RegistroSensorService.processListForGraph(rs2)
+
+rs3 = RegistroSensorService.listAllAvgFromPlantFromCommonBetweenDates(db,plants[0],datetime(2023,5,28,1,00,00),datetime(2023,5,29,1,00,00))
+
+session: Session = db.new_session()
+tipo_sensor = TipoSensor.TEMPERATURA_Y_HUMEDAD
+zona_sensor = ZonaSensor.AMBIENTE
+numero_sensor = 1
+fecha_inicio = datetime(2023,5,24,1,00,00)
+fecha_fin = datetime(2023,5,25,1,00,00)
+RegistroSensorService.getAvgFromSensorBetweenDates(db, tipo_sensor, zona_sensor, numero_sensor,fecha_inicio,fecha_fin)

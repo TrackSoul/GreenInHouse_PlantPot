@@ -34,7 +34,7 @@ class SensorElectronicoDHT11 (SensorElectronico):
                 intentos_lectura += 1
         registro_temperatura = None
         if (temperatura_c is None):
-            temperatura_c = -100
+            temperatura_c = 0
         if (self.unidad_medida_0.getTipoMedida()==TipoMedida.TEMPERATURA):
             registro_temperatura: Tuple[float, UnidadMedida] = [temperatura_c, self.unidad_medida_0]
         else:
@@ -52,7 +52,7 @@ class SensorElectronicoDHT11 (SensorElectronico):
             finally:
                 intentos_lectura += 1
         if (humedad is None):
-            humedad = -100
+            humedad = 0
         registro_humedad = None
         if (self.unidad_medida_0.getTipoMedida()==TipoMedida.HUMEDAD):
             registro_humedad: Tuple[float, UnidadMedida] = [humedad, self.unidad_medida_0]

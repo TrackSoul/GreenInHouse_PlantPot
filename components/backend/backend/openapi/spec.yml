@@ -561,6 +561,85 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
+  /RegistrosSensores/Avg/FromPlant/AgroupByIntervals/ToGraph:
+    get:
+      summary: |
+        Obtener la media de los registros de los sensores de la planta especificada 
+        creados entre las fechas especificadas y agrupados en intervalos en formato para graficar.
+      description: |
+        Obtener las medias de los registros de los sensores de la planta especificada y
+        creados entre las fechas especificadas agrupados en intervalos 
+        almacenados en la base de datos en formato para graficar.
+      operationId: backend.presentation.rest.registro_sensor_rest.getAvgFromPlantAgroupByIntervalsToGraph
+      parameters:
+        - $ref: "#/components/parameters/NombrePlantaParam"
+        - $ref: "#/components/parameters/DiasParam"
+        - $ref: "#/components/parameters/FechaFinParam"
+      responses:
+        "200":
+          description: |
+            Lista de medias de los registros de los sensores asociadas a la planta especificada y
+            creados entre las fechas especificadas agrupados en intervalos en formato para graficar.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/GrupoRegistrosGraficosModel"
+              example:
+                - TEMPERATURA: 
+                    AMBIENTE:
+                      unidad_medida: 
+                        nombre: "ºC"
+                        tipo: "GRADOS_CENTIGRADOS"
+                      tipo_medida: 
+                        nombre: "Temperatura"
+                        tipo: "TEMPERATURA"
+                      zona_sensor: 
+                        nombre: "Ambiente"
+                        tipo: "AMBIENTE"
+                      lista_valores: [22.45,23.34,22.23]
+                      lista_fechas: ["2023-05-14 20:00:00.0", "2023-05-14 21:00:00.0", "2023-05-14 22:00:00.0"]
+                - HUMEDAD: 
+                    AMBIENTE:
+                      unidad_medida: 
+                        nombre: "%"
+                        tipo: "PORCENTAJE"
+                      tipo_medida: 
+                        nombre: "Humedad"
+                        tipo: "HUMEDA"
+                      zona_sensor: 
+                        nombre: "Ambiente"
+                        tipo: "AMBIENTE"
+                      lista_valores: [48.23,49.16,48.95]
+                      lista_fechas: ["2023-05-14 20:00:00.0", "2023-05-14 21:00:00.0", "2023-05-14 22:00:00.0"]
+                -  HUMEDAD: 
+                    AMBIENTE:
+                      unidad_medida: 
+                        nombre: "%"
+                        tipo: "MACETA"
+                      tipo_medida: 
+                        nombre: "Humedad"
+                        tipo: "HUMEDA"
+                      zona_sensor: 
+                        nombre: "Maceta"
+                        tipo: "MACETA"
+                      lista_valores: [48.23,49.16,48.95]
+                      lista_fechas: ["2023-05-14 20:00:00.0", "2023-05-14 21:00:00.0", "2023-05-14 22:00:00.0"]
+        "404":
+          $ref: "#/components/responses/PlantaNoExiste"
+        "406":
+          $ref: "#/components/responses/ErrorFormatoFechas"
+        "406":
+          $ref: "#/components/responses/ErrorFormatoFechaInicio"
+        "406":
+          $ref: "#/components/responses/ErrorFormatoFechaFin"
+        "404":
+          $ref: "#/components/responses/ErrorProcesarDatosParaGraficar"
+
+      tags:
+        - Registros Sensores
+      # security:
+      #   - api_key: []
+      #     user_token: []
 
   /Sensores/One:
     get:
@@ -2478,7 +2557,7 @@ components:
       # in: path
       schema:
         type: string
-      required: true
+      required: false
     ConsejoZonaParam:
       name: cz
       description: Zona del consejo.
@@ -2499,6 +2578,13 @@ components:
       in: query
       schema:
         type: string
+      required: true
+    DiasParam:
+      name: d
+      description: Numero de dias.
+      in: query
+      schema:
+        type: integer
       required: true
 
   responses:

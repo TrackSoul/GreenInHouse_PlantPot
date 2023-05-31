@@ -1,4 +1,3 @@
-import traceback
 from datetime import datetime
 import arrow
 from http import HTTPStatus
@@ -89,9 +88,8 @@ def getAllFromPlantBetweenDates(np:str, fi: str, ff: str = str(datetime.now())) 
         else:
             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)   
 
-
-def __convertRecordsListToGraph(lista_registros_sensores: List[RegistroSensorCommon], dic_registros_graficar) -> List[Dict]:
-
+def __createRecordsDcitToGraph() -> List[Dict]:
+    dic_registros_graficar = {}
     for unidad_medida in list(UnidadMedida):
         tipo_medida: TipoMedida = unidad_medida.getTipoMedida()
         dic_tipo = {}
@@ -107,7 +105,6 @@ def __convertRecordsListToGraph(lista_registros_sensores: List[RegistroSensorCom
             dic_tipo_zona["lista_fechas"] = []
             dic_tipo[zona.getTipo()] = dic_tipo_zona 
         dic_registros_graficar[tipo_medida.getTipo()] = dic_tipo
-
     for zona in list(ZonaSensor):
         dic_zona = {}
         for unidad_medida in list(UnidadMedida):
@@ -123,28 +120,29 @@ def __convertRecordsListToGraph(lista_registros_sensores: List[RegistroSensorCom
             dic_zona_tipo["lista_fechas"] = []
             dic_zona[tipo_medida.getTipo()] = dic_zona_tipo
         dic_registros_graficar[zona.getTipo()] = dic_zona 
+    return dic_registros_graficar
 
+def __addAllRecordsListToGraph(lista_registros_sensores: List[RegistroSensorCommon], dic_registros_graficar) -> List[Dict]:
     for registro_sensor in lista_registros_sensores:
         unidad_medida: UnidadMedida = registro_sensor.getUnidadMedida()
         tipo_medida: TipoMedida = unidad_medida.getTipoMedida()
         zona: ZonaSensor = registro_sensor.getZonaSensor()
         if registro_sensor.getValor() == -100:
             continue
-        
+        # Zona - Tipo unidad
         dic_tipo: Dict = dic_registros_graficar.get(tipo_medida.getTipo())
         dic_tipo_zona: Dict = dic_tipo.get(zona.getTipo())                  
         lista_valores: List = dic_tipo_zona.get("lista_valores")
         lista_fechas: List = dic_tipo_zona.get("lista_fechas")
         lista_valores.append(registro_sensor.getValor())
         lista_fechas.append(str(registro_sensor.getFecha()))
-
+        # Tipo unidad - Zona
         dic_zona: Dict = dic_registros_graficar.get(zona.getTipo())
         dic_zona_tipo: Dict = dic_zona.get(tipo_medida.getTipo())
         lista_valores: List = dic_zona_tipo.get("lista_valores")
         lista_fechas: List = dic_zona_tipo.get("lista_fechas")
         lista_valores.append(registro_sensor.getValor())
         lista_fechas.append(str(registro_sensor.getFecha()))
-
     return dic_registros_graficar
 
 def __addTipsListToGraph(lista_consejos: List[ConsejoCommon], dic_registros_graficar: Dict):
@@ -167,25 +165,25 @@ def getAllFromPlantToGraph(np:str) -> List[Dict]:
     with current_app.app_context() :
         if PlantaService.exists(current_app.db,np):
             nombre_planta: str = np
-            # try:
-            dic_registros_graficar = {}
-            lista_registros = RegistroSensorService.listAllFromPlant(current_app.db, nombre_planta)
-            dic_registros_graficar = __convertRecordsListToGraph(lista_registros, dic_registros_graficar)
-            lista_consejos: List[ConsejoPlantaCommon] = ConsejoPlantaService.listAllFromPlant(current_app.db, nombre_planta)
-            dic_registros_graficar = __addTipsListToGraph(lista_consejos, dic_registros_graficar)
-            # except:
-                # return ("Error al procesar los datos de la planta " + np + " para graficar.", HTTPStatus.NOT_FOUND.value)
+            try:
+                dic_registros_graficar = __createRecordsDcitToGraph()
+                lista_registros = RegistroSensorService.listAllFromPlant(current_app.db, nombre_planta)
+                dic_registros_graficar = __addAllRecordsListToGraph(lista_registros, dic_registros_graficar)
+                lista_consejos: List[ConsejoPlantaCommon] = ConsejoPlantaService.listAllFromPlant(current_app.db, nombre_planta)
+                dic_registros_graficar = __addTipsListToGraph(lista_consejos, dic_registros_graficar)
+            except:
+                return ("Error al procesar los datos de la planta " + np + " para graficar.", HTTPStatus.NOT_FOUND.value)
             return dic_registros_graficar, HTTPStatus.OK.value
         else:
             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
 
 def getAllFromPlantBetweenDatesToGraph(np:str, fi: str, ff: str = str(datetime.now())) -> List[Dict]:
     try:
-        fecha_inicio=datetime.get(fi)
+        fecha_inicio=datetime.fromisoformat(fi)
     except(ValueError):
         return ("Error en el formato de la fecha de inicio " + str(fi) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
     try:
-        fecha_fin=datetime.get(ff)
+        fecha_fin=datetime.fromisoformat(ff)
     except(ValueError):
         return ("Error en el formato de la fecha de fin " + str(ff) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
     if fecha_inicio > fecha_fin:
@@ -194,9 +192,9 @@ def getAllFromPlantBetweenDatesToGraph(np:str, fi: str, ff: str = str(datetime.n
         if PlantaService.exists(current_app.db,np):
             nombre_planta: str = np
             try:
-                dic_registros_graficar = {}
+                dic_registros_graficar = __createRecordsDcitToGraph()
                 lista_registros = RegistroSensorService.listAllFromPlantBetweenDates(current_app.db, nombre_planta, fecha_inicio, fecha_fin)
-                dic_registros_graficar = __convertRecordsListToGraph(lista_registros, dic_registros_graficar)
+                dic_registros_graficar = __addAllRecordsListToGraph(lista_registros, dic_registros_graficar)
                 lista_consejos: List[ConsejoPlantaCommon] = ConsejoPlantaService.listAllFromPlant(current_app.db, nombre_planta)
                 dic_registros_graficar = __addTipsListToGraph(lista_consejos, dic_registros_graficar)
             except:
@@ -205,29 +203,46 @@ def getAllFromPlantBetweenDatesToGraph(np:str, fi: str, ff: str = str(datetime.n
         else:
             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value) 
         
+def __dateListIntervals(dias: int, fecha: datetime = datetime.now() ) -> List[RegistroSensorCommon]:
+    fecha_fin: arrow = arrow.get(fecha)
+    fecha_inicio: arrow = None
+    if(dias==1):
+        fecha_inicio = fecha_fin.shift(days=-dias).ceil("hours")
+        intervalos_dia = 24
+    if(dias>1):
+        fecha_inicio = fecha_fin.shift(days=-dias).ceil("days")
+        intervalos_dia = 4
+        if dias > 7:
+            intervalos_dia = 2
+        if dias > 14:
+            intervalos_dia = 1
+    horas_intervalo = 24/intervalos_dia
+    f_int: arrow = fecha_inicio   
+    lista_fechas = []
+    while f_int < fecha_fin:
+        lista_fechas.append((f_int.datetime,f_int.shift(hours=+horas_intervalo).datetime))
+        f_int = f_int.shift(hours=+horas_intervalo)
+    return lista_fechas
 
-
-def getAllFromPlantToGraphByDays(np:str, d: int, ff=str(datetime.now())) -> List[Dict]:
+def getAvgFromPlantAgroupByIntervalsToGraph(np:str, d: int, ff=str(datetime.now())) -> List[Dict]:
     with current_app.app_context() :
         if d > 0:
             if PlantaService.exists(current_app.db,np):
                 nombre_planta: str = np
-                try:
-                    fecha_fin = arrow.get(ff)
-                    if(d==1):
-                        fecha_inicio = fecha_fin.shift(days=-d).ceil("hours")
-                    if(d>1):
-                        fecha_inicio = fecha_fin.shift(days=-d).ceil("days")
-                    try:
-                        dic_registros_graficar = {}
-                        lista_registros = RegistroSensorService.listAllFromPlantBetweenDates(current_app.db, nombre_planta, fecha_inicio, fecha_fin)
-                        dic_registros_graficar = __convertRecordsListToGraph(lista_registros, dic_registros_graficar)
-                        lista_consejos: List[ConsejoPlantaCommon] = ConsejoPlantaService.listAllFromPlant(current_app.db, nombre_planta)
-                        dic_registros_graficar = __addTipsListToGraph(lista_consejos, dic_registros_graficar)
-                    except:
-                        return ("Error al procesar los datos de la planta " + np + " para graficar.", HTTPStatus.NOT_FOUND.value)
-                except:
-                    return ("Error en el formato de la fecha de fin " + str(ff) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
+                # try:
+                fecha_fin = datetime.fromisoformat(ff)
+                lista_fechas = __dateListIntervals(d,fecha_fin)
+                    # try:
+                dic_registros_graficar = __createRecordsDcitToGraph()
+                for fecha in lista_fechas:
+                    lista_registros = RegistroSensorService.listAllAvgFromPlantBetweenDates(current_app.db, nombre_planta, datetime.fromtimestamp(fecha[0].timestamp()), datetime.fromtimestamp(fecha[1].timestamp()))
+                    dic_registros_graficar = __addAllRecordsListToGraph(lista_registros, dic_registros_graficar)
+                lista_consejos: List[ConsejoPlantaCommon] = ConsejoPlantaService.listAllFromPlant(current_app.db, nombre_planta)
+                dic_registros_graficar = __addTipsListToGraph(lista_consejos, dic_registros_graficar)
+                #     except:
+                #         return ("Error al procesar los datos de la planta " + np + " para graficar.", HTTPStatus.NOT_FOUND.value)
+                # except:
+                #     return ("Error en el formato de la fecha de fin " + str(ff) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
                 return dic_registros_graficar, HTTPStatus.OK.value
             else:
                 return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
@@ -235,22 +250,26 @@ def getAllFromPlantToGraphByDays(np:str, d: int, ff=str(datetime.now())) -> List
             return ("El numero de dias seleccionados tiene que ser mayor que 0.", HTTPStatus.NOT_FOUND.value)
         
 
-# def __agroupRecordsListOnIntervals(lista_registros_sensores: List[RegistroSensorCommon], dias: int, fecha_fin: arrow = arrow.now() ) -> List[RegistroSensorCommon]:
-#     fecha_inicio: arrow = None
-#     if(dias==1):
-#         fecha_inicio = fecha_fin.shift(days=-dias).ceil("hours")
-#         intervalos_dia = 24
-#     if(dias>1):
-#         fecha_inicio = fecha_fin.shift(days=-dias).ceil("days")
-#         intervalos_dia = 4
-#         if dias > 7:
-#             intervalos_dia = 2
-#         if dias > 14:
-#             intervalos_dia = 1
-#     horas_intervalo = 24/intervalos_dia
-#     intervalos = dias * intervalos_dia
-#     fecha = fecha_inicio   
-#     lista_fechas = []
-#     while fecha < fecha_fin:
-#         lista_fechas.append(fecha)
-#         fecha.shift(hours=+horas_intervalo)
+# def getAllAvgFromPlantToGraphAgroupByIntervals(db, np:str, d: int, ff=str(datetime.now())) -> List[Dict]:
+#     if d > 0:
+#         if PlantaService.exists(db,np):
+#             nombre_planta: str = np
+#             try:
+#                 fecha_fin = arrow.get(ff)
+#                 lista_fechas = __dateListIntervals(d,fecha_fin.datetime)
+#                 try:
+#                     dic_registros_graficar = __createRecordsDcitToGraph()
+#                     for fecha in lista_fechas:
+#                         lista_registros = RegistroSensorService.listAllFromPlantBetweenDates(db, nombre_planta, fecha[0], fecha[1])
+#                         dic_registros_graficar = __addAllRecordsListToGraph(lista_registros, dic_registros_graficar)
+#                     lista_consejos: List[ConsejoPlantaCommon] = ConsejoPlantaService.listAllFromPlant(db, nombre_planta)
+#                     dic_registros_graficar = __addTipsListToGraph(lista_consejos, dic_registros_graficar)
+#                 except:
+#                     return ("Error al procesar los datos de la planta " + np + " para graficar.", HTTPStatus.NOT_FOUND.value)
+#             except:
+#                 return ("Error en el formato de la fecha de fin " + str(ff) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
+#             return dic_registros_graficar, HTTPStatus.OK.value
+#         else:
+#             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
+#     else:
+#         return ("El numero de dias seleccionados tiene que ser mayor que 0.", HTTPStatus.NOT_FOUND.value)
