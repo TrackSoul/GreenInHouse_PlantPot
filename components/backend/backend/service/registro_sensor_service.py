@@ -106,6 +106,8 @@ class RegistroSensorService():
             registros_sensor: List[RegistroSensor] = []
             sensor: SensorCommon = SensorService.get(esquema,tipo_sensor,zona_sensor,numero_sensor)
             for unidad_medida in sensor.getUnidadesMedida():
+                if unidad_medida == UnidadMedida.SIN_UNIDAD:
+                    continue
                 registro_sensor = RegistroSensor(tipo_sensor, zona_sensor, numero_sensor, 0, unidad_medida, fecha_inicio)
                 registro_sensor.id_ = -1
                 registros_sensor.append(registro_sensor)

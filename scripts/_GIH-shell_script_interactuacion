@@ -61,4 +61,4 @@ fecha_inicio = datetime(2023,5,24,1,00,00)
 fecha_fin = datetime(2023,5,25,1,00,00)
 RegistroSensorService.getAvgFromSensorBetweenDates(db, tipo_sensor, zona_sensor, numero_sensor,fecha_inicio,fecha_fin)
 
-sensor_temperatura_y_humedad_ambiente_2 = SensorService.create(db,TipoSensor.TEMPERATURA_Y_HUMEDAD,ZonaSensor.AMBIENTE,2,ModeloSensor.DHT11, "Humedad y temperatura ambiente 2 maceta 1", direccion_lectura="RASPBERRY",patilla_0_lectura=board.D20.id, unidad_medida_0=UnidadMedida.PORCENTAJE, unidad_medida_1=UnidadMedida.GRADOS_CENTIGRADOS)
+# sensor_temperatura_y_humedad_ambiente_2 = SensorService.create(db,TipoSensor.TEMPERATURA_Y_HUMEDAD,ZonaSensor.AMBIENTE,2,ModeloSensor.DHT11, "Humedad y temperatura ambiente 2 maceta 1", direccion_lectura="RASPBERRY",patilla_0_lectura=board.D20.id, unidad_medida_0=UnidadMedida.PORCENTAJE, unidad_medida_1=UnidadMedida.GRADOS_CENTIGRADOS)

@@ -104,7 +104,8 @@ def __createRecordsDcitToGraph() -> List[Dict]:
             dic_tipo_zona["zona_sensor"] = {"nombre": str(zona),
                                     "tipo": zona.getTipo()}  
             dic_tipo_zona["lista_valores"] = []
-            dic_tipo_zona["lista_fechas"] = []
+            dic_tipo_zona["lista_fechas_largas"] = []
+            dic_tipo_zona["lista_fechas_cortas"] = []
             dic_tipo[zona.getTipo()] = dic_tipo_zona 
         dic_registros_graficar[tipo_medida.getTipo()] = dic_tipo
     for zona in list(ZonaSensor):
@@ -119,7 +120,8 @@ def __createRecordsDcitToGraph() -> List[Dict]:
             dic_zona_tipo["zona_sensor"] = {"nombre": str(zona),
                                     "tipo": zona.getTipo()}  
             dic_zona_tipo["lista_valores"] = []
-            dic_zona_tipo["lista_fechas"] = []
+            dic_zona_tipo["lista_fechas_largas"] = []
+            dic_zona_tipo["lista_fechas_cortas"] = []
             dic_zona[tipo_medida.getTipo()] = dic_zona_tipo
         dic_registros_graficar[zona.getTipo()] = dic_zona 
     return dic_registros_graficar
@@ -136,22 +138,28 @@ def __addAllRecordsListToGraph(lista_registros_sensores: List[RegistroSensorComm
         dic_tipo: Dict = dic_registros_graficar.get(tipo_medida.getTipo())
         dic_tipo_zona: Dict = dic_tipo.get(zona.getTipo())                  
         lista_valores: List = dic_tipo_zona.get("lista_valores")
-        lista_fechas: List = dic_tipo_zona.get("lista_fechas")
-        if agrupar_multiples_sensores_con_misma_funcion == True and len(lista_fechas) > 0 and lista_fechas[-1] == str(registro_sensor.getFecha()):
-            lista_valores[-1] = (lista_valores[-1] + registro_sensor.getValor()) / 2
+        lista_fechas_largas: List = dic_tipo_zona.get("lista_fechas_largas")
+        lista_fechas_cortas: List = dic_tipo_zona.get("lista_fechas_cortas")
+        if agrupar_multiples_sensores_con_misma_funcion == True and len(lista_fechas_largas) > 0 and lista_fechas_largas[-1] == str(registro_sensor.getFecha()):
+            lista_valores[-1] = round((lista_valores[-1] + registro_sensor.getValor()) / 2)
         else:
-            lista_valores.append(registro_sensor.getValor())
-            lista_fechas.append(str(registro_sensor.getFecha()))
+            lista_valores.append(round(registro_sensor.getValor()))
+            lista_fechas_largas.append(str(registro_sensor.getFecha()))
+            lista_fechas_cortas.append(str(registro_sensor.getFecha()))
+            # lista_fechas_cortas.append(str(registro_sensor.getFecha().strftime("%d-%H")))
         # Tipo unidad - Zona
         dic_zona: Dict = dic_registros_graficar.get(zona.getTipo())
         dic_zona_tipo: Dict = dic_zona.get(tipo_medida.getTipo())
         lista_valores: List = dic_zona_tipo.get("lista_valores")
-        lista_fechas: List = dic_zona_tipo.get("lista_fechas")
-        if agrupar_multiples_sensores_con_misma_funcion == True and len(lista_fechas) > 0 and lista_fechas[-1] == str(registro_sensor.getFecha()):
-            lista_valores[-1] = (lista_valores[-1] + registro_sensor.getValor()) / 2
+        lista_fechas_largas: List = dic_zona_tipo.get("lista_fechas_largas")
+        lista_fechas_cortas: List = dic_zona_tipo.get("lista_fechas_cortas")
+        if agrupar_multiples_sensores_con_misma_funcion == True and len(lista_fechas_largas) > 0 and lista_fechas_largas[-1] == str(registro_sensor.getFecha()):
+            lista_valores[-1] = round((lista_valores[-1] + registro_sensor.getValor()) / 2)
         else:
-            lista_valores.append(registro_sensor.getValor())
-            lista_fechas.append(str(registro_sensor.getFecha()))
+            lista_valores.append(round(registro_sensor.getValor()))
+            lista_fechas_largas.append(str(registro_sensor.getFecha()))
+            lista_fechas_cortas.append(str(registro_sensor.getFecha()))
+            # lista_fechas_cortas.append(str(registro_sensor.getFecha().strftime("%d-%H")))
     return dic_registros_graficar
 
 def __addTipsListToGraph(lista_consejos: List[ConsejoCommon], dic_registros_graficar: Dict):
@@ -262,4 +270,29 @@ def getAvgFromPlantAgroupByIntervalsToGraph(np:str, d: int, ff=str(datetime.now(
                 return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
         else:
             return ("El numero de dias seleccionados tiene que ser mayor que 0.", HTTPStatus.NOT_FOUND.value)
-        
+
+# def getAllAvgFromPlantToGraphAgroupByIntervals(db, np:str, d: int, ff=str(datetime.now())) -> List[Dict]:
+#     if d > 0:
+#         if PlantaService.exists(db,np):
+#             nombre_planta: str = np
+#             try:
+#                 fecha_fin = datetime.fromisoformat(ff)
+#                 lista_fechas = __dateListIntervals(d,fecha_fin)
+#             except:
+#                 return ("Error en el formato de la fecha de fin " + str(ff) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
+#             try:
+#                 dic_registros_graficar = __createRecordsDcitToGraph()
+#                 for fecha in lista_fechas:
+#                     lista_registros = RegistroSensorService.listAllAvgFromPlantBetweenDates(db, nombre_planta, fecha[0], fecha[1])
+#                     dic_registros_graficar = __addAllRecordsListToGraph(lista_registros, dic_registros_graficar)
+#                 lista_consejos: List[ConsejoPlantaCommon] = ConsejoPlantaService.listAllFromPlant(db, nombre_planta)
+#                 dic_registros_graficar = __addTipsListToGraph(lista_consejos, dic_registros_graficar)
+#             except Exception as e:                  
+#                 return (traceback.print_exc(), HTTPStatus.NOT_FOUND.value)
+#             # except: 
+#             #     return ("Error al procesar los datos de la planta " + np + " para graficar.", HTTPStatus.NOT_FOUND.value)
+#             return dic_registros_graficar, HTTPStatus.OK.value
+#         else:
+#             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
+#     else:
+#         return ("El numero de dias seleccionados tiene que ser mayor que 0.", HTTPStatus.NOT_FOUND.value)

@@ -3008,17 +3008,22 @@ components:
           type: array
           items:
             type: number
-        lista_fechas:
+        lista_fechas_largas:
           type: array
           items:
             type: string
             format: date-time
+        lista_fechas_cortas:
+          type: array
+          items:
+            type: string
       required:
         - unidad_medida
         - tipo_medida
         - zona_sensor
         - lista_valores
-        - lista_fechas
+        - lista_fechas_largas
+        - lista_fechas_cortas
     GrupoRegistrosGraficosModel:
       description: Grupo de datos de registros adaptados para ser leido por un grafico.
       type: object
@@ -3027,19 +3032,19 @@ components:
           type: object
           properties:
             AMBIENTE:
-              $ref: "#/components/schemas/UnidadMedidaModel"
+              $ref: "#/components/schemas/RegistrosGraficoModel"
         HUMEDAD:
           type: object
           properties:
             AMBIENTE:
-              $ref: "#/components/schemas/UnidadMedidaModel"
+              $ref: "#/components/schemas/RegistrosGraficoModel"
             MACETA:
-              $ref: "#/components/schemas/UnidadMedidaModel"
+              $ref: "#/components/schemas/RegistrosGraficoModel"
         LUMINOSIDAD:
           type: object
           properties:
             AMBIENTE:
-              $ref: "#/components/schemas/UnidadMedidaModel"
+              $ref: "#/components/schemas/RegistrosGraficoModel"
 
   parameters:
     RegistroSensorIdParam:
