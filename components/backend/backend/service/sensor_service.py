@@ -1,10 +1,11 @@
 from datetime import datetime
 from typing import Union, List, Dict
 from sqlalchemy.orm.session import Session # type: ignore
+import backend.service as service
 from backend.data.db.esquema import Esquema
 from backend.data.db.results import Sensor
 from backend.data.db.resultsets import SensorSet
-from backend.service import SensorPlantaService
+from backend.service.sensor_planta_service import SensorPlantaService
 from common.data.util import Sensor as SensorCommon, SensorPlanta as SensorPlantaCommon
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 
@@ -16,7 +17,7 @@ class SensorService():
                                patilla_2_lectura:int=None, patilla_3_lectura:int=None, unidad_medida_0:UnidadMedida = UnidadMedida.SIN_UNIDAD,
                                unidad_medida_1:UnidadMedida = UnidadMedida.SIN_UNIDAD, unidad_medida_2:UnidadMedida = UnidadMedida.SIN_UNIDAD,
                                unidad_medida_3:UnidadMedida = UnidadMedida.SIN_UNIDAD, fecha_creacion: datetime = datetime.now() ,
-                               fecha_eliminacion: datetime = None) -> SensorCommon:
+                               fecha_eliminacion: datetime = None, asociar_plantas_activas=True) -> SensorCommon:
         session: Session = esquema.new_session()
         out: SensorCommon = None
         try:
@@ -30,6 +31,9 @@ class SensorService():
                               nuevo_sensor.patilla_2_lectura, nuevo_sensor.patilla_3_lectura, nuevo_sensor.unidad_medida_0,
                               nuevo_sensor.unidad_medida_1, nuevo_sensor.unidad_medida_2, nuevo_sensor.unidad_medida_3,
                               nuevo_sensor.fecha_creacion, nuevo_sensor.fecha_eliminacion)
+            if asociar_plantas_activas:
+                for planta in service.planta_service.PlantaService.listAllActive(esquema):
+                    SensorPlantaService.createRelationFromCommon(esquema, out, planta)
         except Exception as ex:
             raise ex
         finally:

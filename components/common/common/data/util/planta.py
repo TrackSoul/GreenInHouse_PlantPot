@@ -55,6 +55,6 @@ class Planta:
     def fromJson(dic: dict):
         planta = Planta(nombre_planta=dic.get("nombre_planta"),
                         tipo_planta=dic.get("tipo_planta"),
-                        fecha_plantacion=datetime.fromisoformat(dic.get("fecha_plantacion")),
+                        fecha_plantacion=datetime.fromisoformat(dic.get("fecha_plantacion")) if dic.get("fecha_plantacion") is not None else None,
                         fecha_marchitacion=datetime.fromisoformat(dic.get("fecha_marchitacion")) if dic.get("fecha_marchitacion") is not None else None)
         return planta

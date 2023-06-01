@@ -99,9 +99,9 @@ class Consejo:
     def fromJson(dic: Dict):
         consejo = Consejo(descripcion=dic.get("descripcion"),
                           nombre_elemento=dic.get("nombre_elemento"),
-                          zona_consejo=dic.get("zona_consejo").get("tipo"),
-                          tipo_medida=dic.get("tipo_medida").get("tipo"),
-                          unidad_medida=dic.get("unidad_medida").get("tipo"),
+                          zona_consejo=ZonaSensor[dic.get("zona_consejo").get("tipo")],
+                          tipo_medida=TipoMedida[dic.get("tipo_medida").get("tipo")],
+                          unidad_medida=UnidadMedida[dic.get("unidad_medida").get("tipo")],
                           valor_minimo=dic.get("valor_minimo"),
                           valor_maximo=dic.get("valor_maximo"),
                           horas_minimas=dic.get("horas_minimas"),

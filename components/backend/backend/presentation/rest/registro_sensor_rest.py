@@ -263,27 +263,3 @@ def getAvgFromPlantAgroupByIntervalsToGraph(np:str, d: int, ff=str(datetime.now(
         else:
             return ("El numero de dias seleccionados tiene que ser mayor que 0.", HTTPStatus.NOT_FOUND.value)
         
-
-# def getAllAvgFromPlantToGraphAgroupByIntervals(db, np:str, d: int, ff=str(datetime.now())) -> List[Dict]:
-#     if d > 0:
-#         if PlantaService.exists(db,np):
-#             nombre_planta: str = np
-#             try:
-#                 fecha_fin = arrow.get(ff)
-#                 lista_fechas = __dateListIntervals(d,fecha_fin.datetime)
-#                 try:
-#                     dic_registros_graficar = __createRecordsDcitToGraph()
-#                     for fecha in lista_fechas:
-#                         lista_registros = RegistroSensorService.listAllFromPlantBetweenDates(db, nombre_planta, fecha[0], fecha[1])
-#                         dic_registros_graficar = __addAllRecordsListToGraph(lista_registros, dic_registros_graficar)
-#                     lista_consejos: List[ConsejoPlantaCommon] = ConsejoPlantaService.listAllFromPlant(db, nombre_planta)
-#                     dic_registros_graficar = __addTipsListToGraph(lista_consejos, dic_registros_graficar)
-#                 except:
-#                     return ("Error al procesar los datos de la planta " + np + " para graficar.", HTTPStatus.NOT_FOUND.value)
-#             except:
-#                 return ("Error en el formato de la fecha de fin " + str(ff) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
-#             return dic_registros_graficar, HTTPStatus.OK.value
-#         else:
-#             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
-#     else:
-#         return ("El numero de dias seleccionados tiene que ser mayor que 0.", HTTPStatus.NOT_FOUND.value)

@@ -6,6 +6,7 @@ from typing import List, Dict
 from backend.service import ConsejoPlantaService, PlantaService
 from common.data.util import ConsejoPlanta as ConsejoPlantaCommon, Planta as PlantaCommon
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
+from backend.data.db.exc import ErrorConsejoPlantaExiste, ErrorConsejoPlantaNoExiste
 
 def get(np: str, cz: str, mt: str) :
     try:
@@ -64,9 +65,21 @@ def getAllFromPlantAndZone(np:str, cz:str):
         if PlantaService.exists(current_app.db, np):
             nombre_planta: str = np
         else:
-            return ("La planta " + str(np) + " no existe.", HTTPStatus.NOT_FOUND.value)
+            return ("El consejo de la planta " + str(np) + " no existe.", HTTPStatus.NOT_FOUND.value)
         return [item.toJson() for item in ConsejoPlantaService.listAllFromPlantAndZone(current_app.db, nombre_planta, zona_consejo)], HTTPStatus.OK.value
 
-# TODO #
-# metodos post para crear consejos
-# metodos update para actualizar consejos
+def post(body:dict):
+    with current_app.app_context() :
+        try:
+            consejo_planta = ConsejoPlantaCommon.fromJson(body)
+            return ConsejoPlantaService.createFromCommon(current_app.db,consejo_planta).toJson(), HTTPStatus.CREATED.value
+        except ErrorConsejoPlantaExiste:
+            return ("El consejo de la planta " + str(body.get("nombre_elemento")) + " ya existe", HTTPStatus.CONFLICT.value)
+
+def update(body:dict):
+    with current_app.app_context() :
+        try:
+            consejo_planta = ConsejoPlantaCommon.fromJson(body)
+            return ConsejoPlantaService.updateFromCommon(current_app.db,consejo_planta).toJson(), HTTPStatus.OK.value
+        except ErrorConsejoPlantaNoExiste:
+            return ("El consejo de la planta " + str(body.get("nombre_elemento")) + " no existe.", HTTPStatus.NOT_FOUND.value)

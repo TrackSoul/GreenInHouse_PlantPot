@@ -59,11 +59,11 @@ class RegistroSensor:
 
     @staticmethod
     def fromJson(dic: dict):
-        sensor = RegistroSensor(tipo_sensor=dic.get("tipo_sensor").get("tipo"),
-                                zona_sensor=dic.get("zona_sensor").get("tipo"),
+        sensor = RegistroSensor(tipo_sensor=TipoSensor[dic.get("tipo_sensor").get("tipo")],
+                                zona_sensor=ZonaSensor[dic.get("zona_sensor").get("tipo")],
                                 numero_sensor=dic.get("numero_sensor"),
                                 valor=dic.get("valor"),
-                                unidad_medida=dic.get("unidad_medida").get("tipo"),
+                                unidad_medida=UnidadMedida[dic.get("unidad_medida").get("tipo")],
                                 fecha=datetime.fromisoformat(dic.get("fecha")),
                                 id_=dic.get("id"))
         return sensor

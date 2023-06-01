@@ -6,6 +6,7 @@ from typing import List, Dict
 from backend.service import SensorService, PlantaService, SensorPlantaService
 from common.data.util import Sensor as SensorCommon, Planta as PlantaCommon, SensorPlanta as SensorPlantaCommon
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
+from backend.data.db.exc import ErrorSensorExiste, ErrorSensorNoExiste
 
 def get(st:str, sz: str ,sid:int) :
     try:
@@ -21,7 +22,7 @@ def get(st:str, sz: str ,sid:int) :
         if SensorService.exists(current_app.db,tipo_sensor,zona_sensor,numero_sensor):
             return SensorService.get(current_app.db, tipo_sensor,zona_sensor,numero_sensor).toJson(), HTTPStatus.OK.value
         else:
-            return ("El sensor " + str(numero_sensor) + " de tipo " + str(tipo_sensor) + " de la zona " + str(zona_sensor) + " no existe", HTTPStatus.NOT_FOUND.value)
+            return ("El sensor " + str(sid) + " de tipo " + str(st) + " de la zona " + str(sz) + " no existe", HTTPStatus.NOT_FOUND.value)
         
 def getAll() :
     with current_app.app_context() :
@@ -103,7 +104,35 @@ def getAllActiveFromModel(sm:str):
     with current_app.app_context() :
         return [item.toJson() for item in SensorService.listAllFromModel(current_app.db,modelo_sensor)], HTTPStatus.OK.value
 
+def post(body:dict):
+    with current_app.app_context() :
+        try:
+            sensor = SensorCommon.fromJson(body)
+            return SensorService.createFromCommon(current_app.db,sensor).toJson(), HTTPStatus.CREATED.value
+        except ErrorSensorExiste:
+            return ("El sensor " + str(body.get("numero_sensor")) + " de tipo " + str(body.get("tipo_sensor")) + " de la zona " + str(body.get("zona_sensor")) + " ya existe", HTTPStatus.CONFLICT.value)
+        
+def update(body:dict):
+    with current_app.app_context() :
+        try:
+            sensor = SensorCommon.fromJson(body)
+            return SensorService.updateFromCommon(current_app.db,sensor).toJson(), HTTPStatus.OK.value
+        except ErrorSensorNoExiste:
+            return ("El sensor " + str(body.get("numero_sensor")) + " de tipo " + str(body.get("tipo_sensor")) + " de la zona " + str(body.get("zona_sensor")) + " no existe", HTTPStatus.NOT_FOUND.value)
 
-# TODO #
-# metodos post para crear sensores
-# metodos update para actualizar sensores
+
+def unsubscribe(st:str, sz: str ,sid:int) :
+    try:
+        tipo_sensor:TipoSensor = TipoSensor[st]
+    except(KeyError):
+        return ("El tipo de sensor " + str(st) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
+    try:
+        zona_sensor: ZonaSensor = ZonaSensor[sz]
+    except(KeyError):
+        return ("La zona de sensor " + str(sz) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
+    numero_sensor:int = sid
+    with current_app.app_context() :
+        if SensorService.exists(current_app.db, tipo_sensor,zona_sensor,numero_sensor):
+            return SensorService.unsubscribe(current_app.db, tipo_sensor,zona_sensor,numero_sensor).toJson(), HTTPStatus.OK.value
+        else:
+            return ("El sensor " + str(sid) + " de tipo " + str(st) + " de la zona " + str(sz) + " no existe", HTTPStatus.NOT_FOUND.value)

@@ -1,10 +1,11 @@
 from datetime import datetime
 from typing import Union, List, Dict
 from sqlalchemy.orm.session import Session # type: ignore
+import backend.service as service
 from backend.data.db.esquema import Esquema
 from backend.data.db.results import ConsejoTipoPlanta
 from backend.data.db.resultsets import ConsejoTipoPlantaSet
-from common.data.util import ConsejoTipoPlanta as ConsejoTipoPlantaCommon, TipoPlanta as TipoPlantaCommon
+from common.data.util import ConsejoTipoPlanta as ConsejoTipoPlantaCommon, TipoPlanta as TipoPlantaCommon, ConsejoPlanta as ConsejoPlantaCommon
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 
 class ConsejoTipoPlantaService():
@@ -12,7 +13,8 @@ class ConsejoTipoPlantaService():
     @staticmethod
     def create(esquema: Esquema, descripcion: str, tipo_planta:str, zona_consejo:ZonaSensor,
                  tipo_medida:TipoMedida, unidad_medida:UnidadMedida, valor_minimo:float, 
-                 valor_maximo:float, horas_minimas:float=0, horas_maximas:float=0) -> ConsejoTipoPlantaCommon:
+                 valor_maximo:float, horas_minimas:float=0, horas_maximas:float=0, 
+                 asociar_consejo_a_plantas_de_ese_tipo_activas = True) -> ConsejoTipoPlantaCommon:
         session: Session = esquema.new_session()
         out: ConsejoTipoPlantaCommon = None
         try:
@@ -22,6 +24,11 @@ class ConsejoTipoPlantaService():
             out= ConsejoTipoPlantaCommon(nuevo_consejo.descripcion, nuevo_consejo.nombre_elemento, nuevo_consejo.zona_consejo,
                                          nuevo_consejo.tipo_medida, nuevo_consejo.unidad_medida, nuevo_consejo.valor_minimo,
                                          nuevo_consejo.valor_maximo, nuevo_consejo.horas_minimas, nuevo_consejo.horas_maximas)
+            if asociar_consejo_a_plantas_de_ese_tipo_activas:
+                for planta in service.planta_service.PlantaService.listAllActiveFromType(esquema,tipo_planta):
+                    service.planta_service.ConsejoPlantaService.create(esquema, nuevo_consejo.descripcion, planta.getNombrePlanta(), nuevo_consejo.zona_consejo,
+                                                                        nuevo_consejo.tipo_medida, nuevo_consejo.unidad_medida, nuevo_consejo.valor_minimo,
+                                                                        nuevo_consejo.valor_maximo, nuevo_consejo.horas_minimas, nuevo_consejo.horas_maximas)
         except Exception as ex:
             raise ex
         finally:
@@ -147,7 +154,7 @@ class ConsejoTipoPlantaService():
     @staticmethod
     def updateFromCommon(esquema: Esquema, consejo: ConsejoTipoPlantaCommon) -> ConsejoTipoPlantaCommon:
         return ConsejoTipoPlantaService.update(esquema=esquema, descripcion=consejo.getDescripcion(), 
-                                    tipo_planta=consejo.getTipoPlanta(), zona_consejo=consejo.getZonaConsejo(), 
+                                    tipo_planta=consejo.getNombreElemento(), zona_consejo=consejo.getZonaConsejo(), 
                                     tipo_medida=consejo.getTipoMedida(), unidad_medida=consejo.getUnidadMedida(), 
                                     valor_minimo=consejo.getValorMinimo(), valor_maximo=consejo.getValorMaximo(), 
                                     horas_minimas=consejo.getHorasMinimas(), horas_maximas=consejo.getHorasMaximas())

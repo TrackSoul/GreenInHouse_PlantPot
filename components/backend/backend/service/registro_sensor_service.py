@@ -187,32 +187,10 @@ class RegistroSensorService():
             for registro_sensor_planta in registros_sensor_planta:
                 lista_registros_sensores_planta.append(registro_sensor_planta)
         return lista_registros_sensores_planta
-    
-    # @staticmethod
-    # def listAllTypesAndZonesAvgFromPlantBetweenDates(esquema: Esquema, nombre_planta: str, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensorCommon]:
-    #     planta: PlantaCommon = PlantaService.get(esquema,nombre_planta)
-    #     lista_registros_sensores_planta: List[RegistroSensorCommon] = []
-        
-    #     sensores_planta_asociados: List[SensorPlantaCommon] =  SensorPlantaService.listAllSensorsFromPlantFromCommon(esquema,planta)
-    #     for sensor_planta_asociado in sensores_planta_asociados:
-    #         sensor: SensorCommon = SensorService.getSensorFromRelationFromCommon(esquema, sensor_planta_asociado)
-    #         if (fecha_fin is None):
-    #             fecha_fin = datetime.now()
-    #         fecha_i = fecha_inicio
-    #         fecha_f = fecha_fin
-    #         registros_sensor_planta = RegistroSensorService.getAvgFromSensorFromCommonBetweenDates(esquema,sensor,fecha_i, fecha_f)
-    #         if len(registros_sensor_planta)==0:
-    #             for unidad_medida in sensor.getUnidadesMedida():
-    #                 registro = RegistroSensorCommon(sensor.getTipoSensor(), sensor.getZonaSensor(), sensor.getNumeroSensor(), 0, unidad_medida, fecha_i)
-    #                 registros_sensor_planta.append(registro)
-    #         for registro_sensor_planta in registros_sensor_planta:
-    #             lista_registros_sensores_planta.append(registro_sensor_planta)
-    #     return lista_registros_sensores_planta
 
     @staticmethod
     def listAllAvgFromPlantFromCommonBetweenDates(esquema: Esquema, planta: PlantaCommon, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[RegistroSensorCommon]:
         return RegistroSensorService.listAllAvgFromPlantBetweenDates(esquema, planta.getNombrePlanta(), fecha_inicio, fecha_fin)
-
 
     @staticmethod
     def get(esquema: Esquema, id_ : int) -> RegistroSensorCommon:

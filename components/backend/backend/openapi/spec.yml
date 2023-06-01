@@ -59,19 +59,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/RegistroSensorModel"
               example:
-                - tipo_sensor: 
-                    nombre: "Temperatura y Humedad"
-                    tipo: "TEMPERATURA_Y_HUMEDAD"
-                  zona_sensor: 
-                    nombre: "Ambiente"
-                    tipo: "AMBIENTE"
-                  numero_sensor: 1
-                  valor: 25.043
-                  unidad_medida: 
-                    nombre: "ºC"
-                    tipo: "GRADOS_CENTIGRADOS"
-                  fecha: 2023-05-15 10:01:03.791271
-                  id_: 1
+                tipo_sensor: 
+                  nombre: "Temperatura y Humedad"
+                  tipo: "TEMPERATURA_Y_HUMEDAD"
+                zona_sensor: 
+                  nombre: "Ambiente"
+                  tipo: "AMBIENTE"
+                numero_sensor: 1
+                valor: 25.043
+                unidad_medida: 
+                  nombre: "ºC"
+                  tipo: "GRADOS_CENTIGRADOS"
+                fecha: 2023-05-15 10:01:03.791271
+                id_: 1
         "404":
           $ref: "#/components/responses/ResgistroSensorNoExiste"
       tags:
@@ -659,26 +659,214 @@ paths:
               schema:
                 $ref: "#/components/schemas/SensorModel"
               example:
-                - tipo_sensor: 
-                    nombre: "Temperatura y Humedad"
-                    tipo: "TEMPERATURA_Y_HUMEDAD"
-                  zona_sensor: 
-                    nombre: "Ambiente"
-                    tipo: "AMBIENTE"
-                  numero_sensor: 1
-                  modelo_sensor: 
-                    nombre: "DHT11"
-                    tipo: "DHT11"
-                  nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
-                  direccion_lectura: "RASPBERRY"
-                  patilla_0_lectura: 20
-                  unidad_medida_0: 
-                    nombre: "ºC"
-                    tipo: "GRADOS_CENTIGRADOS"
-                  unidad_medida_1: 
-                    nombre: "%"
-                    tipo: "PORCENTAJE"
-                  fecha_creacion: 2023-05-15 10:01:03.791271
+                tipo_sensor: 
+                  nombre: "Temperatura y Humedad"
+                  tipo: "TEMPERATURA_Y_HUMEDAD"
+                zona_sensor: 
+                  nombre: "Ambiente"
+                  tipo: "AMBIENTE"
+                numero_sensor: 1
+                modelo_sensor: 
+                  nombre: "DHT11"
+                  tipo: "DHT11"
+                nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+                direccion_lectura: "RASPBERRY"
+                patilla_0_lectura: 20
+                unidad_medida_0: 
+                  nombre: "ºC"
+                  tipo: "GRADOS_CENTIGRADOS"
+                unidad_medida_1: 
+                  nombre: "%"
+                  tipo: "PORCENTAJE"
+                fecha_creacion: 2023-05-15 10:01:03.791271
+        "404":
+          $ref: "#/components/responses/SensorNoExiste"
+        "406":
+          $ref: "#/components/responses/ErrorTipoSensor"
+        "406":
+          $ref: "#/components/responses/ErrorZonaSensor"
+      tags:
+        - Sensores
+      # security:
+      #   - api_key: []
+      #     user_token: []
+    post:
+      summary: Crear el saensor especificado.
+      description: |
+        Crear el senosr especificada y almacenarlo en la base de datos.
+      operationId: backend.presentation.rest.sensor_rest.post
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/SensorModel"
+            example:
+              tipo_sensor: 
+                nombre: "Temperatura y Humedad"
+                tipo: "TEMPERATURA_Y_HUMEDAD"
+              zona_sensor: 
+                nombre: "Ambiente"
+                tipo: "AMBIENTE"
+              numero_sensor: 1
+              modelo_sensor: 
+                nombre: "DHT11"
+                tipo: "DHT11"
+              nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+              direccion_lectura: "RASPBERRY"
+              patilla_0_lectura: 20
+              unidad_medida_0: 
+                nombre: "ºC"
+                tipo: "GRADOS_CENTIGRADOS"
+              unidad_medida_1: 
+                nombre: "%"
+                tipo: "PORCENTAJE"
+              # fecha_creacion: 2023-05-15 10:01:03.791271
+      responses:
+        "201":
+          description: Creado el sensor especificadao.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SensorModel"
+              example:
+                tipo_sensor: 
+                  nombre: "Temperatura y Humedad"
+                  tipo: "TEMPERATURA_Y_HUMEDAD"
+                zona_sensor: 
+                  nombre: "Ambiente"
+                  tipo: "AMBIENTE"
+                numero_sensor: 1
+                modelo_sensor: 
+                  nombre: "DHT11"
+                  tipo: "DHT11"
+                nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+                direccion_lectura: "RASPBERRY"
+                patilla_0_lectura: 20
+                unidad_medida_0: 
+                  nombre: "ºC"
+                  tipo: "GRADOS_CENTIGRADOS"
+                unidad_medida_1: 
+                  nombre: "%"
+                  tipo: "PORCENTAJE"
+                # fecha_creacion: 2023-05-15 10:01:03.791271
+        "409":
+          $ref: "#/components/responses/SensorYaExiste"
+        "406":
+          $ref: "#/components/responses/ErrorTipoSensor"
+        "406":
+          $ref: "#/components/responses/ErrorZonaSensor"
+      tags:
+        - Sensores
+      # security:
+      #   - api_key: []
+      #     user_token: []
+    put:
+      summary: Modificar el saensor especificado.
+      description: |
+        Modificar el senosr especificada y almacenarlo en la base de datos.
+      operationId: backend.presentation.rest.sensor_rest.update
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/SensorModel"
+            example:
+              tipo_sensor: 
+                nombre: "Temperatura y Humedad"
+                tipo: "TEMPERATURA_Y_HUMEDAD"
+              zona_sensor: 
+                nombre: "Ambiente"
+                tipo: "AMBIENTE"
+              numero_sensor: 1
+              modelo_sensor: 
+                nombre: "DHT11"
+                tipo: "DHT11"
+              nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+              direccion_lectura: "RASPBERRY"
+              patilla_0_lectura: 20
+              unidad_medida_0: 
+                nombre: "ºC"
+                tipo: "GRADOS_CENTIGRADOS"
+              unidad_medida_1: 
+                nombre: "%"
+                tipo: "PORCENTAJE"
+              # fecha_creacion: 2023-05-15 10:01:03.791271
+      responses:
+        "201":
+          description: Modificado el sensor especificadao.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SensorModel"
+              example:
+                tipo_sensor: 
+                  nombre: "Temperatura y Humedad"
+                  tipo: "TEMPERATURA_Y_HUMEDAD"
+                zona_sensor: 
+                  nombre: "Ambiente"
+                  tipo: "AMBIENTE"
+                numero_sensor: 1
+                modelo_sensor: 
+                  nombre: "DHT11"
+                  tipo: "DHT11"
+                nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+                direccion_lectura: "RASPBERRY"
+                patilla_0_lectura: 20
+                unidad_medida_0: 
+                  nombre: "ºC"
+                  tipo: "GRADOS_CENTIGRADOS"
+                unidad_medida_1: 
+                  nombre: "%"
+                  tipo: "PORCENTAJE"
+                # fecha_creacion: 2023-05-15 10:01:03.791271
+        "404":
+          $ref: "#/components/responses/SensorNoExiste"
+        "406":
+          $ref: "#/components/responses/ErrorTipoSensor"
+        "406":
+          $ref: "#/components/responses/ErrorZonaSensor"
+      tags:
+        - Sensores
+      # security:
+      #   - api_key: []
+      #     user_token: []
+    delete:
+      summary: Desactivar el saensor especificado.
+      description: |
+        Desactivar el senosr especificada y almacenarlo en la base de datos.
+      operationId: backend.presentation.rest.sensor_rest.unsubscribe
+      parameters:
+        - $ref: "#/components/parameters/SensorTipoParam"
+        - $ref: "#/components/parameters/SensorZonaParam"
+        - $ref: "#/components/parameters/SensorIdParam"
+      responses:
+        "201":
+          description: Desactivado el sensor especificadao.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SensorModel"
+              example:
+                tipo_sensor: 
+                  nombre: "Temperatura y Humedad"
+                  tipo: "TEMPERATURA_Y_HUMEDAD"
+                zona_sensor: 
+                  nombre: "Ambiente"
+                  tipo: "AMBIENTE"
+                numero_sensor: 1
+                modelo_sensor: 
+                  nombre: "DHT11"
+                  tipo: "DHT11"
+                nombre_sensor: "Humedad y temperatura ambiente 1 maceta 1"
+                direccion_lectura: "RASPBERRY"
+                patilla_0_lectura: 20
+                unidad_medida_0: 
+                  nombre: "ºC"
+                  tipo: "GRADOS_CENTIGRADOS"
+                unidad_medida_1: 
+                  nombre: "%"
+                  tipo: "PORCENTAJE"
+                # fecha_creacion: 2023-05-15 10:01:03.791271
         "404":
           $ref: "#/components/responses/SensorNoExiste"
         "406":
@@ -1363,9 +1551,102 @@ paths:
               schema:
                 $ref: "#/components/schemas/PlantaModel"
               example:
-                - nombre_planta: "Mi tomatera"
-                  tipo_planta: "Tomatera"
-                  fecha_plantacion: 2023-05-15 10:01:03.791271
+                nombre_planta: "Mi tomatera"
+                tipo_planta: "Tomatera"
+                fecha_plantacion: 2023-05-15 10:01:03.791271
+        "404":
+          $ref: "#/components/responses/PlantaNoExiste"
+      tags:
+        - Plantas
+      # security:
+      #   - api_key: []
+      #     user_token: []
+    post:
+      summary: Crear la planta especificada.
+      description: |
+        Crear la planta especificada y almacenarla en la base de datos.
+      operationId: backend.presentation.rest.planta_rest.post
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/PlantaModel"
+            example:
+              nombre_planta: "Mi tomatera"
+              tipo_planta: "Tomatera"
+              # fecha_plantacion: 2023-05-15 10:01:03.791271
+      responses:
+        "201":
+          description: Creada la planta especificadao.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/PlantaModel"
+              example:
+                nombre_planta: "Mi tomatera"
+                tipo_planta: "Tomatera"
+                fecha_plantacion: 2023-05-15 10:01:03.791271
+        "409":
+          $ref: "#/components/responses/PlantaYaExiste"
+        "404":
+          $ref: "#/components/responses/TipoPlantaNoExiste"
+      tags:
+        - Plantas
+      # security:
+      #   - api_key: []
+      #     user_token: []
+    put:
+      summary: Modificar la planta especificada.
+      description: |
+        Modificar la planta especificada y almacenarla en la base de datos.
+      operationId: backend.presentation.rest.planta_rest.update
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/PlantaModel"
+            example:
+              nombre_planta: "Mi tomatera"
+              tipo_planta: "Tomatera"
+              # fecha_plantacion: 2023-05-15 10:01:03.791271
+      responses:
+        "201":
+          description: Modificada la planta especificada.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/PlantaModel"
+              example:
+                nombre_planta: "Mi tomatera"
+                tipo_planta: "Tomatera"
+                fecha_plantacion: 2023-05-15 10:01:03.791271
+        "404":
+          $ref: "#/components/responses/PlantaNoExiste"
+        "404":
+          $ref: "#/components/responses/TipoPlantaNoExiste"
+      tags:
+        - Plantas
+      # security:
+      #   - api_key: []
+      #     user_token: []
+    delete:
+      summary: Dar por marchitada la planta especificada.
+      description: |
+        Dar por marchitada la planta especificada almacenada en la base de datos.
+      operationId: backend.presentation.rest.planta_rest.unsubscribe
+      parameters:
+        - $ref: "#/components/parameters/NombrePlantaParam"
+      responses:
+        "201":
+          description: Dar por marchitada la planta especificada.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/PlantaModel"
+              example:
+                nombre_planta: "Mi tomatera"
+                tipo_planta: "Tomatera"
+                fecha_plantacion: 2023-05-15 10:01:03.791271
         "404":
           $ref: "#/components/responses/PlantaNoExiste"
       tags:
@@ -1496,11 +1777,71 @@ paths:
               schema:
                 $ref: "#/components/schemas/TipoPlantaModel"
               example:
-                - tipo_planta: "Tomatera"
-                  descripcion_planta: "Planta que da tomates. Es facil de cultivar"
+                tipo_planta: "Tomatera"
+                descripcion_planta: "Planta que da tomates. Es facil de cultivar"
         "404":
           $ref: "#/components/responses/TipoPlantaNoExiste"
 
+      tags:
+        - Tipos Plantas
+      # security:
+      #   - api_key: []
+      #     user_token: []
+    post:
+      summary: Crear el tipo de planta especificado.
+      description: |
+        Crear el tipo de planta especificado y almacenarla en la base de datos.
+      operationId: backend.presentation.rest.tipo_planta_rest.post
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/TipoPlantaModel"
+            example:
+              tipo_planta: "Tomatera"
+              descripcion_planta: "Planta que da tomates. Es facil de cultivar"
+      responses:
+        "201":
+          description: Creado tipo de planta especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/TipoPlantaModel"
+              example:
+                tipo_planta: "Tomatera"
+                descripcion_planta: "Planta que da tomates. Es facil de cultivar"
+        "409":
+          $ref: "#/components/responses/TipoPlantaYaExiste"
+      tags:
+        - Tipos Plantas
+      # security:
+      #   - api_key: []
+      #     user_token: []
+    put:
+      summary: Modificar el tipo de planta especificado.
+      description: |
+        Modificar el tipo de planta especificado y almacenarla en la base de datos.
+      operationId: backend.presentation.rest.tipo_planta_rest.update
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/TipoPlantaModel"
+            example:
+              tipo_planta: "Tomatera"
+              descripcion_planta: "Planta que da tomates. Es facil de cultivar"
+      responses:
+        "201":
+          description: Modificado tipo de planta especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/TipoPlantaModel"
+              example:
+                tipo_planta: "Tomatera"
+                descripcion_planta: "Planta que da tomates. Es facil de cultivar"
+        "404":
+          $ref: "#/components/responses/TipoPlantaNoExiste"
       tags:
         - Tipos Plantas
       # security:
@@ -1548,19 +1889,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/ConsejoTipoPlantaModel"
               example:
-                - descripcion: "La temperatura ambiente de una tomatera tiene que estar entre 15 y 25 ºC."
-                  nombre_elemeto: "Tomatera"
-                  zona_consejo: 
-                    nombre: "Ambiente"
-                    tipo: "AMBIENTE"
-                  tipo_medida: 
-                    nombre: "Temperatura"
-                    tipo: "TEMPERATURA"
-                  unidad_medida: 
-                    nombre: "ºC"
-                    tipo: "GRADOS_CENTIGRADOS"
-                  valor_minimo: 15.0
-                  valor_minimo: 25.0
+                descripcion: "Temperatura ambiente recomendada."
+                nombre_elemento: "Tomatera"
+                zona_consejo: 
+                  nombre: "Ambiente"
+                  tipo: "AMBIENTE"
+                tipo_medida: 
+                  nombre: "Temperatura"
+                  tipo: "TEMPERATURA"
+                unidad_medida: 
+                  nombre: "ºC"
+                  tipo: "GRADOS_CENTIGRADOS"
+                valor_minimo: 15.0
+                valor_maximo: 25.0
         "404":
           $ref: "#/components/responses/ConsejoTipoPlantaNoExiste"
         "404":
@@ -1569,6 +1910,110 @@ paths:
           $ref: "#/components/responses/ErrorZonaConsejo"
         "406":
           $ref: "#/components/responses/ErrorTipoMedida"
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []
+    post:
+      summary: Crear el consejo del tipo de planta especificado.
+      description: |
+        Crear el consejo del tipo de planta especificado y almacenarla en la base de datos.
+      operationId: backend.presentation.rest.consejo_tipo_planta_rest.post
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/ConsejoTipoPlantaModel"
+            example:
+              descripcion: "Temperatura ambiente recomendada."
+              nombre_elemento: "Tomatera"
+              zona_consejo: 
+                nombre: "Ambiente"
+                tipo: "AMBIENTE"
+              tipo_medida: 
+                nombre: "Temperatura"
+                tipo: "TEMPERATURA"
+              unidad_medida: 
+                nombre: "ºC"
+                tipo: "GRADOS_CENTIGRADOS"
+              valor_minimo: 15.0
+              valor_maximo: 25.0
+      responses:
+        "201":
+          description: Creado el consejo del tipo de planta especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoTipoPlantaModel"
+              example:
+                descripcion: "Temperatura ambiente recomendada."
+                nombre_elemento: "Tomatera"
+                zona_consejo: 
+                  nombre: "Ambiente"
+                  tipo: "AMBIENTE"
+                tipo_medida: 
+                  nombre: "Temperatura"
+                  tipo: "TEMPERATURA"
+                unidad_medida: 
+                  nombre: "ºC"
+                  tipo: "GRADOS_CENTIGRADOS"
+                valor_minimo: 15.0
+                valor_maximo: 25.0
+        "409":
+          $ref: "#/components/responses/ConsejoTipoPlantaYaExiste"
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []
+    put:
+      summary: Modificar el consejo del tipo de planta especificado.
+      description: |
+        Modificar el consejo del tipo de planta especificado y almacenarla en la base de datos.
+      operationId: backend.presentation.rest.consejo_tipo_planta_rest.update
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/ConsejoTipoPlantaModel"
+            example:
+              descripcion: "Temperatura ambiente recomendada."
+              nombre_elemento: "Tomatera"
+              zona_consejo: 
+                nombre: "Ambiente"
+                tipo: "AMBIENTE"
+              tipo_medida: 
+                nombre: "Temperatura"
+                tipo: "TEMPERATURA"
+              unidad_medida: 
+                nombre: "ºC"
+                tipo: "GRADOS_CENTIGRADOS"
+              valor_minimo: 15.0
+              valor_maximo: 25.0
+      responses:
+        "201":
+          description: Modificar el consejo del tipo de planta especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoTipoPlantaModel"
+              example:
+                descripcion: "Temperatura ambiente recomendada."
+                nombre_elemento: "Tomatera"
+                zona_consejo: 
+                  nombre: "Ambiente"
+                  tipo: "AMBIENTE"
+                tipo_medida: 
+                  nombre: "Temperatura"
+                  tipo: "TEMPERATURA"
+                unidad_medida: 
+                  nombre: "ºC"
+                  tipo: "GRADOS_CENTIGRADOS"
+                valor_minimo: 15.0
+                valor_maximo: 25.0
+        "409":
+          $ref: "#/components/responses/ConsejoTipoPlantaNoExiste"
       tags:
         - Consejos
       # security:
@@ -1589,7 +2034,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
               example:
                 - descripcion: "Temperatura ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1602,7 +2047,7 @@ paths:
                   valor_minimo: 15.0
                   valor_maximo: 25.0
                 - descripcion: "Luminosidad ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1638,7 +2083,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
               example:
                 - descripcion: "Temperatura ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1651,7 +2096,7 @@ paths:
                   valor_minimo: 15.0
                   valor_maximo: 25.0
                 - descripcion: "Luminosidad ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1689,7 +2134,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
               example:
                 - descripcion: "Temperatura ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1702,7 +2147,7 @@ paths:
                   valor_minimo: 15.0
                   valor_maximo: 25.0
                 - descripcion: "Luminosidad ambiente recomendada."
-                  nombre_elemeto: 
+                  nombre_elemento: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
                   tipo_medida: 
@@ -1739,7 +2184,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
               example:
                 - descripcion: "Humedad ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1752,7 +2197,7 @@ paths:
                   valor_minimo: 30.0
                   valor_maximo: 60.0
                 - descripcion: "Humedad de la maceta recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Tomatera"
                   zona_consejo: 
                     nombre: "Maceta"
                     tipo: "MACETA"
@@ -1789,7 +2234,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
               example:
                 - descripcion: "Temperatura ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1800,9 +2245,9 @@ paths:
                     nombre: "ºC"
                     tipo: "GRADOS_CENTIGRADOS"
                   valor_minimo: 15.0
-                  valor_minimo: 25.0
+                  valor_maximo: 25.0
                 - descripcion: "Luminosidad ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1813,7 +2258,7 @@ paths:
                     nombre: "Lux"
                     tipo: "LUMINOSIDAD"
                   valor_minimo: 500.0
-                  valor_minimo: 800.0
+                  valor_maximo: 800.0
                   horas_minimas: 6.0
                   horas_maximas: 8.0
         "404":
@@ -1844,19 +2289,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/ConsejoPlantaModel"
               example:
-                - descripcion: "La temperatura ambiente de una tomatera tiene que estar entre 15 y 25 ºC."
-                  nombre_elemeto: "Tomatera"
-                  zona_consejo: 
-                    nombre: "Ambiente"
-                    tipo: "AMBIENTE"
-                  tipo_medida: 
-                    nombre: "Temperatura"
-                    tipo: "TEMPERATURA"
-                  unidad_medida: 
-                    nombre: "ºC"
-                    tipo: "GRADOS_CENTIGRADOS"
-                  valor_minimo: 15.0
-                  valor_minimo: 25.0
+                descripcion: "Temperatura ambiente recomendada."
+                nombre_elemento: "Mi tomatera"
+                zona_consejo: 
+                  nombre: "Ambiente"
+                  tipo: "AMBIENTE"
+                tipo_medida: 
+                  nombre: "Temperatura"
+                  tipo: "TEMPERATURA"
+                unidad_medida: 
+                  nombre: "ºC"
+                  tipo: "GRADOS_CENTIGRADOS"
+                valor_minimo: 15.0
+                valor_maximo: 25.0
         "404":
           $ref: "#/components/responses/ConsejoPlantaNoExiste"
         "404":
@@ -1870,6 +2315,110 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
+    post:
+      summary: Crear el consejo de planta especificado.
+      description: |
+        Crear el consejo de planta especificado y almacenarla en la base de datos.
+      operationId: backend.presentation.rest.consejo_planta_rest.post
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/ConsejoPlantaModel"
+            example:
+              descripcion: "Temperatura ambiente recomendada."
+              nombre_elemento: "Mi tomatera"
+              zona_consejo: 
+                nombre: "Ambiente"
+                tipo: "AMBIENTE"
+              tipo_medida: 
+                nombre: "Temperatura"
+                tipo: "TEMPERATURA"
+              unidad_medida: 
+                nombre: "ºC"
+                tipo: "GRADOS_CENTIGRADOS"
+              valor_minimo: 15.0
+              valor_maximo: 25.0
+      responses:
+        "201":
+          description: Creado el consejo de planta especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoPlantaModel"
+              example:
+                descripcion: "Temperatura ambiente recomendada."
+                nombre_elemento: "Mi tomatera"
+                zona_consejo: 
+                  nombre: "Ambiente"
+                  tipo: "AMBIENTE"
+                tipo_medida: 
+                  nombre: "Temperatura"
+                  tipo: "TEMPERATURA"
+                unidad_medida: 
+                  nombre: "ºC"
+                  tipo: "GRADOS_CENTIGRADOS"
+                valor_minimo: 15.0
+                valor_maximo: 25.0
+        "409":
+          $ref: "#/components/responses/ConsejoTipoPlantaYaExiste"
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []
+    put:
+      summary: Modificar el consejo de planta especificado.
+      description: |
+        Modificar el consejo de planta especificado y almacenarla en la base de datos.
+      operationId: backend.presentation.rest.consejo_planta_rest.update
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/ConsejoPlantaModel"
+            example:
+              descripcion: "Temperatura ambiente recomendada."
+              nombre_elemento: "Mi tomatera"
+              zona_consejo: 
+                nombre: "Ambiente"
+                tipo: "AMBIENTE"
+              tipo_medida: 
+                nombre: "Temperatura"
+                tipo: "TEMPERATURA"
+              unidad_medida: 
+                nombre: "ºC"
+                tipo: "GRADOS_CENTIGRADOS"
+              valor_minimo: 15.0
+              valor_maximo: 25.0
+      responses:
+        "201":
+          description: Modificar el consejo de planta especificado.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoPlantaModel"
+              example:
+                descripcion: "Temperatura ambiente recomendada."
+                nombre_elemento: "Mi tomatera"
+                zona_consejo: 
+                  nombre: "Ambiente"
+                  tipo: "AMBIENTE"
+                tipo_medida: 
+                  nombre: "Temperatura"
+                  tipo: "TEMPERATURA"
+                unidad_medida: 
+                  nombre: "ºC"
+                  tipo: "GRADOS_CENTIGRADOS"
+                valor_minimo: 15.0
+                valor_maximo: 25.0
+        "409":
+          $ref: "#/components/responses/ConsejoPlantaNoExiste"
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []      
   /Consejos/Plantas/All:
     get:
       summary: Obtener todos los consejos de plantas.
@@ -1885,7 +2434,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoPlantaListModel"
               example:
                 - descripcion: "Temperatura ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Mi tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1898,7 +2447,7 @@ paths:
                   valor_minimo: 15.0
                   valor_maximo: 25.0
                 - descripcion: "Luminosidad ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Mi tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1934,7 +2483,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoPlantaListModel"
               example:
                 - descripcion: "Temperatura ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Mi tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1947,7 +2496,7 @@ paths:
                   valor_minimo: 15.0
                   valor_maximo: 25.0
                 - descripcion: "Luminosidad ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Mi tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1985,7 +2534,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoPlantaListModel"
               example:
                 - descripcion: "Temperatura ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Mi tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -1998,7 +2547,7 @@ paths:
                   valor_minimo: 15.0
                   valor_maximo: 25.0
                 - descripcion: "Luminosidad ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Mi tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -2036,7 +2585,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoPlantaListModel"
               example:
                 - descripcion: "Humedad ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Mi tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -2049,7 +2598,7 @@ paths:
                   valor_minimo: 30.0
                   valor_maximo: 60.0
                 - descripcion: "Humedad de la maceta recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Mi tomatera"
                   zona_consejo: 
                     nombre: "Maceta"
                     tipo: "MACETA"
@@ -2086,7 +2635,7 @@ paths:
                 $ref: "#/components/schemas/ConsejoPlantaListModel"
               example:
                 - descripcion: "Temperatura ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Mi tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -2097,9 +2646,9 @@ paths:
                     nombre: "ºC"
                     tipo: "GRADOS_CENTIGRADOS"
                   valor_minimo: 15.0
-                  valor_minimo: 25.0
+                  valor_maximo: 25.0
                 - descripcion: "Luminosidad ambiente recomendada."
-                  nombre_elemeto: "Tomatera"
+                  nombre_elemento: "Mi tomatera"
                   zona_consejo: 
                     nombre: "Ambiente"
                     tipo: "AMBIENTE"
@@ -2110,7 +2659,7 @@ paths:
                     nombre: "Lux"
                     tipo: "LUMINOSIDAD"
                   valor_minimo: 500.0
-                  valor_minimo: 800.0
+                  valor_maximo: 800.0
                   horas_minimas: 6.0
                   horas_maximas: 8.0
         "404":
@@ -2272,7 +2821,7 @@ components:
         - direccion_lectura
         - patilla_0_lectura
         - unidad_medida_0
-        - fecha_creacion
+        # - fecha_creacion
     SensorListModel:
       type: array
       items:
@@ -2358,7 +2907,6 @@ components:
       required:
         - nombre_planta
         - tipo_planta
-        - fecha_plantacion
     PlantaListModel:
       type: array
       items:
@@ -2646,6 +3194,14 @@ components:
           schema:
             type: string
           example: "El consejo de la planta EJEMPLO_PLANTA para la medida EJEMPLO_TIPO_MEDIDA en la zona EJEMPLO_ZONA no existe."
+    ErrorProcesarDatosParaGraficar:
+      description: Error al procesar los datos de la planta para graficar .
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: Error al procesar los datos de la planta EJEMPLO para graficar.
+
 
     # 406
     ErrorTipoSensor:
@@ -2712,14 +3268,56 @@ components:
             type: string
           example: La fecha de inicio EJEMPLO_INICIO no puede ser mayor que la fecha de fin EJEMPLO_FIN .
   
-    # 404
-    ErrorProcesarDatosParaGraficar:
-      description: Error al procesar los datos de la planta para graficar .
+    # 409
+    ResgistroSensorYaExiste:
+      description: El registro del sensor ya existe.
+      content:
+        "text/plain":
+          schema:
+            $ref: "#/components/schemas/EmptyContentModel"
+          example: "El registro de sensor EJEMPLO ya existe."
+    SensorYaExiste:
+      description: El sensor especificado ya existe.
       content:
         "text/plain":
           schema:
             type: string
-          example: Error al procesar los datos de la planta EJEMPLO para graficar.
+          example: "El sensor EJEMPLO_ID de tipo EJEMPLO_TIPO de la zona EJEMPLO_ZONA ya existe."
+    PlantaYaExiste:      
+      description: La planta especificada ya existe.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "La planta EJEMPLO ya existe."
+    TipoPlantaYaExiste:      
+      description: El tipo de planta especificada ya existe.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "El tipo de planta EJEMPLO ya existe."
+    SensorPlantaYaExiste:      
+      description: La relaccion entre el sensor y la planta especificados ya existe.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "La relaccion entre el sensor EJEMPLO_ID de tipo EJEMPLO_TIPO de la zona EJEMPLO_ZONA y la planta EJEMPLO_PLANTA ya existe."
+    ConsejoTipoPlantaYaExiste:      
+      description: El consejo del tipo de planta, zona y tipo de medida especificados ya existe.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "El consejo del tipo de planta EJEMPLO_TIPO_PLANTA para la medida EJEMPLO_TIPO_MEDIDA en la zona EJEMPLO_ZONA ya existe."
+    ConsejoPlantaYaExiste:      
+      description: El consejo de la planta, zona y tipo de medida especificados ya existe.
+      content:
+        "text/plain":
+          schema:
+            type: string
+          example: "El consejo de la planta EJEMPLO_PLANTA para la medida EJEMPLO_TIPO_MEDIDA en la zona EJEMPLO_ZONA ya existe."
 
 
 #   securitySchemes:

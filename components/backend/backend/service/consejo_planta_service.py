@@ -135,7 +135,7 @@ class ConsejoPlantaService():
             consejo_modificado: ConsejoPlanta = ConsejoPlantaSet.update(session, descripcion, nombre_planta, zona_consejo,
                                                                                 tipo_medida, unidad_medida, valor_minimo,
                                                                                 valor_maximo, horas_minimas, horas_maximas)
-            out= ConsejoPlantaCommon(consejo_modificado.descripcion, consejo_modificado.nombre_planta, consejo_modificado.zona_consejo,
+            out= ConsejoPlantaCommon(consejo_modificado.descripcion, consejo_modificado.nombre_elemento, consejo_modificado.zona_consejo,
                                          consejo_modificado.tipo_medida, consejo_modificado.unidad_medida, consejo_modificado.valor_minimo,
                                          consejo_modificado.valor_maximo, consejo_modificado.horas_minimas, consejo_modificado.horas_maximas)
         except Exception as ex:

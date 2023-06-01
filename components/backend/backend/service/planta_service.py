@@ -4,7 +4,10 @@ from sqlalchemy.orm.session import Session # type: ignore
 from backend.data.db.esquema import Esquema
 from backend.data.db.results import Planta,  TipoPlanta
 from backend.data.db.resultsets import PlantaSet
-from backend.service import SensorPlantaService, SensorService, ConsejoPlantaService, ConsejoTipoPlantaService
+from backend.service.sensor_planta_service import SensorPlantaService
+from backend.service.sensor_service import SensorService
+from backend.service.consejo_planta_service import ConsejoPlantaService
+from backend.service.consejo_tipo_planta_service import ConsejoTipoPlantaService
 from common.data.util import Planta as PlantaCommon, SensorPlanta as SensorPlantaCommon
 
 class PlantaService():
@@ -113,10 +116,15 @@ class PlantaService():
         session: Session = esquema.new_session()
         out: PlantaCommon = None
         try:
+            planta_original: PlantaCommon = PlantaService.get(esquema, nombre_planta)
             planta_modificado: Planta = PlantaSet.update(session, nombre_planta, tipo_planta, 
                                                                            fecha_plantacion, fecha_marchitacion)
             out= PlantaCommon(planta_modificado.nombre_planta,planta_modificado.tipo_planta,
                                       planta_modificado.fecha_plantacion,planta_modificado.fecha_marchitacion)
+            if planta_original.getTipoPlanta() != out.getTipoPlanta():
+                for consejo in ConsejoTipoPlantaService.listAllFromTypePlant(esquema,tipo_planta):
+                    consejo.setNombreElemento(nombre_planta)
+                    ConsejoPlantaService.updateFromCommon(esquema, consejo)
         except Exception as ex:
             raise ex
         finally:
