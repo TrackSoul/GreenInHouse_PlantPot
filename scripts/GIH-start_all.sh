@@ -10,7 +10,7 @@ path_home=/GreenInHouse
 path_script="$path_home"/script
 cd "$path_script"
 
-./GIH-stop_except.sh './GIH-start_all.sh'
+./GIH-stop_except.sh './GIH-start_all.sh' './GIH-restart_all.sh'
 
 #lectura periodica de sensores
 $(nohup ./GIH-run_read_sensors_periodically.sh $sleep_time >> ./script_log/periodic_read_sensors.out 2>> ./script_log/periodic_read_sensors.err < /dev/null &)

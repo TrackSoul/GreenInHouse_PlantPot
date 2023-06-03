@@ -20,10 +20,6 @@ if [ ! -d "$path_script"/script_log ]; then
 fi
 chmod -R 777 "$path_script"
 
-rm -rf "$init"/GIH-start_all.conf
-cp -af "$path_init"/GIH-start_all.conf "$init"
-chmod 777 "$init"/GIH-start_all.conf
-
 rm -rfd "$path_cfg"
 cp -af "$original_path"/config "$path_cfg"
 chmod -R 777 "$path_cfg"

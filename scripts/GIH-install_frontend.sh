@@ -26,3 +26,11 @@ pip3 install tk
 
 cd "$original_path"
 ./GIH-deploy_frontend.sh
+
+line='@reboot /GreenInHouse/script/GIH-start_all.sh'
+for usuario in $(who | cut -d ' ' -f 1)
+do
+    if [ $(crontab -u "$usuario" -l | grep -e "$line" | wc -l) -eq 0 ]; then
+        (crontab -u "$usuario" -l; echo "$line" ) | crontab -u "$usuario" -
+    fi
+done
