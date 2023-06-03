@@ -10,6 +10,7 @@ path_script="$path_home"/script
 path_db="$path_home"/db
 path_venv="$path_home"/venv
 path_cfg="$path_home"/cfg
+path_init=/etc/init
 
 rm -rfd "$path_script"
 cp -af "$original_path"/scripts "$path_script"
@@ -18,8 +19,12 @@ if [ ! -d "$path_script"/script_log ]; then
 fi
 chmod -R 777 "$path_script"
 
-rm -rfd "$path_cfg"
-cp -af "$original_path"/config "$path_cfg"
+rm -rf "$path_init"/GIH-start_all.conf
+cp -af "$original_path"/init/GIH-start_all.conf "$path_init"
+chmod 777 "$path_init"/GIH-start_all.conf
+
+rm -rf "$path_cfg"
+cp -af "$original_path"/config/ "$path_cfg"
 chmod -R 777 "$path_cfg"
 
 source "$path_venv"/venv_backend/venv_backend_api_rest/.venv/bin/activate

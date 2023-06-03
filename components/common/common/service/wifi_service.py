@@ -23,6 +23,8 @@ class WifiService:
         for item in result:
             itemp_p = item.partition('     ESSID:')
             wifi_list.append([itemp_p[0],itemp_p[2].strip('"\n')])
+        if len(wifi_list[0])==0:
+            wifi_list[0]=['','Sin conexion wifi']
         return wifi_list
 
     @staticmethod
@@ -59,6 +61,32 @@ class WifiService:
                 new_network="\nnetwork={\n"+"\t\tssid=\"{}\"\n".format(ssid)+"\t\tpsk=\"{}\"\n".format(psk)+"\t\tkey_mgmt=WPA-PSK\n}\n"
                 file.write(new_network)
         return True
+    
+    @staticmethod
+    def define_static_ip(iface, ip_with_net_mask, gateway):
+    # def define_static_ip(iface = "wlan0", ip_with_net_mask = "192.168.1.240/24", gateway = "192.168.1.1"):  
+        path_file = "/etc/dhcpcd.conf"
+        # path_file = "/home/green-in-house-remoto/TFG/GreenInHouse_Pruebas/pruebas/dhcpcd.conf"
+        command = "cat {} | grep -A 4 -iE '^interface {}'".format(path_file,iface)
+        results = os.popen((command.format()))
+        results = list(results)
+        if len(results) > 0:
+            with open(path_file, "rt") as file:
+                x = file.read()
+            with open(path_file, "wt") as file:
+                for result in results:
+                    if  result.startswith("static ip_address="):
+                        x = x.replace(result,"static ip_address={}\n".format(ip_with_net_mask))
+                    if  result.startswith("static routers="):
+                        x = x.replace(result,"static routers={}\n".format(gateway))
+                    if  result.startswith("static domain_name_servers="):
+                        x = x.replace(result,"static domain_name_servers={} 8.8.8.8\n".format(gateway))
+                file.write(x)
+        else:
+            with open(path_file, "at") as file:
+                config_dir="\ninterface {}\n".format(iface)+"static ip_address={}\n".format(ip_with_net_mask)+"static routers={}\n".format(gateway)+"static domain_name_servers={} 8.8.8.8\n".format(gateway)
+                file.write(config_dir)
+        return  0
 
 # if __name__ == "__main__":
 #     print(WifiService().scan_networks())
@@ -67,8 +95,10 @@ class WifiService:
 #     print()
 #     print(WifiService().kwnown_wifis())
 #     print()
-#     print(WifiService().connect_wifi("UniqueSo","TrackSoul_1995"))
-#     print()
-#     print(WifiService().kwnown_wifis())
+#     # print(WifiService().connect_wifi("UniqueSound","TrackSoul_1995"))
+#     # print()
+#     # print(WifiService().kwnown_wifis())
+#     # print()
+#     print(WifiService().define_static_ip(ip_with_net_mask="192.168.1.241/24", gateway="192.168.1.0"))
 #     print()
     

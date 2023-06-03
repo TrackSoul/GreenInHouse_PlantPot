@@ -31,3 +31,6 @@ fi
 cd "$original_path"
 ./GIH-install_backend.sh
 ./GIH-install_frontend.sh
+./GIH-configure_static_ip.sh 
+
+reboot now

@@ -10,4 +10,3 @@ from .planta_service import PlantaService
 from .registro_sensor_service import RegistroSensorService
 from .tipo_planta_service import TipoPlantaService
 from .electronic_sensor_service import ElectronicSensorService 
-from .wifi_service import WifiService

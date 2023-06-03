@@ -1,11 +1,11 @@
 db_connection_string: "sqlite:////GreenInHouse/db/GreenInHouseBackend.sqlite3.db"
-service_host: "192.168.1.19"
+# service_host: "192.168.1.240" # IP estatica definida
 service_port: 5000
 debug: true
-salt: "Change this salt!"
-jws_secret: "Change this secret!"
+salt: "GreenInHouse_salt"
+jws_secret: "GreenInHouse_jws"
 jws_ttl: 3600
 authorized_api_keys:
   - "1234" # FOR FAST TESTING PURPOSES. TODO: REMOVE
-  - "This should be the backend API key"
-  - "This should be the frontend API key"
+  - "GreenInHouse_Backend_ApiKey"
+  - "GreenInHouse_Frontend_ApiKey"
