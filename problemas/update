@@ -1,6 +1,0 @@
-al realizar un update (sudo apt-get -y dist-upgrade) y actualizar el firmware de raspbian a la última versión,
-las cabeceras de los módulos no se encontraba y no podía instalar nuevos paquetes ni drivers
-para solucionarlo he tenido que copiar a mano el contenido de /usr/src y /lib/modules 
-de las capertas 6.1.21-v7+ a 6.1.25-v7+ ya que la versión actual de mi firmware es 6.1.25 pero las 
-cabeceras se descargaban como de la version 6.1.21 y no las encontraban los módulos
-

@@ -38,10 +38,12 @@ pip3 install adafruit-circuitpython-dht
 pip3 install adafruit-circuitpython-mcp3xxx
 pip3 install arrow
 
+#despligue de librerias
 cd "$original_path"
 ./GIH-deploy_backend.sh
 
-line='@reboot /GreenInHouse/script/GIH-start_all.sh'
+#configuracion de lanzamiento durante arranque
+line='@reboot /GreenInHouse/script/GIH-start_backend.sh'
 for usuario in $(who | cut -d ' ' -f 1)
 do
     if [ $(crontab -u "$usuario" -l | grep -e "$line" | wc -l) -eq 0 ]; then

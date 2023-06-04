@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+
+import os
+# para usar las librerias de backend y poder leer los sensores en tiempo real y mostrar sus valores en la app
+# es necesario instalar las librerias de backend en el venv y sus dependencias 
+# CONFIGURAR EN INSTALADOR
+
+# from backend.data.config import BackendConfiguration
+# from backend.data.db import Esquema
+from common.service import WifiService
+from frontend.app.rpi import VentanaPrincipal
+
+if __name__ == '__main__':
+    # cfg: BackendConfiguration = BackendConfiguration()
+    # cfg.load_from_file(cfg.default_config_file())
+
+    ventana_principal = VentanaPrincipal()
+    ventana_principal.mainloop()

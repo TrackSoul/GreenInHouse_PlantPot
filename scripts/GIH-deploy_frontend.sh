@@ -10,8 +10,6 @@ path_script="$path_home"/script
 path_db="$path_home"/db
 path_venv="$path_home"/venv
 path_cfg="$path_home"/cfg
-path_init="$path_home"/init
-init=/etc/init
 
 rm -rfd "$path_script"
 cp -af "$original_path"/scripts "$path_script"
@@ -24,8 +22,18 @@ rm -rfd "$path_cfg"
 cp -af "$original_path"/config "$path_cfg"
 chmod -R 777 "$path_cfg"
 
-source "$path_venv"/venv_frontend/venv_frontend/venv_frontend_app_rpi/.venv/bin/activate
+source "$path_venv"/venv_frontend/venv_frontend_app_rpi/.venv/bin/activate
 cd "$original_path"/components/common
 ./GIH-install.sh
 cd "$original_path"/components/frontend
 ./GIH-install.sh
+
+line='@reboot /GreenInHouse/script/GIH-start_backend.sh'
+for usuario in $(who | cut -d ' ' -f 1)
+do
+    if [ $(crontab -u "$usuario" -l | grep -e "$line" | wc -l) -eq 0 ]; then
+        (crontab -u "$usuario" -l; echo "$line" ) | crontab -u "$usuario" -
+    fi
+done
+
+cp -f "$original_path"/init/GreenInHouse.desktop /etc/xdg/autostart

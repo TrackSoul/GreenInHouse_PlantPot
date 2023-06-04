@@ -1,5 +1,6 @@
 """ Backend configuration classes.
 """
 
-from .principal import VentanaPrincipal
-from .secundaria import VentanaNombre
+from .ventana_teclado import VentanaTeclado
+from .ventana_configurar_wifi import VentanaConfigurarWifi
+from .ventana_principal import VentanaPrincipal

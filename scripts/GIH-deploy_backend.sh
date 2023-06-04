@@ -10,7 +10,6 @@ path_script="$path_home"/script
 path_db="$path_home"/db
 path_venv="$path_home"/venv
 path_cfg="$path_home"/cfg
-path_init=~/.config/upstart
 
 rm -rfd "$path_script"
 cp -af "$original_path"/scripts "$path_script"

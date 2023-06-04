@@ -24,13 +24,9 @@ pip3 install adafruit-circuitpython-dht
 pip3 install adafruit-circuitpython-mcp3xxx
 pip3 install tk
 
+#despligue de librerias
 cd "$original_path"
 ./GIH-deploy_frontend.sh
 
-line='@reboot /GreenInHouse/script/GIH-start_all.sh'
-for usuario in $(who | cut -d ' ' -f 1)
-do
-    if [ $(crontab -u "$usuario" -l | grep -e "$line" | wc -l) -eq 0 ]; then
-        (crontab -u "$usuario" -l; echo "$line" ) | crontab -u "$usuario" -
-    fi
-done
+#configuracion de lanzamiento durante arranque
+cp -f "$original_path"/init/GreenInHouse.desktop /etc/xdg/autostart

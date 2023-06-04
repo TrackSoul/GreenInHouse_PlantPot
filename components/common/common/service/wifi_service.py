@@ -22,9 +22,10 @@ class WifiService:
         result = list(result)
         for item in result:
             itemp_p = item.partition('     ESSID:')
-            wifi_list.append([itemp_p[0],itemp_p[2].strip('"\n')])
-        if len(wifi_list[0])==0:
-            wifi_list[0]=['','Sin conexion wifi']
+            wifi_list.append(itemp_p[0])
+            wifi_list.append(itemp_p[2].strip('"\n'))
+        if len(wifi_list)==0:
+            wifi_list=['','Sin conexion wifi']
         return wifi_list
 
     @staticmethod
@@ -88,13 +89,13 @@ class WifiService:
                 file.write(config_dir)
         return  0
 
-# if __name__ == "__main__":
-#     print(WifiService().scan_networks())
-#     print()
-#     print(WifiService().wifi_conected())
-#     print()
-#     print(WifiService().kwnown_wifis())
-#     print()
+if __name__ == "__main__":
+    print(WifiService().scan_networks())
+    print()
+    print(WifiService().wifi_conected())
+    print()
+    print(WifiService().kwnown_wifis())
+    print()
 #     # print(WifiService().connect_wifi("UniqueSound","TrackSoul_1995"))
 #     # print()
 #     # print(WifiService().kwnown_wifis())

@@ -1,3 +1,0 @@
-"""
-BACKENDO REST API modules
-"""
