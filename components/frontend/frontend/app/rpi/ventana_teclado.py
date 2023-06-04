@@ -24,8 +24,8 @@ class VentanaTeclado(tk.Toplevel):
 
         # entry box
         self.equation = tk.StringVar()
-        self.Dis_entry = ttk.Entry(self, state='readonly', textvariable=self.equation)
-        self.Dis_entry.grid(rowspan=1, columnspan=20, ipadx=280, ipady=60)
+        self.Dis_entry = ttk.Entry(self, state='readonly', textvariable=self.equation, font=('Arial', 20))
+        self.Dis_entry.grid(rowspan=1, columnspan=20, ipadx=200, ipady=60)
 
 
         # showing all data in display
