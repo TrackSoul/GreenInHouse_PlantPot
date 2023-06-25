@@ -28,12 +28,12 @@ class BackendConfiguration(ServiceConfiguration):
         self.set_service_host('127.0.0.1')
         self.set_service_port(5000)
         self.set_debug_flag(False)
-        #TODO
-        self.set_password_salt('This salt should be changed ASAP')
-        #TODO
-        self.set_jws_secret('This JWS secret should be changed ASAP')
-        self.set_jws_ttl(3600)
-        self.set_authorized_api_keys(['1234','This is another frontend API key'])
+        # #TODO
+        # self.set_password_salt('This salt should be changed ASAP')
+        # #TODO
+        # self.set_jws_secret('This JWS secret should be changed ASAP')
+        # self.set_jws_ttl(3600)
+        # self.set_authorized_api_keys(['1234','This is another frontend API key'])
 
     def _set_values(self, values: Dict) -> None:
         """Sets/merges a collection of configuration values.
