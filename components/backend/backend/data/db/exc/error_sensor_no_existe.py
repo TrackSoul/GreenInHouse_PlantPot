@@ -1,6 +1,7 @@
 """ 
 Clase del modulo ErrorSensorNoExiste
 """
+#Author: Oscar Valverde Escobar
 
 
 class ErrorSensorNoExiste(Exception):

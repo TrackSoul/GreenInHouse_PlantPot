@@ -1,3 +1,5 @@
+#Author: Oscar Valverde Escobar
+
 import traceback
 from datetime import datetime
 from http import HTTPStatus
@@ -19,20 +21,6 @@ def get(ntp:str) :
 def getAll() :
     with current_app.app_context() :
         return [item.toJson() for item in TipoPlantaService.listAll(current_app.db)], HTTPStatus.OK.value
-
-# def post(tipo_planta:str, descripcion_planta:str):
-#     with current_app.app_context() :
-#         try:
-#             return TipoPlantaService.create(current_app.db,tipo_planta,descripcion_planta).toJson(), HTTPStatus.CREATED.value
-#         except ErrorTipoPlantaExiste:
-#             return ('El Tipo de planta ya existe', HTTPStatus.CONFLICT.value)
-
-# def update(tipo_planta:str, descripcion_planta:str):
-#     with current_app.app_context() :
-#         try:
-#             return TipoPlantaService.update(current_app.db,tipo_planta,descripcion_planta).toJson(), HTTPStatus.CREATED.value
-#         except ErrorTipoPlantaNoExiste:
-#             return ('El tipo de planta no existe.', HTTPStatus.NOT_FOUND.value)
 
 def post(body:dict):
     with current_app.app_context() :

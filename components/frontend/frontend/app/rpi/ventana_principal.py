@@ -1,3 +1,5 @@
+#Author: Oscar Valverde Escobar
+
 import tkinter as tk
 from tkinter import ttk
 from frontend.app.rpi import VentanaConfigurarWifi

@@ -1,6 +1,8 @@
 """ 
 Capa de servicios de clases de Backend
 """
+#Author: Oscar Valverde Escobar
+
 
 from .sensor_planta_service import SensorPlantaService
 from .sensor_service import SensorService

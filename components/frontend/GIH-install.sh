@@ -1,3 +1,6 @@
+#Author: Jesús Alonso Abad
+#Author: Oscar Valverde Escobar
+
 #!/bin/bash
 
 TEMP_DIR="$(mktemp -d)"

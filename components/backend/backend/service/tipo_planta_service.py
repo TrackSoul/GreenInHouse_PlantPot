@@ -1,3 +1,5 @@
+#Author: Oscar Valverde Escobar
+
 from typing import Union, List, Dict
 from sqlalchemy.orm.session import Session # type: ignore
 from backend.data.db.esquema import Esquema

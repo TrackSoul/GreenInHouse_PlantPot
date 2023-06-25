@@ -1,3 +1,5 @@
+#Author: Oscar Valverde Escobar
+
 import json
 import time
 import flask

@@ -1,6 +1,7 @@
 """ 
 Modulo de clase Esquema
 """
+#Author: Oscar Valverde Escobar
 
 from sqlalchemy import create_engine, event  # type: ignore
 from sqlalchemy.engine import Engine  # type: ignore

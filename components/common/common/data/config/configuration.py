@@ -1,5 +1,7 @@
 """ Module containing the dms2223common.data.config.configuration.Configuration class.
 """
+#Author: Jesús Alonso Abad
+#Author: Oscar Valverde Escobar
 
 import os
 from abc import ABC, abstractmethod

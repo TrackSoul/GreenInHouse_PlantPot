@@ -1,7 +1,11 @@
+#Author: Jesús Alonso Abad
+#Author: Oscar Valverde Escobar
+
 db_connection_string: "sqlite:////GreenInHouse/db/GreenInHouseBackend.sqlite3.db"
 # service_host: "192.168.1.240" # IP estatica definida
 service_port: 5000
 debug: true
+'''
 salt: "GreenInHouse_salt"
 jws_secret: "GreenInHouse_jws"
 jws_ttl: 3600
@@ -9,3 +13,4 @@ authorized_api_keys:
   - "1234" # FOR FAST TESTING PURPOSES. TODO: REMOVE
   - "GreenInHouse_Backend_ApiKey"
   - "GreenInHouse_Frontend_ApiKey"
+'''

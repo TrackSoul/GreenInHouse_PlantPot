@@ -1,3 +1,5 @@
+#Author: Oscar Valverde Escobar
+
 from .registro_sensor_set import RegistroSensorSet
 from .planta_set import PlantaSet
 from .tipo_planta_set import TipoPlantaSet

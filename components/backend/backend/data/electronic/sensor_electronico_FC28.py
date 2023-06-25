@@ -1,3 +1,5 @@
+#Author: Oscar Valverde Escobar
+
 from typing import List, Tuple
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 from backend.data.electronic import SensorElectronico, SensorElectronicoMCP3008

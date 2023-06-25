@@ -1,6 +1,7 @@
 """ 
 Modulo ResultBase.
 """
+#Author: Oscar Valverde Escobar
 
 from abc import ABC, abstractmethod
 from typing import Dict

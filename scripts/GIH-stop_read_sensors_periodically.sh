@@ -1,4 +1,6 @@
 #!/bin/bash
+#Author: Oscar Valverde Escobar
+
 
 path_home=/GreenInHouse
 path_script="$path_home"/script

@@ -1,3 +1,5 @@
+#Author: Oscar Valverde Escobar
+
 import os
 
 class WifiService:

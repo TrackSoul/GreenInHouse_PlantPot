@@ -1,3 +1,5 @@
+#Author: Oscar Valverde Escobar
+
 from datetime import datetime
 from typing import Dict, Optional
 from sqlalchemy import Table, MetaData, Column, String, Boolean, TIMESTAMP # type: ignore

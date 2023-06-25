@@ -1,3 +1,5 @@
+#Author: Oscar Valverde Escobar
+
 from .sensor_electronico import SensorElectronico
 from .sensor_electronico_MCP3008 import SensorElectronicoMCP3008
 from .sensor_electronico_DHT11 import SensorElectronicoDHT11

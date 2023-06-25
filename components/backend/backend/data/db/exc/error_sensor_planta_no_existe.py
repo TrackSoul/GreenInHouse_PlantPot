@@ -1,7 +1,7 @@
 """ 
 Clase del modulo ErrorSensorPlantaNoExiste
 """
-
+#Author: Oscar Valverde Escobar
 
 class ErrorSensorPlantaNoExiste(Exception):
     """ 

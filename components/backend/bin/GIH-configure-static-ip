@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+#Author: Oscar Valverde Escobar
+
 
 import os
 from backend.data.config import BackendConfiguration

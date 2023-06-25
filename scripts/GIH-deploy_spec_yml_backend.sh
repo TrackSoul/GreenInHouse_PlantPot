@@ -1,4 +1,6 @@
 #!/bin/bash
+#Author: Oscar Valverde Escobar
+
 #ejecutar con sudo
 
 ./GIH-stop_process.sh './GIH-backend-api-rest' 

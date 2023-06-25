@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+#Author: Oscar Valverde Escobar
+
 
 import os
 # para usar las librerias de backend y poder leer los sensores en tiempo real y mostrar sus valores en la app

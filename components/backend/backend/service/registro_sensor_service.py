@@ -1,3 +1,5 @@
+#Author: Oscar Valverde Escobar
+
 from datetime import datetime
 from typing import List, Dict
 from sqlalchemy.orm.session import Session # type: ignore

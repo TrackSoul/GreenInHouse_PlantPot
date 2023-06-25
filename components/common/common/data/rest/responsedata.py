@@ -1,5 +1,7 @@
 """ ResponseData class module.
 """
+#Author: Jesús Alonso Abad
+#Author: Oscar Valverde Escobar
 
 from typing import List
 

@@ -1,5 +1,7 @@
 """ BackendConfiguration class module.
 """
+#Author: Jesús Alonso Abad
+#Author: Oscar Valverde Escobar
 
 from typing import Dict
 from common.data.config import ServiceConfiguration

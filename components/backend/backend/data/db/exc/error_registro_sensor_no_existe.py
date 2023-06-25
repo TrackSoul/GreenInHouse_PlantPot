@@ -1,6 +1,7 @@
 """ 
 Clase del modulo ErrorRegistroSensorNoExiste
 """
+#Author: Oscar Valverde Escobar
 
 
 class ErrorRegistroSensorNoExiste(Exception):

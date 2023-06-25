@@ -1,6 +1,7 @@
 """ 
 Clase del modulo ErrorTipoPlantaNoExiste
 """
+#Author: Oscar Valverde Escobar
 
 
 class ErrorTipoPlantaNoExiste(Exception):

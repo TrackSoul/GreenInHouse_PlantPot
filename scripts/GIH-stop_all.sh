@@ -1,4 +1,6 @@
 #!/bin/bash
+#Author: Oscar Valverde Escobar
+
 
 for pid in $(ps -ax | grep -E 'GIH' | grep -oE ^[\ ]*[0-9]+ | grep -oE [0-9]+)
 do

@@ -10,6 +10,4 @@ To manually install the library:
 
 ```bash
 pip3 install .
-#   (run this instead to install locally in "editable mode"):
-# pip3 install --user -e .
 ```

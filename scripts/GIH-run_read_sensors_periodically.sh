@@ -1,4 +1,6 @@
 #!/bin/bash
+#Author: Oscar Valverde Escobar
+
 
 if [ $# -lt 1 ]; then 
     sleep_time=600

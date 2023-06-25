@@ -1,3 +1,5 @@
+#Author: Oscar Valverde Escobar
+
 from datetime import datetime
 from typing import List, Optional
 from sqlalchemy.exc import IntegrityError  # type: ignore

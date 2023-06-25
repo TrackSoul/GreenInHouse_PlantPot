@@ -9,15 +9,12 @@ Run `./GIH-install.sh` for an automated installation.
 To manually install the service:
 
 ```bash
-# Install the service itself.
 pip3 install .
-#   (run this instead to install locally in "editable mode"):
-# pip3 install --user -e .
 ```
 
 ## Configuration
 
-Configuration will be loaded from the root directory, subpath `greeninhouse/cfg/config.yml`.
+Configuration will be loaded from the root directory, subpath `/greeninhouse/cfg/config.yml`.
 
 The configuration file is a YAML dictionary with the following configurable parameters:
 
@@ -25,11 +22,6 @@ The configuration file is a YAML dictionary with the following configurable para
 - `host` (mandatory): The service host.
 - `port` (mandatory): The service port.
 - `debug`: If set to true, the service will run in debug mode.
-- `salt`: A configurable string used to further randomize the password hashing. If changed, existing user passwords will be lost.
-- `authorized_api_keys`: An array of keys (in string format) that integrated applications should provide to be granted access to certain REST operations.
-- `auth_service`: A dictionary with the configuration needed to connect to the authentication service.
-  - `host` and `port`: Host and port used to connect to the service.
-  - `apikey_secret`: The API key this service will use to present itself to the authentication service in the requests that require so. Must be included in the authentication service `authorized_api_keys` whitelist.
 
 ## Running the service
 
@@ -39,14 +31,3 @@ Just run `backend` as any other program.
 
 This service exposes a REST API in OpenAPI format that can be browsed at `greeninhouse/openapi/spec.yml` or in the HTTP path `/api/v1/ui/` of the service.
 
-## Services integration
-
-The backend service requires an API key to ensure that only the whitelisted clients can operate through the REST API.
-
-Requesting clients must include their own, unique API key in the `X-ApiKey-Backend` header.
-
-When a request under that security schema receives a request, the key in this header is searched in the whitelisted API keys at the service configuration (in the `authorized_api_keys` entry). If the header is not included or the key is not in the whitelist, the request will be immediately rejected, before being further processed.
-
-This service also has its own API key to integrate itself with the authentication service. This key must be thus whitelisted in the authentication service in order to operate.
-
-As some operations required in the authentication service require a user session, clients using this backend must obtain and keep a valid user session token, that will be passed in the requests to this service to authenticate and authorize them.

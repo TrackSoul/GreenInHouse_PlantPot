@@ -1,5 +1,6 @@
 """ Questions  database-related exceptions.
 """
+#Author: Oscar Valverde Escobar
 
 from .error_sensor_existe import ErrorSensorExiste
 from .error_sensor_no_existe import ErrorSensorNoExiste

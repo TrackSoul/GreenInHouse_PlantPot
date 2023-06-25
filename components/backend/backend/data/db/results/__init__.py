@@ -1,3 +1,5 @@
+#Author: Oscar Valverde Escobar
+
 from .modulo_base import ModuloBase
 from .registro_sensor import RegistroSensor
 from .planta import Planta

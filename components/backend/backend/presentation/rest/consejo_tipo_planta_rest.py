@@ -1,3 +1,5 @@
+#Author: Oscar Valverde Escobar
+
 import traceback
 from datetime import datetime
 from http import HTTPStatus

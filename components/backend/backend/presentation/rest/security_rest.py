@@ -1,5 +1,7 @@
 """ REST API controllers responsible of handling the security schemas.
 """
+#Author: Oscar Valverde Escobar
+
 
 import json
 import time
