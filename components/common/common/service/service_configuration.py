@@ -4,7 +4,7 @@
 #Author: Oscar Valverde Escobar
 
 from typing import List, Dict
-from .configuration import Configuration
+from common.data.config import Configuration
 
 
 class ServiceConfiguration(Configuration):
@@ -19,6 +19,15 @@ class ServiceConfiguration(Configuration):
 
         self.set_authorized_api_keys([])
 
+    # def _component_name(self) -> str:
+    #     """ The component name, to categorize the default config path.
+
+    #     Returns:
+    #         - str: A string identifying the component which will categorize the configuration.
+    #     """
+
+    #     return 'GreenInHouse/cfg'
+
     def _set_values(self, values: Dict) -> None:
         """Sets/merges a collection of configuration values.
 
@@ -27,6 +36,10 @@ class ServiceConfiguration(Configuration):
         """
         if 'service_host' in values:
             self.set_service_host(values['service_host'])
+        if 'net_mask' in values:
+            self.set_net_mask(values['net_mask'])
+        if 'gateway' in values:
+            self.set_gateway(values['gateway'])
         if 'service_port' in values:
             self.set_service_port(values['service_port'])
         if 'debug' in values:
@@ -53,6 +66,46 @@ class ServiceConfiguration(Configuration):
         """
 
         return str(self._values['service_host'])
+    
+    def set_net_mask(self, net_mask: str) -> None:
+        """ Sets the net_mask configuration value.
+
+        Args:
+            - net_mask: A string with the configuration value.
+
+        Raises:
+            - ValueError: If validation is not passed.
+        """
+        self._values['net_mask'] = str(net_mask)
+
+    def get_net_mask(self) -> str:
+        """ Gets the net_mask configuration value.
+
+        Returns:
+            - str: A string with the value of net_mask.
+        """
+
+        return str(self._values['net_mask'])
+    
+    def set_gateway(self, gateway: str) -> None:
+        """ Sets the gateway configuration value.
+
+        Args:
+            - gateway: A string with the configuration value.
+
+        Raises:
+            - ValueError: If validation is not passed.
+        """
+        self._values['gateway'] = str(gateway)
+
+    def get_gateway(self) -> str:
+        """ Gets the gateway configuration value.
+
+        Returns:
+            - str: A string with the value of gateway.
+        """
+
+        return str(self._values['gateway'])
 
     def set_service_port(self, service_port: int) -> None:
         """ Sets the service_port configuration value.

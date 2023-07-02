@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+#Author: Oscar Valverde Escobar
+
+
+import os
+from common.service import ServiceConfiguration
+from common.service import WifiService
+
+if __name__ == '__main__':
+    cfg: ServiceConfiguration = ServiceConfiguration()
+    cfg.load_from_file(cfg.default_config_file())
+    ip = (cfg.get_service_host() + cfg.get_net_mask())
+    WifiService.define_static_ip(iface = "wlan0", ip_with_net_mask = ip, gateway = "192.168.1.1")

@@ -2,7 +2,9 @@
 #Author: Oscar Valverde Escobar
 
 db_connection_string: "sqlite:////GreenInHouse/db/GreenInHouseBackend.sqlite3.db"
-# service_host: "192.168.1.240" # IP estatica definida
+service_host: "192.168.1.240"
+net_mask: "/24"
+gateway: "192.168.1.1"
 service_port: 5000
 debug: true
 

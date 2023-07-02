@@ -4,4 +4,3 @@
 
 
 from .configuration import Configuration
-from .serviceconfiguration import ServiceConfiguration

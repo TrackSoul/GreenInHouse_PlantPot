@@ -4,21 +4,21 @@
 #Author: Oscar Valverde Escobar
 
 from typing import Dict
-from common.data.config import ServiceConfiguration
+from common.service import ServiceConfiguration
 
 
 class BackendConfiguration(ServiceConfiguration):
     """ Class responsible of storing a specific backendentication service configuration.
     """
 
-    def _component_name(self) -> str:
-        """ The component name, to categorize the default config path.
+    # def _component_name(self) -> str:
+    #     """ The component name, to categorize the default config path.
 
-        Returns:
-            - str: A string identifying the component which will categorize the configuration.
-        """
+    #     Returns:
+    #         - str: A string identifying the component which will categorize the configuration.
+    #     """
 
-        return 'GreenInHouse/cfg'
+    #     return 'GreenInHouse/cfg'
 
     def __init__(self):
         """ Initialization/constructor method.

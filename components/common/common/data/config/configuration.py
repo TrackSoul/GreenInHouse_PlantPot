@@ -14,7 +14,7 @@ class Configuration(ABC):
     """ Class responsible of storing a specific service configuration.
     """
 
-    @abstractmethod
+    # @abstractmethod
     def _component_name(self) -> str:
         """ The component name, to categorize the default config path.
 
