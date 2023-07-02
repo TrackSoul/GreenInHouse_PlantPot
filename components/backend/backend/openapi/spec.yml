@@ -2,14 +2,13 @@
 
 openapi: 3.0.0
 info:
-  title: GIH backend service REST API
+  title: Servidor API REST de Green In House
   version: "1.0"
   description: |
-    REST API del servicio de backend.
+    Servicio API REST de Green In House
 
     Autor: Oscar Valverde Escobar.
 
-    Green In House.
     Grado en Ingeniería Informática, Universidad de Burgos, 2022-2023.
   contact:
     name: Universidad de Burgos

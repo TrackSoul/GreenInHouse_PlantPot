@@ -6,7 +6,7 @@ service_host: "192.168.1.240"
 net_mask: "/24"
 gateway: "192.168.1.1"
 service_port: 5000
-debug: true
+debug: false
 
 # salt: "GreenInHouse_salt"
 # jws_secret: "GreenInHouse_jws"
