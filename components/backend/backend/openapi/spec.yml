@@ -2271,6 +2271,59 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
+  /Consejos/TiposPlantas/All/FromTypePlantAndTypeMeasure:
+    get:
+      summary: Obtener todos los consejos de un tipo de planta y de un tipo de medida especificados.
+      description: |
+        Obtener todos los consejos del tipo de planta y tipo de medida especificados almacenados en la base de datos.
+      operationId: backend.presentation.rest.consejo_tipo_planta_rest.getAllFromTypePlantAndTypeMeasure
+      parameters:
+        - $ref: "#/components/parameters/NombreTipoPlantaParam"
+        - $ref: "#/components/parameters/MedidaTipoParam"
+      responses:
+        "200":
+          description: Todos los consejos de un tipo de planta y de un tipo de medida especificados.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoTipoPlantaListModel"
+              example:
+                - descripcion: "Humedad ambiente recomendada."
+                  nombre_elemento: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Humedad"
+                    tipo: "HUMEDAD"
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  valor_minimo: 30.0
+                  valor_maximo: 60.0
+                - descripcion: "Humedad de la maceta recomendada."
+                  nombre_elemento: "Tomatera"
+                  zona_consejo: 
+                    nombre: "Maceta"
+                    tipo: "MACETA"
+                  tipo_medida: 
+                    nombre: "Humedad"
+                    tipo: "HUMEDAD"
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  valor_minimo: 40.0
+                  valor_maximo: 70.0
+        "404":
+          $ref: "#/components/responses/TipoPlantaNoExiste"
+        "406":
+          $ref: "#/components/responses/ErrorTipoMedida"
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []
+
 
   /Consejos/Plantas/One:
     get:
@@ -2672,6 +2725,59 @@ paths:
       # security:
       #   - api_key: []
       #     user_token: []
+  /Consejos/Plantas/All/FromPlantAndTypeMeasure:
+    get:
+      summary: Obtener todos los consejos de una planta y de un tipo de medida especificados.
+      description: |
+        Obtener todos los consejos de la planta y tipo de medida especificados almacenados en la base de datos.
+      operationId: backend.presentation.rest.consejo_planta_rest.getAllFromPlantAndTypeMeasure
+      parameters:
+        - $ref: "#/components/parameters/NombrePlantaParam"
+        - $ref: "#/components/parameters/MedidaTipoParam"
+      responses:
+        "200":
+          description: Todos los consejos de una planta y de un tipo de medida especificados.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ConsejoPlantaListModel"
+              example:
+                - descripcion: "Humedad ambiente recomendada."
+                  nombre_elemento: "Mi tomatera"
+                  zona_consejo: 
+                    nombre: "Ambiente"
+                    tipo: "AMBIENTE"
+                  tipo_medida: 
+                    nombre: "Humedad"
+                    tipo: "HUMEDAD"
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  valor_minimo: 30.0
+                  valor_maximo: 60.0
+                - descripcion: "Humedad de la maceta recomendada."
+                  nombre_elemento: "Mi tomatera"
+                  zona_consejo: 
+                    nombre: "Maceta"
+                    tipo: "MACETA"
+                  tipo_medida: 
+                    nombre: "Humedad"
+                    tipo: "HUMEDAD"
+                  unidad_medida: 
+                    nombre: "%"
+                    tipo: "PORCENTAJE"
+                  valor_minimo: 40.0
+                  valor_maximo: 70.0
+        "404":
+          $ref: "#/components/responses/PlantaNoExiste"
+        "406":
+          $ref: "#/components/responses/ErrorTipoMedida"
+      tags:
+        - Consejos
+      # security:
+      #   - api_key: []
+      #     user_token: []
+
 
 
 components:

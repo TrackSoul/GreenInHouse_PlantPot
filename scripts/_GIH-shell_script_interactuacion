@@ -4,8 +4,8 @@ path_install=/GreenInHouse/src
 path_venv=/GreenInHouse/venv
 
 #source "$path_venv"/venv_backend/venv_backend_sensors/.venv/bin/activate
-source "$path_venv"/venv_backend/venv_backend_api_rest/.venv/bin/activate
-cd "$path_install"/components
+source /GreenInHouse/venv/venv_backend/venv_backend_api_rest/.venv/bin/activate
+cd /GreenInHouse/src/components
 python3
 
 
@@ -34,12 +34,31 @@ from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, U
 from backend.data.util import SensorBackend  #DELETEC COMMENT #
 import board #DELETEC COMMENT#
 import adafruit_mcp3xxx.mcp3008 as MCP #DELETEC COMMENT#
+import adafruit_bh1750 as BH1750
+import time
 
 from sqlalchemy.exc import IntegrityError  # type: ignore
 from sqlalchemy.orm.session import Session  # type: ignore
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore
 from sqlalchemy.sql import func
 from http import HTTPStatus
+
+
+i2c = board.I2C()
+sensor1 = BH1750.BH1750(i2c,BH1750._BH1750_DEFAULT_ADDRESS)
+sensor2 = BH1750.BH1750(i2c,BH1750._BH1750_ALT_ADDRESS)
+
+
+while True:
+    try:
+        print("%.2f Lux"%sensor1.lux)
+    except OSError:
+        print ("error")
+    try:
+        print("%.2f Lux"%sensor2.lux)
+    except OSError:
+        print ("error")
+    time.sleep(1)
 
 cfg: BackendConfiguration = BackendConfiguration()
 cfg.load_from_file(cfg.default_config_file())

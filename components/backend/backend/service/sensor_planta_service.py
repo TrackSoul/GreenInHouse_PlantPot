@@ -8,23 +8,24 @@ from backend.data.db.results import SensorPlanta
 from backend.data.db.resultsets import SensorPlantaSet
 from common.data.util import SensorPlanta as SensorPlantaCommon, Sensor as SensorCommon, Planta as PlantaCommon
 from common.data.util import TipoSensor, ZonaSensor
+from backend.data.db.exc import ErrorSensorPlantaExiste, ErrorSensorPlantaNoExiste
 
 class SensorPlantaService():
 
     @staticmethod
     def create(esquema: Esquema, tipo_sensor: TipoSensor, zona_sensor: ZonaSensor, 
-                               numero_sensor:int, nombre_planta:str = "Sin planta", 
+                               numero_sensor:int, nombre_planta:str, 
                                fecha_asociacion:datetime = datetime.now() ,fecha_anulacion:datetime = None) -> SensorPlantaCommon:
         session: Session = esquema.new_session()
         out: SensorPlantaCommon = None
         try:
             nuevo_sensor_planta: SensorPlanta = SensorPlantaSet.create(session, tipo_sensor, zona_sensor, 
-                                                                           numero_sensor, nombre_planta, 
-                                                                           fecha_asociacion, fecha_anulacion)
+                                                                        numero_sensor, nombre_planta, 
+                                                                        fecha_asociacion, fecha_anulacion)
             out= SensorPlantaCommon(nuevo_sensor_planta.tipo_sensor, nuevo_sensor_planta.zona_sensor,
-                                      nuevo_sensor_planta.numero_sensor, nuevo_sensor_planta.nombre_planta, 
-                                      nuevo_sensor_planta.fecha_asociacion, nuevo_sensor_planta.fecha_anulacion, 
-                                      nuevo_sensor_planta.id_)
+                                    nuevo_sensor_planta.numero_sensor, nuevo_sensor_planta.nombre_planta, 
+                                    nuevo_sensor_planta.fecha_asociacion, nuevo_sensor_planta.fecha_anulacion, 
+                                    nuevo_sensor_planta.id_)
         except Exception as ex:
             raise ex
         finally:
@@ -45,6 +46,15 @@ class SensorPlantaService():
     def exists(esquema: Esquema, id_:int) -> bool:
         session: Session = esquema.new_session()
         sensor_planta_existe: bool = SensorPlantaSet.get(session, id_)
+        esquema.remove_session()
+        return sensor_planta_existe
+    
+    @staticmethod
+    def existsActiveFromSensorAndPlant(esquema: Esquema, tipo_sensor: TipoSensor, zona_sensor: ZonaSensor, 
+                                        numero_sensor:int, nombre_planta:str) -> bool:
+        session: Session = esquema.new_session()
+        sensor_planta_existe: bool = SensorPlantaSet.getActiveFromSensorAndPlant(session, tipo_sensor, zona_sensor, 
+                                                                                numero_sensor, nombre_planta)
         esquema.remove_session()
         return sensor_planta_existe
     
@@ -190,6 +200,19 @@ class SensorPlantaService():
                                   sensor_planta.id_)
         esquema.remove_session()
         return out
+
+    @staticmethod
+    def getActiveFromSensorAndPlant(esquema: Esquema, tipo_sensor: TipoSensor, zona_sensor: ZonaSensor, 
+                                        numero_sensor:int, nombre_planta:str) -> SensorPlantaCommon:
+        session: Session = esquema.new_session()
+        sensor_planta : SensorPlanta = SensorPlantaSet.getActiveFromSensorAndPlant(session, tipo_sensor, zona_sensor, 
+                                                                                numero_sensor, nombre_planta)
+        out= SensorPlantaCommon(sensor_planta.tipo_sensor, sensor_planta.zona_sensor,
+                                  sensor_planta.numero_sensor, sensor_planta.nombre_planta, 
+                                  sensor_planta.fecha_asociacion, sensor_planta.fecha_anulacion,
+                                  sensor_planta.id_)
+        esquema.remove_session()
+        return out
     
     @staticmethod
     def update(esquema: Esquema, tipo_sensor: TipoSensor, zona_sensor: ZonaSensor, numero_sensor:int, 
@@ -252,5 +275,14 @@ class SensorPlantaService():
     def unsubscribeAllFromPlantFromCommon(esquema: Esquema, planta: PlantaCommon) -> List[SensorPlantaCommon]:
         return SensorPlantaService.unsubscribeAllFromPlant(esquema, planta.getNombrePlanta())
 
-    #TODO
-    #unsibscribeFromSensorAndPlantFromCommon
+    @staticmethod
+    def unsubscribeFromSensorAndPlant(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, nombre_planta:str) -> SensorPlantaCommon:
+        if SensorPlantaService.existsActiveFromSensorAndPlant(esquema, tipo_sensor, zona_sensor, numero_sensor,nombre_planta):
+            sensor_planta = SensorPlantaService.getActiveFromSensorAndPlant(esquema, tipo_sensor, zona_sensor, numero_sensor,nombre_planta)
+            sensor_planta.setFechaAnulacion(datetime.now())
+            sensor_planta = SensorPlantaService.updateFromCommon(esquema, sensor_planta)
+        return sensor_planta
+
+    @staticmethod
+    def unsubscribeFromSensorAndPlantFromCommon(esquema: Esquema, sensor: SensorCommon, planta: PlantaCommon) -> SensorPlantaCommon:
+        return SensorPlantaService.unsubscribeFromSensorAndPlant(esquema, sensor.getTipoSensor(), sensor.getZonaSensor(), sensor.getNumeroSensor(), planta.getNombrePlanta())

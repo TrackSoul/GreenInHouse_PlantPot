@@ -11,7 +11,8 @@ class ModeloSensor(Enum):
     DHT11 = 1, "DHT11", "DHT11", TipoSensor.TEMPERATURA_Y_HUMEDAD, ZonaSensor.AMBIENTE
     LDR = 2, "LDR", "LDR", TipoSensor.LUMINOSIDAD, ZonaSensor.AMBIENTE
     LM35 = 3, "LM35", "LM35", TipoSensor.TEMPERATURA, ZonaSensor.AMBIENTE
-    FC28 = 3, "FC28", "FC28", TipoSensor.HUMEDAD, ZonaSensor.MACETA
+    FC28 = 4, "FC28", "FC28", TipoSensor.HUMEDAD, ZonaSensor.MACETA
+    BH1750 = 5, "BH1750", "BH1750", TipoSensor.LUMINOSIDAD, ZonaSensor.AMBIENTE
     OTRO = 99, "Otro", "OTRO", TipoSensor.OTRO, ZonaSensor.OTRA
 
     def __new__(cls, value: int, nombre, tipo, 

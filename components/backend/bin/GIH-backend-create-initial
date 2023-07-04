@@ -15,6 +15,7 @@ from common.data.util import Planta as PlantaCommon, TipoPlanta as TipoPlantaCom
 from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon, SensorPlanta as SensorPlantaCommon
 import board #DELETEC COMMENT#
 import adafruit_mcp3xxx.mcp3008 as MCP #DELETEC COMMENT#
+import adafruit_bh1750 as BH1750
 
 if __name__ == '__main__':
     cfg: BackendConfiguration = BackendConfiguration()
@@ -36,24 +37,32 @@ if __name__ == '__main__':
     consejo_luminosidad_ambiente_sin_tipo_planta = ConsejoTipoPlantaService.create(db, "Luminosidad de ambiente optima.", "Plantilla", ZonaSensor.AMBIENTE, 
                                                             TipoMedida.LUMINOSIDAD, UnidadMedida.LUMENES, 0.0, 0.0, 0.0, 0.0)
     
-    #Sensores conectados a Raspberry
+    #Sensores GPIO conectados a Raspberry
     sensor_temperatura_y_humedad_ambiente_1 =SensorService.create(db,TipoSensor.TEMPERATURA_Y_HUMEDAD,ZonaSensor.AMBIENTE,1,ModeloSensor.DHT11, 
                                                                     "Humedad y temperatura ambiente 1 maceta 1", direccion_lectura="RASPBERRY",patilla_0_lectura=board.D20.id, 
                                                                     unidad_medida_0=UnidadMedida.PORCENTAJE, unidad_medida_1=UnidadMedida.GRADOS_CENTIGRADOS)
 
-    #Sensores conectados a MCP3008
+    #Sensores por SPI conectados a MCP3008
     sensor_humedad_maceta_1 = SensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,ModeloSensor.FC28, "Humedad tierra 1 maceta 1",
                                                 direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P0, 
                                                 unidad_medida_0=UnidadMedida.PORCENTAJE)
-    sensor_luminosidad_ambiente_1 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,1,ModeloSensor.LDR, "Luminosidad 1 maceta 1",
-                                                        direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P1, 
+    # sensor_luminosidad_ambiente_1 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,1,ModeloSensor.LDR, "Luminosidad 1 maceta 1",
+    #                                                     direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P1, 
+    #                                                     unidad_medida_0=UnidadMedida.LUMENES)
+    # sensor_luminosidad_ambiente_2 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,2,ModeloSensor.LDR, "Luminosidad 2 maceta 1",
+    #                                                     direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P2, 
+    #                                                     unidad_medida_0=UnidadMedida.LUMENES)
+    # sensor_luminosidad_ambiente_3 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,3,ModeloSensor.LDR, "Luminosidad 3 maceta 1",
+    #                                                     direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P3, 
+    #                                                     unidad_medida_0=UnidadMedida.LUMENES)    
+
+    # Sensores pro I2C
+    sensor_luminosidad_ambiente_1 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,1,ModeloSensor.BH1750, "Luminosidad 1 maceta 1",
+                                                        direccion_lectura="I2C", patilla_0_lectura=BH1750._BH1750_DEFAULT_ADDRESS, 
                                                         unidad_medida_0=UnidadMedida.LUMENES)
-    sensor_luminosidad_ambiente_2 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,2,ModeloSensor.LDR, "Luminosidad 2 maceta 1",
-                                                        direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P2, 
+    sensor_luminosidad_ambiente_2 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,2,ModeloSensor.BH1750, "Luminosidad 2 maceta 1",
+                                                        direccion_lectura="I2C", patilla_0_lectura=BH1750._BH1750_ALT_ADDRESS, 
                                                         unidad_medida_0=UnidadMedida.LUMENES)
-    sensor_luminosidad_ambiente_3 =SensorService.create(db,TipoSensor.LUMINOSIDAD,ZonaSensor.AMBIENTE,3,ModeloSensor.LDR, "Luminosidad 3 maceta 1",
-                                                        direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P3, 
-                                                        unidad_medida_0=UnidadMedida.LUMENES)     
     
     #Creacion de primer tipo de planta
     tipo_planta_tomatera = TipoPlantaService.create(db,"Tomatera","Planta que da tomates. Facil de cultivar.")

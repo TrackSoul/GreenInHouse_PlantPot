@@ -48,18 +48,27 @@ class SensorPlantaSet():
         if nombre_planta is None:
             raise ValueError('Necesario especificar el nombre de la planta asociada.')
         nuevo_sensor_planta = None
-        try:
-            nuevo_sensor_planta = SensorPlanta(tipo_sensor, zona_sensor, numero_sensor, 
-                                            nombre_planta, fecha_asociacion, fecha_anulacion)
-            session.add(nuevo_sensor_planta)
-            session.commit()
-        except IntegrityError as ex:
+        if SensorPlantaSet.getActiveFromSensorAndPlant(session, tipo_sensor, zona_sensor, numero_sensor, nombre_planta):
+            SensorPlantaSet.getActiveFromSensorAndPlant(session, tipo_sensor, zona_sensor, numero_sensor, nombre_planta)
             session.rollback()
             raise ErrorSensorPlantaExiste(
-                'El registro ' + str(nuevo_sensor_planta.id_) + ' del sensor ' + str(nuevo_sensor_planta.numero_sensor) + ' de ' +  nuevo_sensor_planta.tipo_sensor + ' de ' +  nuevo_sensor_planta.zona_sensor + 'ya existe.'
-                ) from ex
-        finally:
-            return nuevo_sensor_planta
+                'Actualmente el sensor ' + str(numero_sensor) + ' de ' +  tipo_sensor + ' de ' +  zona_sensor + 
+                ' y la planta ' + nombre_planta + ' ya estan asociados.'
+                )
+        else:
+            try:
+                nuevo_sensor_planta = SensorPlanta(tipo_sensor, zona_sensor, numero_sensor, 
+                                                nombre_planta, fecha_asociacion, fecha_anulacion)
+                session.add(nuevo_sensor_planta)
+                session.commit()
+            except IntegrityError as ex:
+                session.rollback()
+                raise ErrorSensorPlantaExiste(
+                    'Actualmente el sensor ' + str(numero_sensor) + ' de ' +  tipo_sensor + ' de ' +  zona_sensor + 
+                    ' y la planta ' + nombre_planta + ' ya estan asociados.'
+                    ) from ex
+            finally:
+                return nuevo_sensor_planta
 
     @staticmethod
     def listAll(session: Session) -> List[SensorPlanta]:
@@ -105,6 +114,8 @@ class SensorPlantaSet():
         Returns:
             - List[SensorPlanta]: Sensores asociados a una planta.
         """
+        if nombre_planta is None:
+            raise ValueError('Necesario especificar el nombre de la planta asociada.')
         sensores_planta = None
         query = session.query(SensorPlanta).filter_by(nombre_planta=nombre_planta)
         sensores_planta: List[SensorPlanta] = query.all()
@@ -122,6 +133,8 @@ class SensorPlantaSet():
         Returns:
             - List[SensorPlanta]: Sensores asociados a una planta.
         """
+        if nombre_planta is None:
+            raise ValueError('Necesario especificar el nombre de la planta asociada.')
         sensores_planta = None
         query = session.query(SensorPlanta).filter_by(nombre_planta=nombre_planta,fecha_anulacion=None)
         sensores_planta: List[SensorPlanta] = query.all()
@@ -139,6 +152,8 @@ class SensorPlantaSet():
         Returns:
             - List[SensorPlanta]: Sensores asociados a una planta.
         """
+        if nombre_planta is None:
+            raise ValueError('Necesario especificar el nombre de la planta asociada.')
         sensores_planta = None
         query = session.query(SensorPlanta).filter(SensorPlanta.nombre_planta == nombre_planta, SensorPlanta.fecha_asociacion >= fecha_inicio, 
                                                    or_(SensorPlanta.fecha_anulacion.is_(None), SensorPlanta.fecha_anulacion <= fecha_fin))
@@ -159,6 +174,12 @@ class SensorPlantaSet():
         Returns:
             - List[SensorPlanta]: Sensores asociados a una planta.
         """
+        if tipo_sensor is None:
+            raise ValueError('Necesario especificar el tipo de sensor asociado.')
+        if zona_sensor is None:
+            raise ValueError('Necesario especificar la zona del sensor asociado.')
+        if numero_sensor is None:
+            raise ValueError('Necesario especificar el numero de sensor asociado.')
         sensores_planta = None
         query = session.query(SensorPlanta).filter_by(tipo_sensor=tipo_sensor, zona_sensor=zona_sensor ,numero_sensor=numero_sensor)
         sensores_planta: List[SensorPlanta] = query.all()
@@ -178,6 +199,12 @@ class SensorPlantaSet():
         Returns:
             - List[SensorPlanta]: Sensores asociados a una planta.
         """
+        if tipo_sensor is None:
+            raise ValueError('Necesario especificar el tipo de sensor asociado.')
+        if zona_sensor is None:
+            raise ValueError('Necesario especificar la zona del sensor asociado.')
+        if numero_sensor is None:
+            raise ValueError('Necesario especificar el numero de sensor asociado.')
         sensores_planta = None
         query = session.query(SensorPlanta).filter_by(tipo_sensor=tipo_sensor, zona_sensor=zona_sensor, numero_sensor=numero_sensor, fecha_anulacion=None)
         sensores_planta: List[SensorPlanta] = query.all()
@@ -195,6 +222,12 @@ class SensorPlantaSet():
         Returns:
             - List[SensorPlanta]: Sensores asociados a una planta.
         """
+        if tipo_sensor is None:
+            raise ValueError('Necesario especificar el tipo de sensor asociado.')
+        if zona_sensor is None:
+            raise ValueError('Necesario especificar la zona del sensor asociado.')
+        if numero_sensor is None:
+            raise ValueError('Necesario especificar el numero de sensor asociado.')
         sensores_planta = None
         query = session.query(SensorPlanta).filter(SensorPlanta.tipo_sensor == tipo_sensor, SensorPlanta.zona_sensor == zona_sensor, 
                                                    SensorPlanta.numero_sensor == numero_sensor, SensorPlanta.fecha_asociacion > fecha_inicio, 
@@ -223,6 +256,44 @@ class SensorPlantaSet():
         except NoResultFound as ex:
             raise ErrorSensorPlantaNoExiste(
                 'La asociacion entre un sensor y una planta con el id ' + id_ + ' no existe.'
+                ) from ex
+        finally:
+            return sensor_planta
+        
+    @staticmethod
+    def getActiveFromSensorAndPlant(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, 
+               nombre_planta:str) -> Optional[SensorPlanta]:
+        """ 
+        Obtencion de una asociacion entre un sensor y una planta
+
+        Args:
+            - session (Session): Objeto de sesion.
+            - tipo_sensor (TipoSensor): Tipo de sensor.
+            - zona_sensor (ZonaSensor): Zona del sensor.
+            - numero_sensor (int): Numero de sensor.
+            - nombre_planta (str): Nombre de la planta asociada al sensor.
+            
+        Returns:
+            - Optional[SensorPlanta]: Asociacion sensor planta 
+        """
+        if tipo_sensor is None:
+            raise ValueError('Necesario especificar el tipo de sensor asociado.')
+        if zona_sensor is None:
+            raise ValueError('Necesario especificar la zona del sensor asociado.')
+        if numero_sensor is None:
+            raise ValueError('Necesario especificar el numero de sensor asociado.')
+        if nombre_planta is None:
+            raise ValueError('Necesario especificar el nombre de la planta asociada.')
+        sensor_planta: SensorPlanta = None
+        try:
+            query = session.query(SensorPlanta).filter(SensorPlanta.tipo_sensor == tipo_sensor, SensorPlanta.zona_sensor == zona_sensor, 
+                                                        SensorPlanta.numero_sensor == numero_sensor, SensorPlanta.nombre_planta == nombre_planta,
+                                                        SensorPlanta.fecha_anulacion == None)
+            sensor_planta: SensorPlanta = query.one()
+        except NoResultFound as ex:
+            raise ErrorSensorPlantaNoExiste(
+                'Actualmente el sensor ' + str(numero_sensor) + ' de ' +  tipo_sensor + ' de ' +  zona_sensor + 
+                 ' y la planta ' + nombre_planta + ' no estan asociados.'
                 ) from ex
         finally:
             return sensor_planta

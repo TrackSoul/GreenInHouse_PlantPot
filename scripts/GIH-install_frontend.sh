@@ -24,6 +24,7 @@ pip3 install sqlalchemy==2.0.0b3 pyyaml
 pip3 install gpiod
 pip3 install adafruit-circuitpython-dht
 pip3 install adafruit-circuitpython-mcp3xxx
+pip3 install adafruit-circuitpython-bh1750
 pip3 install tk
 
 #despligue de librerias

@@ -70,6 +70,19 @@ def getAllFromPlantAndZone(np:str, cz:str):
             return ("El consejo de la planta " + str(np) + " no existe.", HTTPStatus.NOT_FOUND.value)
         return [item.toJson() for item in ConsejoPlantaService.listAllFromPlantAndZone(current_app.db, nombre_planta, zona_consejo)], HTTPStatus.OK.value
 
+def getAllFromPlantAndTypeMeasure(np:str, mt: str):
+    try:
+        tipo_medida:TipoMedida = TipoMedida[mt]
+    except(KeyError):
+        return ("El tipo de medida " + str(mt) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)
+    with current_app.app_context() :
+        if PlantaService.exists(current_app.db, np):
+            nombre_planta: str = np
+        else:
+            return ("El consejo de la planta " + str(np) + " no existe.", HTTPStatus.NOT_FOUND.value)
+        return [item.toJson() for item in ConsejoPlantaService.listAllFromPlantAndTypeMeasure(current_app.db, nombre_planta, tipo_medida)], HTTPStatus.OK.value
+
+
 def post(body:dict):
     with current_app.app_context() :
         try:

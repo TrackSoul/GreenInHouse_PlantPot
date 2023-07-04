@@ -1,3 +1,5 @@
+#Author: Oscar Valverde Escobar
+
 from datetime import datetime
 from typing import Optional,Dict,List
 from enum import Enum
@@ -84,7 +86,7 @@ class SensorPlanta:
                               zona_sensor=dic.get("zona_sensor").get("tipo"),
                               numero_sensor=dic.get("numero_sensor"), 
                               nombre_planta=dic.get("nombre_planta"),
-                              fecha_asociacion=datetime.fromisoformat(dic.get("fecha_asociacion")),
+                              fecha_asociacion=datetime.fromisoformat(dic.get("fecha_asociacion")) if dic.get("fecha_asociacion") is not None else None,
                               fecha_anulacion=datetime.fromisoformat(dic.get("fecha_anulacion")) if dic.get("fecha_anulacion") is not None else None,
-                              id_=dic.get("id"))
+                              id_=dic.get("id") if dic.get("id") is not None else None)
         return sensor
