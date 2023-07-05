@@ -33,4 +33,4 @@ cd "$original_path"
 
 #configuracion de lanzamiento durante arranque
 cd "$original_path"/..
-cp -f /init/GreenInHouse.desktop /etc/xdg/autostart
+cp -f ./init/GreenInHouse.desktop /etc/xdg/autostart
