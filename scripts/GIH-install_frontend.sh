@@ -32,4 +32,5 @@ cd "$original_path"
 ./GIH-deploy_frontend.sh
 
 #configuracion de lanzamiento durante arranque
-cp -f "$original_path"/init/GreenInHouse.desktop /etc/xdg/autostart
+cd "$original_path"/..
+cp -f /init/GreenInHouse.desktop /etc/xdg/autostart
