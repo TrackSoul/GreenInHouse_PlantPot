@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Applicacion de gestion de Green In House
+Name=GreenInHouse.desktop
 Comment=
 Exec=/GreenInHouse/script/GIH-start_frontend.sh
 Icon=
