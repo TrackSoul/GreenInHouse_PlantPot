@@ -14,7 +14,7 @@ apt-get install nmap
 apt install network-manager
 
 #change permisions of wpa_spplicant.conf to permit update network form app
-sudo chmod 666 /etc/wpa_supplicant/wpa_supplicant.conf
+chmod 666 /etc/wpa_supplicant/wpa_supplicant.conf
 
 #Habilitación de puertos de comunicacion
 raspi-config nonint do_ssh 0
