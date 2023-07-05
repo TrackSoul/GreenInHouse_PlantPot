@@ -1,21 +1,83 @@
 #Author: Oscar Valverde Escobar
 
-#Configurar tarjeta de red wifi
 
-
-#Configurar SSH
 #https://blog.jhordyess.com/programacion-remota-en-raspberry-pi-con-ssh-y-visual-studio-code
-sudo adduser green-in-house-remoto ssh
-sudo adduser green-in-house-remoto spi
-sudo adduser green-in-house-remoto i2c
 
 
-#Configurar hostname
-#hacer un script incremental que busque el hostname disponible
 
-ping -c 4 GreenInHouse
+#######Configuración de SSH en Raspberry Pi
 
 
-#hay que activar el spi y ssh
+#A continuación se detalla como se configuran las claves de acceso por SSH en la Raspberry Pi
 
-sudo chmod 666 /etc/wpa_supplicant/wpa_supplicant.conf
+#Crear el directorio ~/.ssh ejecutando el siguiente comando:
+mkdir -p $HOME/.ssh
+
+#Generar par de llaves SSH
+ssh-keygen -t ed25519 -f $HOME/.ssh/GIH
+
+#Introducir nuestra frase clave utilizada para generar el par de claves privada-publica
+
+#Volver a introducir la misma frase clave.
+
+#Añadir la llave privada a SSH Agent
+ssh-add $HOME/.ssh/GIH
+
+#Introducir nuestra frase clave utilizada para generar el par de clavesprivada-publica
+
+#Copiar la llave pública a RPi 
+#En el siguiente comando sustituir green-in-house por el nombre de usuario que se haya configurado en Raspbian para el usuario principal con el que arranca el sistema operativo por defecto.
+ssh-copy-id -i $HOME/.ssh/GIH.pub green-in-house@GreenInHouse
+
+#Introducir la clave del usuario especificado en el comando anterior
+
+#Reiniciar el sistema
+
+
+
+
+######Configuración de VSCode en ordenador
+
+
+#A continuación se detalla como se configura en VSCode el acceso por SSH a la Raspberry Pi.
+
+#Abrir VSCode.
+
+#Abrir una terminal de VSCode.
+
+#Instalar la extensión Remote - SSH
+code –install-extension ms-vscode-remote.remote-ssh
+
+#Cerrar y abrir VScode.
+
+#Configurar la conexión SSH
+
+#Pinchar en el icono de la tele con un circulo para acceder a las conexiones SSH y pulsar sobre el + .
+
+#En el cuadro que aparecerá escribir el usuario de la raspberry @ seguido del hostname o la dirección IP como en la imagen D.6. En mi caso es:
+green-in-house@GreenInHouse
+
+#En el cuadro que aparecerá seleccionar el directorio en el que se almacenará la configuración SSH como en la imagen D.7. Utilizar el directorio de nuestro usuario actual del ordenador. En mi caso es:
+C:/Users/UX581/.ssh/config
+
+#Abajo a la derecha aparecerá un mensaje de que se ha agregado correctamente el host SSH.
+
+#Si pulsamos en abrir configuración se mostrará un archivo con las siguientes lineas:
+Host GreenInHouse
+HostName GreenInHouse
+User green-in-house
+
+#Pinchar de nuevo en el icono de la tele con un circulo para acceder a las conexiones SSH y pulsar sobre la flecha ->
+
+#En el cuadro que aparecerá introducir la contraseña del usuario de la raspberri en el que estamos intentador loguearnos,
+
+#Abajo a la izquierda aparecerá un cuadrado azul que indica que estamos conectados por SSH al equipo remoto 
+
+#Pulsando en archivo y en abrir carpeta nos permitirá abrir un directorio remoto y trabajar con él como de costumbre
+
+#En el cuadro que aparecerá introducir la ruta del directorio que queremos abrir. En mi caso es:
+/home/green-in-house/TFG/GreenInHouse_PlantPot
+
+#Nos volverá a pedir introducir la contraseña del usuario de la Raspberry utilizado. Tras hacerlo se desplegará el directorio y sus archivos 
+
+#Una vez que accedamos a un directorio, al pulsar en el icono de la tele con el círculo para conectarnos a un servidor remoto, nos mostrará la dirección de los últimos directorios utilizados de dicho servidor remoto

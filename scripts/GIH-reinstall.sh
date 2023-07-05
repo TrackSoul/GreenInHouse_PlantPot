@@ -26,10 +26,11 @@ raspi-config nonint do_onewire 0
 raspi-config nonint do_rgpio 0
 #cambio nombre de hostname
 raspi-config nonint do_hostname GreenInHouse
-#configuracion de direccion IP
-./GIH-configure_static_ip.sh
 
 ./GIH-reinstall_backend.sh
 ./GIH-reinstall_frontend.sh
+
+#configuracion de direccion IP
+./GIH-configure_static_ip.sh
 
 reboot now
