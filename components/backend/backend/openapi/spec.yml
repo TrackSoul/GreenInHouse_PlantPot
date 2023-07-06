@@ -23,8 +23,6 @@ tags:
     description: Operaciones relaccionadas con los sensores.
   - name: Tipos Plantas
     description: Operaciones relaccionadas con los tipos de plantas.
-  - name: Sensores Plantas
-    description: Operaciones relaccionadas con las relacciones entre sensores y plantas.
   - name: Consejos
     description: Operaciones relaccionadas con los consejos de cuidado.
 servers:

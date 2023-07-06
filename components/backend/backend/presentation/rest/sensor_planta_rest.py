@@ -145,16 +145,16 @@ def post(body:dict):
             return SensorPlantaService.createFromCommon(current_app.db,sensor_planta).toJson(), HTTPStatus.CREATED.value
         except ErrorSensorPlantaExiste:
             return ("Ya existe una asociacion activa entre el sensor " + str(body.get("numero_sensor")) + " de tipo " + str(body.get("tipo_sensor")) + " de la zona " + str(body.get("zona_sensor")) + " y la planta " + str(body.get("nombre_planta")), HTTPStatus.CONFLICT.value)
-        
+       
 def update(body:dict):
     with current_app.app_context() :
         try:
-            sensor = SensorCommon.fromJson(body)
-            return SensorPlantaService.updateFromCommon(current_app.db,sensor).toJson(), HTTPStatus.OK.value
+            sensor_planta = SensorPlantaCommon.fromJson(body)
+            return SensorPlantaService.updateFromCommon(current_app.db,sensor_planta).toJson(), HTTPStatus.OK.value
         except ErrorSensorPlantaNoExiste:
             return ("La asociación entre el sensor " + str(body.get("numero_sensor")) + " de tipo " + str(body.get("tipo_sensor")) + " de la zona " + str(body.get("zona_sensor")) + " y la planta " + str(body.get("nombre_planta") + " no existe"), HTTPStatus.NOT_FOUND.value)
 
-def unsubscribe(st:str, sz: str ,sid:int, np:str) :
+def unsubscribeFromSensorAndPlant(st:str, sz: str ,sid:int, np:str) :
     try:
         tipo_sensor:TipoSensor = TipoSensor[st]
     except(KeyError):
@@ -165,11 +165,41 @@ def unsubscribe(st:str, sz: str ,sid:int, np:str) :
         return ("La zona de sensor " + str(sz) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     numero_sensor:int = sid
     with current_app.app_context() :
+        if SensorService.exists(current_app.db,tipo_sensor,zona_sensor,numero_sensor):
+            if PlantaService.exists(current_app.db,np):
+                nombre_planta: str = np
+                if SensorPlantaService.existsActiveFromSensorAndPlant(current_app.db, tipo_sensor,zona_sensor,numero_sensor,nombre_planta):
+                    return SensorPlantaService.unsubscribeFromSensorAndPlant(current_app.db, tipo_sensor,zona_sensor,numero_sensor,nombre_planta).toJson(), HTTPStatus.OK.value
+                else:
+                    return ("La asociación entre el sensor " + str(sid) + " de tipo " + str(st) + " de la zona " + str(sz) + " y la planta " + str(np) + " no existe", HTTPStatus.NOT_FOUND.value)
+            else:
+                return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
+        else:
+            return ("El sensor " + str(numero_sensor) + " de tipo " + str(tipo_sensor) + " de la zona " + str(zona_sensor) + " no existe", HTTPStatus.NOT_FOUND.value)
+ 
+        
+def unsubscribeAllFromSensor(st:str, sz: str ,sid:int) :
+    try:
+        tipo_sensor:TipoSensor = TipoSensor[st]
+    except(KeyError):
+        return ("El tipo de sensor " + str(st) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
+    try:
+        zona_sensor: ZonaSensor = ZonaSensor[sz]
+    except(KeyError):
+        return ("La zona de sensor " + str(sz) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
+    numero_sensor:int = sid
+    with current_app.app_context() :
+        if SensorService.exists(current_app.db,tipo_sensor,zona_sensor,numero_sensor):
+            return SensorPlantaService.unsubscribeAllFromSensor(current_app.db, tipo_sensor,zona_sensor,numero_sensor).toJson(), HTTPStatus.OK.value
+        else:
+            return ("El sensor " + str(numero_sensor) + " de tipo " + str(tipo_sensor) + " de la zona " + str(zona_sensor) + " no existe", HTTPStatus.NOT_FOUND.value)
+ 
+
+def unsubscribeAllFromPlant(np:str) :
+    with current_app.app_context() :
         if PlantaService.exists(current_app.db,np):
             nombre_planta: str = np
-            if SensorPlantaService.existsActiveFromSensorAndPlant(current_app.db, tipo_sensor,zona_sensor,numero_sensor,nombre_planta):
-                return SensorPlantaService.unsubscribeFromSensorAndPlant(current_app.db, tipo_sensor,zona_sensor,numero_sensor,nombre_planta).toJson(), HTTPStatus.OK.value
-            else:
-                return ("La asociación entre el sensor " + str(sid) + " de tipo " + str(st) + " de la zona " + str(sz) + " y la planta " + str(np) + " no existe", HTTPStatus.NOT_FOUND.value)
+            return SensorPlantaService.unsubscribeAllFromPlant(current_app.db,nombre_planta).toJson(), HTTPStatus.OK.value
         else:
             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value) 
+ 
