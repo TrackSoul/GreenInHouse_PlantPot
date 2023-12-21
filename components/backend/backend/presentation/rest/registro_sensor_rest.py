@@ -39,7 +39,7 @@ def getAllFromSensor(st:str, sz: str ,sid:int) -> List[Dict]:
         else:
             return ("El sensor " + str(numero_sensor) + " de tipo " + str(tipo_sensor) + " de la zona " + str(zona_sensor) + " no existe", HTTPStatus.NOT_FOUND.value)
 
-def getAllFromSensorBetweenDates(st:str, sz: str ,sid:int, fi: str, ff: str = str(datetime.now())) -> List[Dict]:
+def getAllFromSensorBetweenDates(st:str, sz: str ,sid:int, fi: str, ff: str = None) -> List[Dict]:
     try:
         tipo_sensor:TipoSensor = TipoSensor[st]
     except(KeyError):
@@ -54,6 +54,8 @@ def getAllFromSensorBetweenDates(st:str, sz: str ,sid:int, fi: str, ff: str = st
     except(ValueError):
         return ("Error en el formato de la fecha de inicio " + str(fi) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
     try:
+        if ff is None:
+            ff=str(datetime.now())
         fecha_fin=datetime.fromisoformat(ff)
     except(ValueError):
         return ("Error en el formato de la fecha de fin " + str(ff) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
@@ -74,12 +76,14 @@ def getAllFromPlant(np:str) -> List[Dict]:
         else:
             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
 
-def getAllFromPlantBetweenDates(np:str, fi: str, ff: str = str(datetime.now())) -> List[Dict]:
+def getAllFromPlantBetweenDates(np:str, fi: str, ff: str = None) -> List[Dict]:
     try:
         fecha_inicio=datetime.fromisoformat(fi)
     except(ValueError):
         return ("Error en el formato de la fecha de inicio " + str(fi) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
     try:
+        if ff is None:
+            ff=str(datetime.now())
         fecha_fin=datetime.fromisoformat(ff)
     except(ValueError):
         return ("Error en el formato de la fecha de fin " + str(ff) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
@@ -196,12 +200,14 @@ def getAllFromPlantToGraph(np:str) -> List[Dict]:
         else:
             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
 
-def getAllFromPlantBetweenDatesToGraph(np:str, fi: str, ff: str = str(datetime.now())) -> List[Dict]:
+def getAllFromPlantBetweenDatesToGraph(np:str, fi: str, ff: str = None) -> List[Dict]:
     try:
         fecha_inicio=datetime.fromisoformat(fi)
     except(ValueError):
         return ("Error en el formato de la fecha de inicio " + str(fi) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
     try:
+        if ff is None:
+            ff=str(datetime.now())
         fecha_fin=datetime.fromisoformat(ff)
     except(ValueError):
         return ("Error en el formato de la fecha de fin " + str(ff) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
@@ -222,7 +228,9 @@ def getAllFromPlantBetweenDatesToGraph(np:str, fi: str, ff: str = str(datetime.n
         else:
             return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value) 
         
-def __dateListIntervals(dias: int, fecha: datetime = datetime.now() ) -> List[RegistroSensorCommon]:
+def __dateListIntervals(dias: int, fecha: datetime = None) -> List[RegistroSensorCommon]:
+    if fecha is None:
+            fecha=datetime.now()
     fecha_fin: arrow = arrow.get(fecha)
     fecha_inicio: arrow = None
     if(dias==1):
@@ -237,7 +245,10 @@ def __dateListIntervals(dias: int, fecha: datetime = datetime.now() ) -> List[Re
         if dias > 14:
             intervalos_dia = 1
         horas_intervalo = 24/intervalos_dia
+        fecha_actual: arrow = arrow.get(fecha)#
         fecha_fin = fecha_fin.floor("days").shift(days=+1,hours=-horas_intervalo)
+        while fecha_actual <= fecha_fin:#
+            fecha_fin = fecha_fin.shift(hours=-horas_intervalo)#
         fecha_inicio = fecha_fin.shift(days=-dias,hours=+horas_intervalo)
     f_int: arrow = fecha_inicio   
     lista_fechas = []
@@ -246,12 +257,14 @@ def __dateListIntervals(dias: int, fecha: datetime = datetime.now() ) -> List[Re
         f_int = f_int.shift(hours=+horas_intervalo)
     return lista_fechas
 
-def getAvgFromPlantAgroupByIntervalsToGraph(np:str, d: int, ff=str(datetime.now())) -> List[Dict]:
+def getAvgFromPlantAgroupByIntervalsToGraph(np:str, d: int, ff:str = None) -> List[Dict]:
     with current_app.app_context() :
         if d > 0:
             if PlantaService.exists(current_app.db,np):
                 nombre_planta: str = np
                 try:
+                    if ff is None:
+                        ff=str(datetime.now())
                     fecha_fin = datetime.fromisoformat(ff)
                     lista_fechas = __dateListIntervals(d,fecha_fin)
                 except:

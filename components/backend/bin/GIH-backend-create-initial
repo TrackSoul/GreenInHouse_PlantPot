@@ -42,6 +42,7 @@ if __name__ == '__main__':
                                                                     "Humedad y temperatura ambiente 1 maceta 1", direccion_lectura="RASPBERRY",patilla_0_lectura=board.D20.id, 
                                                                     unidad_medida_0=UnidadMedida.PORCENTAJE, unidad_medida_1=UnidadMedida.GRADOS_CENTIGRADOS)
 
+
     #Sensores por SPI conectados a MCP3008
     sensor_humedad_maceta_1 = SensorService.create(db,TipoSensor.HUMEDAD,ZonaSensor.MACETA,1,ModeloSensor.FC28, "Humedad tierra 1 maceta 1",
                                                 direccion_lectura="MCP3008_0",patilla_0_lectura=board.CE0.id, patilla_1_lectura=MCP.P0, 

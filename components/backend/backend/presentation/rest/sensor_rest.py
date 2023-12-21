@@ -104,7 +104,7 @@ def getAllActiveFromModel(sm:str):
     except(KeyError):
         return ("El modelo de sensor " + str(sm) + " no existe.", HTTPStatus.NOT_ACCEPTABLE.value)   
     with current_app.app_context() :
-        return [item.toJson() for item in SensorService.listAllFromModel(current_app.db,modelo_sensor)], HTTPStatus.OK.value
+        return [item.toJson() for item in SensorService.listAllActiveFromModel(current_app.db,modelo_sensor)], HTTPStatus.OK.value
 
 def post(body:dict):
     with current_app.app_context() :

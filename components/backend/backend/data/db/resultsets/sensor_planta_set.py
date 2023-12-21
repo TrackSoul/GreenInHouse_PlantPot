@@ -141,7 +141,7 @@ class SensorPlantaSet():
         return sensores_planta
     
     @staticmethod
-    def listAllSensorsFromPlantBetweenDates(session: Session, nombre_planta:str, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[SensorPlanta]:
+    def listAllSensorsFromPlantBetweenDates(session: Session, nombre_planta:str, fecha_inicio: datetime, fecha_fin: datetime = None) -> List[SensorPlanta]:
         """
         Lista de sensores asociados a una planta en concreto.
 
@@ -154,6 +154,8 @@ class SensorPlantaSet():
         """
         if nombre_planta is None:
             raise ValueError('Necesario especificar el nombre de la planta asociada.')
+        if fecha_fin is None:
+            fecha_fin = datetime.now()
         sensores_planta = None
         query = session.query(SensorPlanta).filter(SensorPlanta.nombre_planta == nombre_planta, SensorPlanta.fecha_asociacion >= fecha_inicio, 
                                                    or_(SensorPlanta.fecha_anulacion.is_(None), SensorPlanta.fecha_anulacion <= fecha_fin))
@@ -211,7 +213,7 @@ class SensorPlantaSet():
         return sensores_planta
     
     @staticmethod
-    def listAllPlantsFromSensorBetweenDates(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[SensorPlanta]:
+    def listAllPlantsFromSensorBetweenDates(session: Session, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = None) -> List[SensorPlanta]:
         """
         Lista de sensores asociados a una planta en concreto.
 
@@ -228,6 +230,8 @@ class SensorPlantaSet():
             raise ValueError('Necesario especificar la zona del sensor asociado.')
         if numero_sensor is None:
             raise ValueError('Necesario especificar el numero de sensor asociado.')
+        if fecha_fin is None:
+            fecha_fin = datetime.now()
         sensores_planta = None
         query = session.query(SensorPlanta).filter(SensorPlanta.tipo_sensor == tipo_sensor, SensorPlanta.zona_sensor == zona_sensor, 
                                                    SensorPlanta.numero_sensor == numero_sensor, SensorPlanta.fecha_asociacion > fecha_inicio, 

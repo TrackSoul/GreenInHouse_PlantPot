@@ -119,7 +119,9 @@ class SensorPlantaService():
         return SensorPlantaService.listAllActiveSensorsFromPlant(esquema, planta.getNombrePlanta())
 
     @staticmethod
-    def listAllSensorsFromPlantBetweenDates(esquema: Esquema, nombre_planta: str, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[SensorPlantaCommon]:
+    def listAllSensorsFromPlantBetweenDates(esquema: Esquema, nombre_planta: str, fecha_inicio: datetime, fecha_fin: datetime = None) -> List[SensorPlantaCommon]:
+        if fecha_fin is None:
+            fecha_fin = datetime.now()
         out: List[SensorPlantaCommon] = []
         session: Session = esquema.new_session()
         relacciones_sensor_planta: List[SensorPlanta] = SensorPlantaSet.listAllSensorsFromPlantBetweenDates(session, nombre_planta, fecha_inicio, fecha_fin)
@@ -132,7 +134,7 @@ class SensorPlantaService():
         return out
 
     @staticmethod
-    def listAllSensorsFromPlantFromCommonBetweenDates(esquema: Esquema, planta: PlantaCommon, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[SensorPlantaCommon]:
+    def listAllSensorsFromPlantFromCommonBetweenDates(esquema: Esquema, planta: PlantaCommon, fecha_inicio: datetime, fecha_fin: datetime = None) -> List[SensorPlantaCommon]:
         return SensorPlantaService.listAllSensorsFromPlantBetweenDates(esquema, planta.getNombrePlanta(), fecha_inicio, fecha_fin)
 
 
@@ -173,7 +175,9 @@ class SensorPlantaService():
                                                             sensor.getNumeroSensor())
 
     @staticmethod
-    def listAllPlantsFromSensorBetweenDates(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[SensorPlantaCommon]:
+    def listAllPlantsFromSensorBetweenDates(esquema: Esquema, tipo_sensor:TipoSensor, zona_sensor: ZonaSensor ,numero_sensor:int, fecha_inicio: datetime, fecha_fin: datetime = None) -> List[SensorPlantaCommon]:
+        if fecha_fin is None:
+            fecha_fin = datetime.now()
         out: List[SensorPlantaCommon] = []
         session: Session = esquema.new_session()
         relacciones_sensor_planta: List[SensorPlanta] = SensorPlantaSet.listAllPlantsFromSensorBetweenDates(session, tipo_sensor, zona_sensor, numero_sensor, fecha_inicio, fecha_fin)
@@ -186,7 +190,7 @@ class SensorPlantaService():
         return out
 
     @staticmethod
-    def listAllPlantsFromSensorFromCommonBetweenDates(esquema: Esquema, sensor: SensorCommon, fecha_inicio: datetime, fecha_fin: datetime = datetime.now()) -> List[SensorPlantaCommon]:
+    def listAllPlantsFromSensorFromCommonBetweenDates(esquema: Esquema, sensor: SensorCommon, fecha_inicio: datetime, fecha_fin: datetime = None) -> List[SensorPlantaCommon]:
         return SensorPlantaService.listAllPlantsFromSensorBetweenDates(esquema, sensor.getTipoSensor(), sensor.getZonaSensor(), 
                                                                       sensor.getNumeroSensor(), fecha_inicio, fecha_fin)
 

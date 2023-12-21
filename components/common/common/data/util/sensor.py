@@ -171,9 +171,9 @@ class Sensor:
                         patilla_2_lectura=dic.get("patilla_2_lectura") if dic.get("patilla_2_lectura") is not None else None, 
                         patilla_3_lectura=dic.get("patilla_3_lectura") if dic.get("patilla_3_lectura") is not None else None,
                         unidad_medida_0=UnidadMedida[dic.get("unidad_medida_0").get("tipo")], 
-                        unidad_medida_1=UnidadMedida[dic.get("unidad_medida_1").get("tipo")] if dic.get("unidad_medida_1") is not None else None,
-                        unidad_medida_2=UnidadMedida[dic.get("unidad_medida_2").get("tipo")] if dic.get("unidad_medida_2") is not None else None, 
-                        unidad_medida_3=UnidadMedida[dic.get("unidad_medida_3").get("tipo")] if dic.get("unidad_medida_3") is not None else None,
+                        unidad_medida_1=UnidadMedida[dic.get("unidad_medida_1").get("tipo")] if dic.get("unidad_medida_1") is not None else UnidadMedida.SIN_UNIDAD,
+                        unidad_medida_2=UnidadMedida[dic.get("unidad_medida_2").get("tipo")] if dic.get("unidad_medida_2") is not None else UnidadMedida.SIN_UNIDAD, 
+                        unidad_medida_3=UnidadMedida[dic.get("unidad_medida_3").get("tipo")] if dic.get("unidad_medida_3") is not None else UnidadMedida.SIN_UNIDAD,
                         fecha_creacion=datetime.fromisoformat(dic.get("fecha_creacion")) if dic.get("fecha_creacion") is not None else None,
                         fecha_eliminacion=datetime.fromisoformat(dic.get("fecha_eliminacion")) if dic.get("fecha_eliminacion") is not None else None)
         return sensor
