@@ -3,9 +3,8 @@
 path_install=/GreenInHouse/src
 path_venv=/GreenInHouse/venv
 
-#source "$path_venv"/venv_backend/venv_backend_sensors/.venv/bin/activate
-source /GreenInHouse/venv/venv_backend/venv_backend_api_rest/.venv/bin/activate
-cd /GreenInHouse/src/components
+source "$path_venv"/venv_backend/venv_backend_sensors/.venv/bin/activate
+#source /GreenInHouse/venv/venv_backend/venv_backend_api_rest/.venv/bin/activate
 python3
 
 
@@ -13,6 +12,7 @@ import os
 import inspect
 import logging
 import connexion  # type: ignore
+import arrow
 from datetime import datetime
 from typing import Union, List, Dict
 from flask import Flask
@@ -24,12 +24,13 @@ import common
 from backend.data.config import BackendConfiguration
 from sqlalchemy.orm.session import Session
 from backend.data.db.esquema import Esquema
-from backend.data.db.results import Sensor, Planta, RegistroSensor, TipoPlanta, SensorPlanta, ConsejoTipoPlanta
-from backend.data.db.resultsets import SensorSet,PlantaSet, RegistroSensorSet, TipoPlantaSet, SensorPlantaSet, ConsejoTipoPlantaSet
-from backend.service import SensorService, PlantaService, RegistroSensorService, TipoPlantaService, SensorPlantaService, ConsejoTipoPlantaService
+from backend.data.db.results import Sensor, Planta, RegistroSensor, TipoPlanta, SensorPlanta, ConsejoTipoPlanta, ConsejoPlanta
+from backend.data.db.resultsets import SensorSet,PlantaSet, RegistroSensorSet, TipoPlantaSet, SensorPlantaSet, ConsejoTipoPlantaSet, ConsejoPlantaSet
+from backend.service import SensorService, PlantaService, RegistroSensorService, TipoPlantaService, SensorPlantaService, ConsejoTipoPlantaService, ConsejoPlantaService
 from backend.presentation.rest import sensor_rest, planta_rest, registro_sensor_rest, tipo_planta_rest, consejo_tipo_planta_rest
 from common.data.util import Sensor as SensorCommon, RegistroSensor as RegistroSensorCommon, Planta as PlantaCommon
-from common.data.util import TipoPlanta as TipoPlantaCommon, SensorPlanta as SensorPlantaCommon, ConsejoTipoPlanta as ConsejoTipoPlantaCommon
+from common.data.util import TipoPlanta as TipoPlantaCommon, SensorPlanta as SensorPlantaCommon
+from common.data.util import Consejo as ConsejoCommon, ConsejoPlanta as ConsejoPlantaCommon, ConsejoTipoPlanta as ConsejoTipoPlantaCommon
 from common.data.util import TipoSensor, ZonaSensor, ModeloSensor, TipoMedida, UnidadMedida
 from backend.data.util import SensorBackend  #DELETEC COMMENT #
 import board #DELETEC COMMENT#
@@ -43,6 +44,242 @@ from sqlalchemy.orm.exc import NoResultFound  # type: ignore
 from sqlalchemy.sql import func
 from http import HTTPStatus
 
+cfg: BackendConfiguration = BackendConfiguration()
+cfg.load_from_file(cfg.default_config_file())
+db: Esquema = Esquema(cfg)
+
+esquema = db
+session: Session = esquema.new_session()
+planta = 'Mi tomatera'
+sensores=SensorPlantaService.listAllSensorsFromPlant(db,planta)
+sensor=sensores[4]
+fecha_inicio=datetime(2025,3,20,22,0,0)
+fecha_fin=datetime(2025,3,20,23,0,0)
+RegistroSensorSet.listAllFromSensorBetweenDates(session, sensor.getTipoSensor(), sensor.getZonaSensor(), sensor.getNumeroSensor(),fecha_inicio,fecha_fin)
+RegistroSensorSet.getAvgFromSensorBetweenDates(session, sensor.getTipoSensor(), sensor.getZonaSensor(), sensor.getNumeroSensor(),fecha_inicio,fecha_fin)
+RegistroSensorService.listAllFromSensorBetweenDates(db,sensor.getTipoSensor(), sensor.getZonaSensor(), sensor.getNumeroSensor(),fecha_inicio,fecha_fin)
+RegistroSensorService.getAvgFromSensorBetweenDates(db,sensor.getTipoSensor(), sensor.getZonaSensor(), sensor.getNumeroSensor(),fecha_inicio,fecha_fin)
+
+
+
+def __createRecordsDcitToGraph() -> List[Dict]:
+    dic_registros_graficar = {}
+    for unidad_medida in list(UnidadMedida):
+        tipo_medida: TipoMedida = unidad_medida.getTipoMedida()
+        dic_tipo = {}
+        for zona in list(ZonaSensor):
+            dic_tipo_zona = {} 
+            dic_tipo_zona["unidad_medida"] = {"nombre": str(unidad_medida),
+                                            "tipo": unidad_medida.getTipo()}
+            dic_tipo_zona["tipo_medida"] = {"nombre": str(tipo_medida),
+                                            "tipo": tipo_medida.getTipo()}
+            dic_tipo_zona["zona_sensor"] = {"nombre": str(zona),
+                                    "tipo": zona.getTipo()}  
+            dic_tipo_zona["lista_valores"] = []
+            dic_tipo_zona["lista_fechas_largas"] = []
+            dic_tipo_zona["lista_fechas_cortas"] = []
+            dic_tipo[zona.getTipo()] = dic_tipo_zona 
+        dic_registros_graficar[tipo_medida.getTipo()] = dic_tipo
+    for zona in list(ZonaSensor):
+        dic_zona = {}
+        for unidad_medida in list(UnidadMedida):
+            tipo_medida: TipoMedida = unidad_medida.getTipoMedida()           
+            dic_zona_tipo = {}   
+            dic_zona_tipo["unidad_medida"] = {"nombre": str(unidad_medida),
+                                            "tipo": unidad_medida.getTipo()}
+            dic_zona_tipo["tipo_medida"] = {"nombre": str(tipo_medida),
+                                            "tipo": tipo_medida.getTipo()}
+            dic_zona_tipo["zona_sensor"] = {"nombre": str(zona),
+                                    "tipo": zona.getTipo()}  
+            dic_zona_tipo["lista_valores"] = []
+            dic_zona_tipo["lista_fechas_largas"] = []
+            dic_zona_tipo["lista_fechas_cortas"] = []
+            dic_zona[tipo_medida.getTipo()] = dic_zona_tipo
+        dic_registros_graficar[zona.getTipo()] = dic_zona 
+    return dic_registros_graficar
+
+def __addAllRecordsListToGraph(lista_registros_sensores: List[RegistroSensorCommon], dic_registros_graficar, agrupar_multiples_sensores_con_misma_funcion=True) -> List[Dict]:
+    for registro_sensor in lista_registros_sensores:
+        unidad_medida: UnidadMedida = registro_sensor.getUnidadMedida()
+        tipo_medida: TipoMedida = unidad_medida.getTipoMedida()
+        zona: ZonaSensor = registro_sensor.getZonaSensor()
+        # if registro_sensor.getValor() == -100:
+        if zona == ZonaSensor.SIN_ZONA or tipo_medida == TipoMedida.SIN_TIPO:
+            continue
+        # Zona - Tipo unidad
+        dic_tipo: Dict = dic_registros_graficar.get(tipo_medida.getTipo())
+        dic_tipo_zona: Dict = dic_tipo.get(zona.getTipo())                  
+        lista_valores: List = dic_tipo_zona.get("lista_valores")
+        lista_fechas_largas: List = dic_tipo_zona.get("lista_fechas_largas")
+        lista_fechas_cortas: List = dic_tipo_zona.get("lista_fechas_cortas")
+        if agrupar_multiples_sensores_con_misma_funcion == True and len(lista_fechas_largas) > 0 and lista_fechas_largas[-1] == str(registro_sensor.getFecha()):
+            lista_valores[-1] = round((lista_valores[-1] + registro_sensor.getValor()) / 2)
+        else:
+            lista_valores.append(round(registro_sensor.getValor()))
+            lista_fechas_largas.append(str(registro_sensor.getFecha()))
+            lista_fechas_cortas.append(str(registro_sensor.getFecha()))
+            # lista_fechas_cortas.append(str(registro_sensor.getFecha().strftime("%d-%H")))
+        # Tipo unidad - Zona
+        dic_zona: Dict = dic_registros_graficar.get(zona.getTipo())
+        dic_zona_tipo: Dict = dic_zona.get(tipo_medida.getTipo())
+        lista_valores: List = dic_zona_tipo.get("lista_valores")
+        lista_fechas_largas: List = dic_zona_tipo.get("lista_fechas_largas")
+        lista_fechas_cortas: List = dic_zona_tipo.get("lista_fechas_cortas")
+        if agrupar_multiples_sensores_con_misma_funcion == True and len(lista_fechas_largas) > 0 and lista_fechas_largas[-1] == str(registro_sensor.getFecha()):
+            lista_valores[-1] = round((lista_valores[-1] + registro_sensor.getValor()) / 2)
+        else:
+            lista_valores.append(round(registro_sensor.getValor()))
+            lista_fechas_largas.append(str(registro_sensor.getFecha()))
+            lista_fechas_cortas.append(str(registro_sensor.getFecha()))
+            # lista_fechas_cortas.append(str(registro_sensor.getFecha().strftime("%d-%H")))
+    return dic_registros_graficar
+
+def __addTipsListToGraph(lista_consejos: List[ConsejoCommon], dic_registros_graficar: Dict):
+    for consejo in lista_consejos:
+        dic_zona_medida: Dict = dic_registros_graficar.get(consejo.getZonaConsejo().getTipo()).get(consejo.getTipoMedida().getTipo())
+        dic_medida_zona: Dict = dic_registros_graficar.get(consejo.getTipoMedida().getTipo()).get(consejo.getZonaConsejo().getTipo())
+        lista_valores_minimos = []
+        lista_valores_maximos = []
+        for valor in dic_zona_medida.get("lista_valores"):
+            lista_valores_minimos.append(consejo.getValorMinimo())
+            lista_valores_maximos.append(consejo.getValorMaximo())
+        dic_zona_medida["lista_valores_minimos"] = lista_valores_minimos
+        dic_zona_medida["lista_valores_maximos"] = lista_valores_maximos
+        dic_medida_zona["lista_valores_minimos"] = lista_valores_minimos
+        dic_medida_zona["lista_valores_maximos"] = lista_valores_maximos
+    return dic_registros_graficar
+
+def __dateListIntervals(dias: int, fecha: datetime = None) -> List[RegistroSensorCommon]:
+    if fecha is None:
+            fecha=datetime.now()
+    fecha_fin: arrow = arrow.get(fecha)
+    fecha_inicio: arrow = None
+    if(dias==1):
+        intervalos_dia = 24
+        horas_intervalo = 24/intervalos_dia
+        fecha_fin = fecha_fin.floor("hours")
+        fecha_inicio = fecha_fin.shift(days=-dias,hours=+1)
+    if(dias>1):
+        intervalos_dia = 4
+        if dias > 7:
+            intervalos_dia = 2
+        if dias > 14:
+            intervalos_dia = 1
+        horas_intervalo = 24/intervalos_dia
+        fecha_actual: arrow = arrow.get(fecha)#
+        fecha_fin = fecha_fin.floor("days").shift(days=+1,hours=-horas_intervalo)
+        while fecha_actual <= fecha_fin:#
+            fecha_fin = fecha_fin.shift(hours=-horas_intervalo)#
+        fecha_inicio = fecha_fin.shift(days=-dias,hours=+horas_intervalo)
+    f_int: arrow = fecha_inicio   
+    lista_fechas = []
+    while f_int <= fecha_fin:
+        lista_fechas.append((f_int.datetime.replace(tzinfo=None),f_int.shift(hours=+horas_intervalo).datetime.replace(tzinfo=None)))
+        f_int = f_int.shift(hours=+horas_intervalo)
+    return lista_fechas
+
+
+def __addAllRecordsListToGraph(lista_registros_sensores: List[RegistroSensorCommon], dic_registros_graficar, agrupar_multiples_sensores_con_misma_funcion=True) -> List[Dict]:
+    for registro_sensor in lista_registros_sensores:
+        unidad_medida: UnidadMedida = registro_sensor.getUnidadMedida()
+        tipo_medida: TipoMedida = unidad_medida.getTipoMedida()
+        zona: ZonaSensor = registro_sensor.getZonaSensor()
+        # if registro_sensor.getValor() == -100:
+        if zona == ZonaSensor.SIN_ZONA or tipo_medida == TipoMedida.SIN_TIPO:
+            continue
+        # Zona - Tipo unidad
+        dic_tipo: Dict = dic_registros_graficar.get(tipo_medida.getTipo())
+        dic_tipo_zona: Dict = dic_tipo.get(zona.getTipo())                  
+        lista_valores: List = dic_tipo_zona.get("lista_valores")
+        lista_fechas_largas: List = dic_tipo_zona.get("lista_fechas_largas")
+        lista_fechas_cortas: List = dic_tipo_zona.get("lista_fechas_cortas")
+        if agrupar_multiples_sensores_con_misma_funcion == True and len(lista_fechas_largas) > 0 and lista_fechas_largas[-1] == str(registro_sensor.getFecha()):
+            lista_valores[-1] = round((lista_valores[-1] + registro_sensor.getValor()) / 2)
+        else:
+            print(str(registro_sensor.getValor()) + ' ' + str(tipo_medida) + ' ' + str(zona) + ' ' + str(registro_sensor.getFecha()))
+            lista_valores.append(round(registro_sensor.getValor()))
+            lista_fechas_largas.append(str(registro_sensor.getFecha()))
+            lista_fechas_cortas.append(str(registro_sensor.getFecha()))
+            print(str(lista_valores) + ' ' + str(tipo_medida) + ' ' + str(zona) + ' ' + str(lista_fechas_largas))
+            # lista_fechas_cortas.append(str(registro_sensor.getFecha().strftime("%d-%H")))
+        # Tipo unidad - Zona
+        dic_zona: Dict = dic_registros_graficar.get(zona.getTipo())
+        dic_zona_tipo: Dict = dic_zona.get(tipo_medida.getTipo())
+        lista_valores: List = dic_zona_tipo.get("lista_valores")
+        lista_fechas_largas: List = dic_zona_tipo.get("lista_fechas_largas")
+        lista_fechas_cortas: List = dic_zona_tipo.get("lista_fechas_cortas")
+        if agrupar_multiples_sensores_con_misma_funcion == True and len(lista_fechas_largas) > 0 and lista_fechas_largas[-1] == str(registro_sensor.getFecha()):
+            lista_valores[-1] = round((lista_valores[-1] + registro_sensor.getValor()) / 2)
+        else:
+            lista_valores.append(round(registro_sensor.getValor()))
+            lista_fechas_largas.append(str(registro_sensor.getFecha()))
+            lista_fechas_cortas.append(str(registro_sensor.getFecha()))
+            # lista_fechas_cortas.append(str(registro_sensor.getFecha().strftime("%d-%H")))
+    print()
+    return dic_registros_graficar
+
+
+
+def getAvgFromPlantAgroupByIntervalsToGraph(np:str, d: int, ff:str = None) -> List[Dict]:
+        if d > 0:
+            if PlantaService.exists(db,np):
+                nombre_planta: str = np
+                try:
+                    if ff is None:
+                        ff=str(datetime.now())
+                    fecha_fin = datetime.fromisoformat(ff)
+                    lista_fechas = __dateListIntervals(d,fecha_fin)
+                except:
+                    return ("Error en el formato de la fecha de fin " + str(ff) +" .", HTTPStatus.NOT_ACCEPTABLE.value)
+                try:
+                    dic_registros_graficar = __createRecordsDcitToGraph()
+                    for fecha in lista_fechas:
+                        lista_registros = RegistroSensorService.listAllAvgFromPlantBetweenDates(db, nombre_planta, fecha[0], fecha[1])
+                        dic_registros_graficar = __addAllRecordsListToGraph(lista_registros, dic_registros_graficar)
+                    lista_consejos: List[ConsejoPlantaCommon] = ConsejoPlantaService.listAllFromPlant(db, nombre_planta)
+                    dic_registros_graficar = __addTipsListToGraph(lista_consejos, dic_registros_graficar)
+                # except Exception as e:                  
+                #     return (traceback.print_exc(), HTTPStatus.NOT_FOUND.value)
+                except: 
+                    return ("Error al procesar los datos de la planta " + np + " para graficar.", HTTPStatus.NOT_FOUND.value)
+                return dic_registros_graficar, HTTPStatus.OK.value
+            else:
+                return ("La planta " + np + " no existe.", HTTPStatus.NOT_FOUND.value)
+        else:
+            return ("El numero de dias seleccionados tiene que ser mayor que 0.", HTTPStatus.NOT_FOUND.value)
+
+fecha_fin=datetime(2025,3,20,23,0,0)
+lista_fechas = __dateListIntervals(1,fecha_fin)
+nombre_planta='Mi tomatera'
+
+dic_registros_graficar = __createRecordsDcitToGraph()
+for fecha in lista_fechas:
+    lista_registros = RegistroSensorService.listAllAvgFromPlantBetweenDates(db, nombre_planta, fecha[0], fecha[1])
+    dic_registros_graficar = __addAllRecordsListToGraph(lista_registros, dic_registros_graficar)
+
+
+
+[print(x) for x in SensorPlantaService.listAllSensorsFromPlant(esquema,planta)]
+[print(x) for x in SensorPlantaService.listAllSensorsFromPlantBetweenDates(esquema,planta,fecha_inicio,fecha_fin)]
+
+esquema = db
+session: Session = esquema.new_session()
+planta = 'Mi tomatera'
+sensores=SensorPlantaService.listAllSensorsFromPlant(db,planta)
+sensor=sensores[0]
+fecha_i=datetime(2025,3,20,18,0,0)
+fecha_f=datetime(2025,3,20,21,0,0)
+[print(x) for x in RegistroSensorService.getAvgFromSensorFromCommonBetweenDates(esquema,sensores[1],fecha_i, fecha_f)]
+[print(x) for x in RegistroSensorService.listAllFromSensorFromCommonBetweenDates(esquema,sensores[1],fecha_i, fecha_f)]
+
+[print(x) for x in RegistroSensorService.listAllAvgFromPlantBetweenDates(esquema,planta,fecha_i, fecha_f)]
+
+registro_sensor = RegistroSensorService.listAllAvgFromPlantBetweenDates(db, nombre_planta, lista_fechas[1][0], lista_fechas[1][1])
+
+[print(x) for x in lista_fechas]
+
+
+'''
 
 i2c = board.I2C()
 sensor1 = BH1750.BH1750(i2c,BH1750._BH1750_DEFAULT_ADDRESS)
@@ -65,6 +302,7 @@ cfg.load_from_file(cfg.default_config_file())
 db: Esquema = Esquema(cfg)
 
 sensores_activos=SensorService.listAllActive(db)
+
 registros=RegistroSensorService.listAllFromSensorFromCommonBetweenDates(db,sensores_activos[1],datetime(2023,4,24,1,00,00),datetime(2023,4,24,2,00,00))
 plants = PlantaService.listAllActive(db)
 sensor_plant = SensorPlantaService.listAllSensorsFromPlantFromCommonBetweenDates(db,plants[1],datetime(2023,4,24,1,0,0))
@@ -82,4 +320,13 @@ fecha_inicio = datetime(2023,5,24,1,00,00)
 fecha_fin = datetime(2023,5,25,1,00,00)
 RegistroSensorService.getAvgFromSensorBetweenDates(db, tipo_sensor, zona_sensor, numero_sensor,fecha_inicio,fecha_fin)
 
+for s in sensores_activos:
+    print(s)
+
+
+
+    
+
 # sensor_temperatura_y_humedad_ambiente_2 = SensorService.create(db,TipoSensor.TEMPERATURA_Y_HUMEDAD,ZonaSensor.AMBIENTE,2,ModeloSensor.DHT11, "Humedad y temperatura ambiente 2 maceta 1", direccion_lectura="RASPBERRY",patilla_0_lectura=board.D20.id, unidad_medida_0=UnidadMedida.PORCENTAJE, unidad_medida_1=UnidadMedida.GRADOS_CENTIGRADOS)
+
+'''

@@ -157,8 +157,8 @@ class SensorPlantaSet():
         if fecha_fin is None:
             fecha_fin = datetime.now()
         sensores_planta = None
-        query = session.query(SensorPlanta).filter(SensorPlanta.nombre_planta == nombre_planta, SensorPlanta.fecha_asociacion >= fecha_inicio, 
-                                                   or_(SensorPlanta.fecha_anulacion.is_(None), SensorPlanta.fecha_anulacion <= fecha_fin))
+        query = session.query(SensorPlanta).filter(SensorPlanta.nombre_planta == nombre_planta, SensorPlanta.fecha_asociacion < fecha_fin, 
+                                                   or_(SensorPlanta.fecha_anulacion.is_(None), SensorPlanta.fecha_anulacion > fecha_inicio))
         sensores_planta: List[SensorPlanta] = query.all()
         return sensores_planta
 
