@@ -17,4 +17,6 @@ class SensorElectronicoLM35 (SensorElectronicoMCP3008):
         valor = lista_valor_unidad_medida[0][0]
         if (valor is not None):
             lista_valor_unidad_medida[0][0]=(valor/10.0)
+        else:
+             lista_valor_unidad_medida[0][0]=-999
         return lista_valor_unidad_medida

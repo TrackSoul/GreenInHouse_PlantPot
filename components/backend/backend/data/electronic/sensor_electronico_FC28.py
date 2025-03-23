@@ -16,6 +16,8 @@ class SensorElectronicoFC28 (SensorElectronicoMCP3008):
         valor = lista_valor_unidad_medida[0][0]
         if (valor is not None):
             lista_valor_unidad_medida[0][0]=100.0-(valor*100.0/65535)
+        else:
+             lista_valor_unidad_medida[0][0]=-999
         return lista_valor_unidad_medida
 
 

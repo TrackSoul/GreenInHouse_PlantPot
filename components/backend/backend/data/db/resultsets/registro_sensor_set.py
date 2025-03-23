@@ -46,6 +46,8 @@ class RegistroSensorSet():
             raise ValueError('Necesario especificar el numero de sensor.')
         if valor is None:
             raise ValueError('Necesario especificar el valor del sensor.')
+        if valor == -999:
+            raise ValueError('El valor del sensor es erroneo.')
         if unidad_medida is None:
             raise ValueError('Necesario especificar la unidad_medida del sensor.')
         nuevo_registro_sensor: RegistroSensor = None

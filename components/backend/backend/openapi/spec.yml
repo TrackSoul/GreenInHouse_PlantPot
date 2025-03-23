@@ -595,7 +595,8 @@ paths:
                       zona_sensor: 
                         nombre: "Ambiente"
                         tipo: "AMBIENTE"
-                      lista_valores: [22.45,23.34,22.23]
+                      lista_valores_medios: [22.45,23.34,22.23]
+                      ista_valores: [22.45,23.34,22.23]
                       lista_fechas: ["2023-05-14 20:00:00.0", "2023-05-14 21:00:00.0", "2023-05-14 22:00:00.0"]
                 - HUMEDAD: 
                     AMBIENTE:
@@ -608,20 +609,22 @@ paths:
                       zona_sensor: 
                         nombre: "Ambiente"
                         tipo: "AMBIENTE"
+                      lista_valores_medios: [48.23,49.16,48.95]
                       lista_valores: [48.23,49.16,48.95]
                       lista_fechas: ["2023-05-14 20:00:00.0", "2023-05-14 21:00:00.0", "2023-05-14 22:00:00.0"]
-                -  HUMEDAD: 
+                -  LUMINOSIDAD: 
                     AMBIENTE:
                       unidad_medida: 
-                        nombre: "%"
-                        tipo: "MACETA"
+                        nombre: "LUX"
+                        tipo: "LUMENES"
                       tipo_medida: 
-                        nombre: "Humedad"
-                        tipo: "HUMEDA"
+                        nombre: "Luminosidad"
+                        tipo: "LUMINOSIDAD"
                       zona_sensor: 
-                        nombre: "Maceta"
-                        tipo: "MACETA"
-                      lista_valores: [48.23,49.16,48.95]
+                        nombre: "Ambiente"
+                        tipo: "AMBIENTE"
+                      lista_valores_medios: [48.23,49.16,48.95]
+                      lista_valores: [[48.23,48.23],[49.16,49.16],[48.95,48.95]]
                       lista_fechas: ["2023-05-14 20:00:00.0", "2023-05-14 21:00:00.0", "2023-05-14 22:00:00.0"]
         "404":
           $ref: "#/components/responses/PlantaNoExiste"
@@ -3109,10 +3112,16 @@ components:
           $ref: "#/components/schemas/TipoMedidaModel"
         zona_sensor:
           $ref: "#/components/schemas/ZonaSensorModel"
-        lista_valores:
+        lista_valores_medios:
           type: array
           items:
             type: number
+        lista_valores:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
         lista_fechas_largas:
           type: array
           items:
@@ -3126,6 +3135,7 @@ components:
         - unidad_medida
         - tipo_medida
         - zona_sensor
+        - lista_valores_medios
         - lista_valores
         - lista_fechas_largas
         - lista_fechas_cortas

@@ -19,4 +19,6 @@ class SensorElectronicoLDR (SensorElectronicoMCP3008):
         valor = lista_valor_unidad_medida[0][0]
         if (valor is not None):
             lista_valor_unidad_medida[0][0]= (valor*self.R_o*10)/(self.R_l*self.R_c*(65535-valor))
+        else:
+             lista_valor_unidad_medida[0][0]=-999
         return lista_valor_unidad_medida

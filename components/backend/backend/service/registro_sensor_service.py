@@ -115,7 +115,7 @@ class RegistroSensorService():
             for unidad_medida in sensor.getUnidadesMedida():
                 if unidad_medida == UnidadMedida.SIN_UNIDAD:
                     continue
-                registro_sensor = RegistroSensor(tipo_sensor, zona_sensor, numero_sensor, 0, unidad_medida, fecha_inicio)
+                registro_sensor = RegistroSensor(tipo_sensor, zona_sensor, numero_sensor, -999, unidad_medida, fecha_inicio)
                 registro_sensor.id_ = -1
                 registros_sensor.append(registro_sensor)
         '''
@@ -192,14 +192,13 @@ class RegistroSensorService():
             fecha_i = fecha_inicio
             fecha_f = fecha_fin
             registros_sensor_planta = RegistroSensorService.getAvgFromSensorFromCommonBetweenDates(esquema,sensor,fecha_i, fecha_f)
-            '''
             if len(registros_sensor_planta)==0:
                 for unidad_medida in sensor.getUnidadesMedida():
                     if unidad_medida is None:
                         unidad_medida = UnidadMedida.SIN_UNIDAD
-                    registro = RegistroSensorCommon(sensor.getTipoSensor(), sensor.getZonaSensor(), sensor.getNumeroSensor(), 0, unidad_medida, fecha_i)
-                    registros_sensor_planta.append(registro)'
-            '''
+                    registro = RegistroSensorCommon(sensor.getTipoSensor(), sensor.getZonaSensor(), sensor.getNumeroSensor(), -999, unidad_medida, fecha_i)
+                    registro.id_ = -1
+                    registros_sensor_planta.append(registro)
             for registro_sensor_planta in registros_sensor_planta:
                 lista_registros_sensores_planta.append(registro_sensor_planta)
         return lista_registros_sensores_planta

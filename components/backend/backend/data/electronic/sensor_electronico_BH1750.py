@@ -28,7 +28,7 @@ class SensorElectronicoBH1750 (SensorElectronico):
             try:
                 valor_leido = BH1750.BH1750(i2c,self.patilla_0_lectura).lux
             except OSError:
-                valor_leido=None
+                valor_leido=-999
                 time.sleep(1)
             intentos_lectura += 1
         lista_valor_unidad_medida: List[Tuple[float, UnidadMedida]] = [[valor_leido, self.unidad_medida_0]]

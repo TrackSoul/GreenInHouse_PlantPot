@@ -30,6 +30,8 @@ class SensorElectronicoMCP3008 (SensorElectronico):
         while (valor_leido is None and intentos_lectura < 10):
             valor_leido = self.canal.value
             intentos_lectura += 1
+        if (valor_leido is None):
+            valor_leido = -999
         lista_valor_unidad_medida: List[Tuple[float, UnidadMedida]] = [[valor_leido, self.unidad_medida_0]]
         return lista_valor_unidad_medida
 
